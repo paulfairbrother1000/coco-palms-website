@@ -29,3 +29,12 @@ h1,h2,h3,.brand,.quote-form legend,.gallery-placeholder-number{font-family:var(-
 .quotation-overview .quotation-intro{margin-bottom:0}
 .rates-card .form-note{color:rgba(255,255,255,.82)}
 @media(max-width:980px){.quotation-overview{grid-template-columns:1fr}}
+:root{--teal:#087f7a;--sea:#4fb3ad;--gold:#4fb3ad}
+button{border-radius:8px}
+.button{border-radius:8px}
+.button:hover{background:#055f5c}
+.button-gold:hover{background:#e5f6f4}
+.contact-details,.rates-card,.quote-invitation{background:#087f7a}
+.calendar-grid button,.calendar-key i.available{background:#edf8f7}
+.calendar-grid button.in-range,.calendar-key i.selected-key{background:#d6f0ed}
+.availability-pill{background:#e5f6f4;color:#087f7a}
