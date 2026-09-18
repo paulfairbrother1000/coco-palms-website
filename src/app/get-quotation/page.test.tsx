@@ -24,4 +24,11 @@ describe("quotation page introduction", () => {
     expect(screen.getByText("$1,200")).toBeInTheDocument();
     expect(screen.getByText("$1,500")).toBeInTheDocument();
   });
+
+  it("places the published rates directly beneath the payment information", () => {
+    render(<GetQuotationPage />);
+
+    const introduction = screen.getByText(/a 50% payment confirms your stay/i).closest(".quotation-intro");
+    expect(introduction).toContainElement(screen.getByRole("heading", { name: "Published rates" }));
+  });
 });
