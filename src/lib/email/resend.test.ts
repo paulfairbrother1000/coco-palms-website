@@ -28,6 +28,18 @@ describe("sendEmail", () => {
     expect(mocks.send).toHaveBeenCalledWith(expect.objectContaining({
       to: "paul@example.com",
       cc: "hello@cocopalms-antigua.com",
-    }));
+    }), undefined);
+  });
+
+  it("passes an idempotency key to Resend", async () => {
+    await sendEmail(
+      { to: "hello@cocopalms-antigua.com", subject: "Booking request", text: "Text", html: "<p>Text</p>" },
+      { idempotencyKey: "booking-request-quote-id" },
+    );
+
+    expect(mocks.send).toHaveBeenCalledWith(
+      expect.objectContaining({ to: "hello@cocopalms-antigua.com" }),
+      { idempotencyKey: "booking-request-quote-id" },
+    );
   });
 });

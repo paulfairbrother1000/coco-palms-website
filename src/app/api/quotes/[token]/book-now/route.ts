@@ -4,48 +4,151 @@ import { publicQuoteFromDatabase, type PublicQuote } from "@/features/quotes/pub
 import { sendEmail } from "@/lib/email/resend";
 import { createAdminSupabaseClient } from "@/lib/supabase/admin";
 
+type Acceptance =
+  | { outcome: "not_found" }
+  | { outcome: "expired" }
+  | {
+      outcome: "accepted";
+      quoteId: string;
+      requestedAt: string;
+      notificationSent: boolean;
+    };
+
 type Dependencies = {
-  getQuote: (token: string) => Promise<{ id: string; quote: PublicQuote } | null>;
-  hasRecentRequest: (quoteId: string) => Promise<boolean>;
-  sendNotification: (quote: PublicQuote, requestedAt: string) => Promise<void>;
-  recordRequest: (quoteId: string, payload: Record<string, unknown>) => Promise<void>;
+  acceptQuote(token: string): Promise<Acceptance>;
+  getQuote(quoteId: string): Promise<PublicQuote | null>;
+  sendNotification(
+    quote: PublicQuote,
+    requestedAt: string,
+    idempotencyKey: string,
+  ): Promise<void>;
+  markNotificationSent(quoteId: string): Promise<void>;
 };
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null;
+}
+
+function acceptanceFromRpc(value: unknown): Acceptance {
+  if (!isRecord(value)) throw new Error("Invalid quote acceptance response.");
+
+  if (value.outcome === "not_found") return { outcome: "not_found" };
+  if (value.outcome === "expired") return { outcome: "expired" };
+  if (
+    value.outcome === "accepted" &&
+    typeof value.quote_id === "string" &&
+    typeof value.requested_at === "string" &&
+    typeof value.notification_sent === "boolean"
+  ) {
+    return {
+      outcome: "accepted",
+      quoteId: value.quote_id,
+      requestedAt: value.requested_at,
+      notificationSent: value.notification_sent,
+    };
+  }
+
+  throw new Error("Invalid quote acceptance response.");
+}
 
 function defaultDependencies(): Dependencies {
   return {
-    async getQuote(token) {
-      const { data, error } = await createAdminSupabaseClient().from("quotes").select("id,public_token,contact_name,contact_email,start_date,end_date,adults_count,children_6_17_count,under6_count,created_at,expires_at,breakdown").eq("public_token", token).maybeSingle();
+    async acceptQuote(token) {
+      const { data, error } = await createAdminSupabaseClient().rpc(
+        "accept_website_quote",
+        { p_token: token },
+      );
+      if (error) throw error;
+      return acceptanceFromRpc(data);
+    },
+    async getQuote(quoteId) {
+      const { data, error } = await createAdminSupabaseClient()
+        .from("quotes")
+        .select(
+          "public_token,contact_name,contact_email,start_date,end_date,adults_count,children_6_17_count,under6_count,created_at,expires_at,breakdown",
+        )
+        .eq("id", quoteId)
+        .maybeSingle();
       if (error) throw error;
       if (!data) return null;
-      return { id: data.id, quote: publicQuoteFromDatabase({ ...data, token: data.public_token, name: data.contact_name, email: data.contact_email, arrival: data.start_date, departure: data.end_date, calculation: data.breakdown }) };
+      return publicQuoteFromDatabase({
+        public_token: data.public_token,
+        contact_name: data.contact_name,
+        contact_email: data.contact_email,
+        start_date: data.start_date,
+        end_date: data.end_date,
+        adults_count: data.adults_count,
+        children_6_17_count: data.children_6_17_count,
+        under6_count: data.under6_count,
+        created_at: data.created_at,
+        expires_at: data.expires_at,
+        calculation: data.breakdown,
+      });
     },
-    async hasRecentRequest(quoteId) {
-      const since = new Date(Date.now() - 15 * 60 * 1000).toISOString();
-      const { data, error } = await createAdminSupabaseClient().from("quote_events").select("id").eq("quote_id", quoteId).eq("event_type", "book_now_requested").gte("created_at", since).limit(1);
-      if (error) throw error;
-      return Boolean(data?.length);
+    async sendNotification(quote, requestedAt, idempotencyKey) {
+      await sendEmail(renderBookNowEmail(quote, requestedAt), { idempotencyKey });
     },
-    async sendNotification(quote, requestedAt) { await sendEmail(renderBookNowEmail(quote, requestedAt)); },
-    async recordRequest(quoteId, payload) {
-      const { error } = await createAdminSupabaseClient().from("quote_events").insert({ quote_id: quoteId, event_type: "book_now_requested", event_payload: payload });
+    async markNotificationSent(quoteId) {
+      const { error } = await createAdminSupabaseClient().rpc(
+        "mark_website_booking_request_notified",
+        { p_quote_id: quoteId },
+      );
       if (error) throw error;
     },
   };
 }
 
 export function createBookNowPostHandler(dependencies: Dependencies) {
-  return async function POST(_request: Request, context: { params: Promise<{ token: string }> }) {
+  return async function POST(
+    _request: Request,
+    context: { params: Promise<{ token: string }> },
+  ) {
+    const { token } = await context.params;
+    let acceptance: Acceptance;
     try {
-      const { token } = await context.params;
-      const stored = await dependencies.getQuote(token);
-      if (!stored) return NextResponse.json({ error: "Quotation not found." }, { status: 404 });
-      if (await dependencies.hasRecentRequest(stored.id)) return NextResponse.json({ ok: true, alreadySent: true });
-      const requestedAt = new Date().toISOString();
-      await dependencies.sendNotification(stored.quote, requestedAt);
-      await dependencies.recordRequest(stored.id, { source: "website", requested_at: requestedAt, contact_email: stored.quote.email });
+      acceptance = await dependencies.acceptQuote(token);
+    } catch {
+      return NextResponse.json(
+        { error: "Your request could not be sent. Please try again." },
+        { status: 503 },
+      );
+    }
+
+    if (acceptance.outcome === "not_found") {
+      return NextResponse.json({ error: "Quotation not found." }, { status: 404 });
+    }
+    if (acceptance.outcome === "expired") {
+      return NextResponse.json(
+        { error: "This quotation has expired. Please request a new quotation." },
+        { status: 410 },
+      );
+    }
+    if (acceptance.notificationSent) {
+      return NextResponse.json({ ok: true, alreadySent: true });
+    }
+
+    try {
+      const quote = await dependencies.getQuote(acceptance.quoteId);
+      if (!quote) {
+        return NextResponse.json({ error: "Quotation not found." }, { status: 404 });
+      }
+
+      await dependencies.sendNotification(
+        quote,
+        acceptance.requestedAt,
+        `coco-palms-booking-request-${acceptance.quoteId}`,
+      );
+      await dependencies.markNotificationSent(acceptance.quoteId);
       return NextResponse.json({ ok: true, alreadySent: false });
     } catch {
-      return NextResponse.json({ error: "Your enquiry could not be sent." }, { status: 503 });
+      return NextResponse.json(
+        {
+          error:
+            "Your request was recorded, but the notification could not be sent. Please try again.",
+          recorded: true,
+        },
+        { status: 503 },
+      );
     }
   };
 }

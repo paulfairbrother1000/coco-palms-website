@@ -1,4 +1,5 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { describe, expect, it } from "vitest";
 import { QuoteResult } from "./quote-result";
 import type { QuoteCalculation } from "./types";
@@ -24,6 +25,18 @@ const calculation = {
   balanceDueDaysBeforeArrival: 70,
 } satisfies QuoteCalculation;
 
+const confirmation = {
+  arrival: "2027-06-01",
+  departure: "2027-06-08",
+  nights: 7,
+  adults: 2,
+  childrenSixToSeventeen: 0,
+  childrenUnderSix: 0,
+  quotationTotal: 8773,
+  dueToConfirm: 4386.5,
+  securityDeposit: 2000,
+};
+
 describe("QuoteResult", () => {
   it("explains each price component and the fee basis", () => {
     render(<QuoteResult calculation={calculation} />);
@@ -40,5 +53,18 @@ describe("QuoteResult", () => {
     render(<QuoteResult calculation={calculation} emailSent={false} />);
 
     expect(screen.getByText("Your quotation is displayed here, but the email could not be sent. Please keep this page open and contact us if you need a copy.")).toBeInTheDocument();
+  });
+
+  it("passes the confirmation details into the booking dialog", async () => {
+    const user = userEvent.setup();
+    render(<QuoteResult calculation={calculation} publicToken="quote-token" confirmation={confirmation} />);
+
+    await user.click(screen.getByRole("button", { name: "Book Now" }));
+
+    const dialog = screen.getByRole("dialog", { name: "Confirm your booking request" });
+    expect(within(dialog).getByText("1 June 2027")).toBeInTheDocument();
+    expect(within(dialog).getByText("Children aged 6 or over").nextSibling).toHaveTextContent("0");
+    expect(within(dialog).getByText("Children under 6").nextSibling).toHaveTextContent("0");
+    expect(within(dialog).getByText("$8,773.00")).toBeInTheDocument();
   });
 });

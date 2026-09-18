@@ -5,10 +5,15 @@ import { useSearchParams } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
 import { QuotationCalendar } from "@/features/availability/quotation-calendar";
 import type { UnavailableRange } from "@/features/availability/date-range";
-import type { QuoteCalculation } from "./types";
+import type { QuoteCalculation, QuoteConfirmationDetails } from "./types";
 import { QuoteResult } from "./quote-result";
 
-type QuoteResponse = { calculation: QuoteCalculation; publicToken?: string; emailSent?: boolean };
+type QuoteResponse = {
+  calculation: QuoteCalculation;
+  publicToken?: string;
+  emailSent?: boolean;
+  confirmation?: QuoteConfirmationDetails;
+};
 
 export function QuoteForm() {
   const params = useSearchParams();
@@ -43,9 +48,22 @@ export function QuoteForm() {
     const payload = { name: form.get("name"), email: form.get("email"), arrival, departure, adults: Number(form.get("adults")), childrenSixToSeventeen: Number(form.get("childrenSixToSeventeen")), childrenUnderSix: Number(form.get("childrenUnderSix")) };
     try {
       const response = await fetch("/api/quotes", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(payload) });
-      const result = await response.json();
+      const result = await response.json() as QuoteResponse & { error?: string };
       if (!response.ok) { setError(result.error ?? "We could not prepare your quotation."); return; }
-      setQuote(result);
+      setQuote({
+        ...result,
+        confirmation: {
+          arrival,
+          departure,
+          adults: payload.adults,
+          childrenSixToSeventeen: payload.childrenSixToSeventeen,
+          childrenUnderSix: payload.childrenUnderSix,
+          nights: result.calculation.nights,
+          quotationTotal: result.calculation.quotationTotal,
+          dueToConfirm: result.calculation.dueToConfirm,
+          securityDeposit: result.calculation.securityDeposit,
+        },
+      });
     } catch {
       setError("We could not prepare your quotation. Please try again.");
     } finally {
@@ -66,6 +84,6 @@ export function QuoteForm() {
       {error && <p className="form-error" role="alert">{error}</p>}
       <button className="button quote-submit" disabled={loading || Boolean(calendarError)}>{loading ? "Preparing quotation…" : "Get Quotation"}</button>
     </form>
-    {quote && <QuoteResult calculation={quote.calculation} publicToken={quote.publicToken} emailSent={quote.emailSent} />}
+    {quote && <QuoteResult calculation={quote.calculation} publicToken={quote.publicToken} emailSent={quote.emailSent} confirmation={quote.confirmation} />}
   </div>;
 }

@@ -42,3 +42,11 @@ button{border-radius:8px}
 .page-hero{padding-top:clamp(3rem,6vw,5.5rem);padding-bottom:clamp(2.5rem,4vw,4rem)}
 .page-hero+.section{padding-top:clamp(2.5rem,4vw,4rem)}
 .location-collage{display:block;width:100%;height:auto;margin-top:2rem}
+.booking-confirmation-backdrop{position:fixed;inset:0;z-index:100;background:rgba(7,23,37,.68);display:grid;place-items:center;padding:1rem}
+.booking-confirmation-dialog{background:#fff;width:min(620px,100%);max-height:calc(100svh - 2rem);overflow:auto;padding:clamp(1.25rem,4vw,2.5rem);border-radius:12px;box-shadow:0 24px 70px rgba(0,0,0,.28)}
+.booking-confirmation-summary{display:grid;grid-template-columns:1fr auto;gap:.65rem 1rem;margin:1.5rem 0}
+.booking-confirmation-summary dt{font-weight:700}.booking-confirmation-summary dd{margin:0;text-align:right}
+.booking-confirmation-warning{background:#edf9fc;border-left:4px solid var(--teal);padding:1rem}
+.booking-confirmation-actions{display:flex;justify-content:flex-end;gap:.75rem;flex-wrap:wrap}
+.booking-confirmation-back{background:#e9eef2;color:var(--deep)}
+@media(max-width:520px){.booking-confirmation-actions .button{width:100%}}

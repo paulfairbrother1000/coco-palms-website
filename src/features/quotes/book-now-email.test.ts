@@ -16,11 +16,24 @@ describe("renderBookNowEmail", () => {
     expect(email.subject).toContain("Book Now");
     expect(email.text).toContain("Source: Website");
     expect(email.text).toContain("Paul Fairbrother (paul@example.com)");
+    expect(email.replyTo).toBe("paul@example.com");
+    expect(email.text).toContain("Nights: 7");
     expect(email.text).toContain("Adults: 2");
     expect(email.text).toContain("Children aged 6–17: 1");
+    expect(email.text).toContain("Children under 6: 1");
     expect(email.text).toContain("Quotation total: $8,809.75");
+    expect(email.text).toContain("Due to confirm: $4,404.88");
+    expect(email.text).toContain("Balance: $4,404.87");
+    expect(email.text).toContain("Separate refundable security deposit: $2,000.00");
     expect(email.text).toContain("Administration fee (5%, including refundable security deposit)");
     expect(email.text).toContain("Requested: 17 September 2026 at 14:00 UTC");
+    expect(email.text).toContain(
+      "The dates are not secured until the required deposit has been paid.",
+    );
+    expect(email.html).toContain("Nights: 7");
+    expect(email.html).toContain(
+      "The dates are not secured until the required deposit has been paid.",
+    );
   });
 
   it("escapes customer-controlled values in the HTML email", () => {

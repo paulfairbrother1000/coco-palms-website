@@ -1,11 +1,23 @@
 "use client";
 
-import type { QuoteCalculation } from "./types";
+import type { QuoteCalculation, QuoteConfirmationDetails } from "./types";
 import { BookNowButton } from "./book-now-button";
 
 const money = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" });
 
-export function QuoteResult({ calculation: quote, publicToken, emailSent }: { calculation: QuoteCalculation; publicToken?: string; emailSent?: boolean }) {
+export function QuoteResult({
+  calculation: quote,
+  publicToken,
+  emailSent,
+  confirmation,
+  disabled,
+}: {
+  calculation: QuoteCalculation;
+  publicToken?: string;
+  emailSent?: boolean;
+  confirmation?: QuoteConfirmationDetails;
+  disabled?: boolean;
+}) {
   return <section className="quote-result" aria-live="polite">
     <div className="quote-result-head"><div><span className="eyebrow">Your quotation</span><h2>{money.format(quote.quotationTotal)}</h2></div><span className="availability-pill">Dates available</span></div>
     <p>{quote.nights} nights for {quote.guests} {quote.guests === 1 ? "guest" : "guests"}</p>
@@ -23,6 +35,6 @@ export function QuoteResult({ calculation: quote, publicToken, emailSent }: { ca
     {emailSent === false && publicToken && <p className="form-note">Your quotation is saved, but the email could not be sent. Keep this page open while we resolve it.</p>}
     {emailSent === false && !publicToken && <p className="form-note">Your quotation is displayed here, but the email could not be sent. Please keep this page open and contact us if you need a copy.</p>}
     <p className="form-note">This quotation does not reserve the dates. Selecting Book Now sends an enquiry to Coco Palms.</p>
-    <BookNowButton token={publicToken} />
+    <BookNowButton token={publicToken} details={confirmation} disabled={disabled} />
   </section>;
 }

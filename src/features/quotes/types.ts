@@ -30,3 +30,15 @@ export interface QuoteCalculation {
   balanceDueDaysBeforeArrival: number;
   balanceDueDate?: string;
 }
+
+export interface QuoteConfirmationDetails {
+  arrival: string;
+  departure: string;
+  nights: number;
+  adults: number;
+  childrenSixToSeventeen: number;
+  childrenUnderSix: number;
+  quotationTotal: number;
+  dueToConfirm: number;
+  securityDeposit: number;
+}

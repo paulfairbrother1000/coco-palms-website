@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { QuoteForm } from "./quote-form";
@@ -51,12 +51,19 @@ describe("QuoteForm", () => {
     await screen.findByRole("heading", { name: "June 2027" });
     await user.type(screen.getByLabelText("Name"), "Paul Fairbrother");
     await user.type(screen.getByLabelText("Email"), "paul@example.com");
+    await user.clear(screen.getByLabelText("Children aged 6 or over"));
+    await user.type(screen.getByLabelText("Children aged 6 or over"), "1");
     await user.click(screen.getByRole("checkbox"));
     await user.click(screen.getByRole("button", { name: "Get Quotation" }));
 
     await screen.findByRole("heading", { name: "$8,773.00" });
     expect(screen.getByText("7 nights × $1,000.00 — 15th May to 15th Nov")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Book Now" })).toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "Book Now" }));
+    const dialog = screen.getByRole("dialog", { name: "Confirm your booking request" });
+    expect(within(dialog).getByText("Adults").nextSibling).toHaveTextContent("2");
+    expect(within(dialog).getByText("Children aged 6 or over").nextSibling).toHaveTextContent("1");
+    expect(within(dialog).getByText("Children under 6").nextSibling).toHaveTextContent("0");
     expect(fetchMock).toHaveBeenLastCalledWith("/api/quotes", expect.objectContaining({ method: "POST" }));
     await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(2));
   });
