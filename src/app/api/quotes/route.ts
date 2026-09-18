@@ -3,7 +3,7 @@ import { calculateQuote, validateQuoteRequest } from "@/features/quotes/calculat
 import { COCO_PALMS_ICAL_URL, loadUnavailableRanges } from "@/features/availability/load-unavailable-ranges";
 import { mapDatabaseCalculation, quoteReference, type PublicQuote } from "@/features/quotes/public-quote";
 import { quoteRequestSchema, type QuoteRequest } from "@/features/quotes/quote-schema";
-import { renderQuotationEmail } from "@/features/quotes/quotation-email";
+import { renderQuotationEmail, type QuotationEmailQuote } from "@/features/quotes/quotation-email";
 import { sendEmail } from "@/lib/email/resend";
 import { createAdminSupabaseClient } from "@/lib/supabase/admin";
 import { createPublicSupabaseClient } from "@/lib/supabase/public";
@@ -14,7 +14,7 @@ type StoredQuote = { public_token: string; calculation: Record<string, unknown> 
 type Dependencies = {
   getUnavailableRanges: (start: string, end: string) => Promise<UnavailableRange[]>;
   createWebsiteQuote: (value: { arrival: string; departure: string; partySize: number; adults: number; childrenSixToSeventeen: number; underSixCount: number; contactEmail: string; contactName: string }) => Promise<StoredQuote | null>;
-  sendCustomerQuote?: (quote: PublicQuote) => Promise<void>;
+  sendCustomerQuote?: (quote: QuotationEmailQuote) => Promise<void>;
 };
 
 function defaultDependencies(): Dependencies {
@@ -51,7 +51,7 @@ function defaultDependencies(): Dependencies {
       return data as StoredQuote;
     },
     async sendCustomerQuote(quote) {
-      const content = renderQuotationEmail(quote, process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000");
+      const content = renderQuotationEmail(quote);
       await sendEmail({ to: quote.email, ...content, replyTo: "hello@cocopalms-antigua.com" });
     },
   };
@@ -68,11 +68,20 @@ export function createQuotePostHandler(dependencies: Dependencies) {
     try {
       const ranges = await dependencies.getUnavailableRanges(value.arrival, value.departure);
       if (ranges.some((range) => range.start_date < value.departure && range.end_date > value.arrival)) return NextResponse.json({ error: "Coco Palms is not available for those dates." }, { status: 409 });
-      const stored = await dependencies.createWebsiteQuote({ arrival: value.arrival, departure: value.departure, partySize: value.adults + value.childrenSixToSeventeen + value.childrenUnderSix, adults: value.adults, childrenSixToSeventeen: value.childrenSixToSeventeen, underSixCount: value.childrenUnderSix, contactEmail: value.email, contactName: value.name });
+      const localCalculation = calculateQuote({ arrival: value.arrival, departure: value.departure, adults: value.adults, childrenSixToSeventeen: value.childrenSixToSeventeen, childrenUnderSix: value.childrenUnderSix });
+      let stored: StoredQuote | null = null;
+      try {
+        stored = await dependencies.createWebsiteQuote({ arrival: value.arrival, departure: value.departure, partySize: value.adults + value.childrenSixToSeventeen + value.childrenUnderSix, adults: value.adults, childrenSixToSeventeen: value.childrenSixToSeventeen, underSixCount: value.childrenUnderSix, contactEmail: value.email, contactName: value.name });
+      } catch {
+        stored = null;
+      }
       if (!stored) {
+        const quote: QuotationEmailQuote = { name: value.name, email: value.email, arrival: value.arrival, departure: value.departure, adults: value.adults, childrenSixToSeventeen: value.childrenSixToSeventeen, childrenUnderSix: value.childrenUnderSix, calculation: localCalculation };
+        let emailSent = false;
+        try { await dependencies.sendCustomerQuote?.(quote); emailSent = Boolean(dependencies.sendCustomerQuote); } catch { emailSent = false; }
         return NextResponse.json({
-          calculation: calculateQuote({ arrival: value.arrival, departure: value.departure, adults: value.adults, childrenSixToSeventeen: value.childrenSixToSeventeen, childrenUnderSix: value.childrenUnderSix }),
-          emailSent: false,
+          calculation: localCalculation,
+          emailSent,
         });
       }
       const calculation = mapDatabaseCalculation(stored.calculation);

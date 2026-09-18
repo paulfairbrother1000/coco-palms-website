@@ -38,6 +38,7 @@ describe("QuoteForm", () => {
     expect(container.querySelector('input[type="date"]')).toBeNull();
     expect(await screen.findByRole("heading", { name: "June 2027" })).toBeInTheDocument();
     expect(screen.getByText(/children under 6 are not charged/i)).toBeInTheDocument();
+    expect(screen.getByLabelText("Children aged 6 or over")).toBeInTheDocument();
   });
 
   it("submits the selected stay and displays an itemised quote with Book Now", async () => {

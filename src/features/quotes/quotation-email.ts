@@ -1,24 +1,68 @@
 import { format, parseISO } from "date-fns";
 import type { PublicQuote } from "./public-quote";
 
+export type QuotationEmailQuote = Pick<
+  PublicQuote,
+  | "name"
+  | "email"
+  | "arrival"
+  | "departure"
+  | "adults"
+  | "childrenSixToSeventeen"
+  | "childrenUnderSix"
+  | "calculation"
+>;
+
 const money = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" });
 const escapeHtml = (value: string) => value.replace(/[&<>'"]/g, (character) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" })[character] ?? character);
 
-export function renderQuotationEmail(quote: PublicQuote, siteUrl: string) {
-  const link = `${siteUrl.replace(/\/$/, "")}/quotation/${quote.token}`;
-  const dates = `${format(parseISO(quote.arrival), "d MMMM yyyy")} to ${format(parseISO(quote.departure), "d MMMM yyyy")}`;
-  const lines = [
-    ...quote.calculation.rateBreakdown.map((line) => [`${line.period}: ${line.nights} ${line.nights === 1 ? "night" : "nights"} at ${money.format(line.rate)}`, line.total] as const),
-    ...(quote.calculation.longStayDiscount ? [["Long-stay discount", quote.calculation.longStayDiscount] as const] : []),
-    ...(quote.calculation.shortStayLevy ? [["Four-night short-stay charge", quote.calculation.shortStayLevy] as const] : []),
-    ["ABST (17%)", quote.calculation.abst] as const,
-    [`Government levy (${quote.calculation.levyGuests} guests aged 6+)`, quote.calculation.governmentLevy] as const,
-    ["Administration fee (5%, including refundable security deposit)", quote.calculation.fees] as const,
+function partyDescription(quote: QuotationEmailQuote) {
+  const groups = [
+    quote.adults > 0 ? `${quote.adults} ${quote.adults === 1 ? "adult" : "adults"}` : null,
+    quote.childrenSixToSeventeen > 0 ? `${quote.childrenSixToSeventeen} ${quote.childrenSixToSeventeen === 1 ? "child aged 6 or over" : "children aged 6 or over"}` : null,
+    quote.childrenUnderSix > 0 ? `${quote.childrenUnderSix} ${quote.childrenUnderSix === 1 ? "child under 6" : "children under 6"}` : null,
+  ].filter((group): group is string => Boolean(group));
+
+  if (groups.length < 2) return groups[0] ?? "your party";
+  if (groups.length === 2) return `${groups[0]} and ${groups[1]}`;
+  return `${groups.slice(0, -1).join(", ")} and ${groups.at(-1)}`;
+}
+
+export function renderQuotationEmail(quote: QuotationEmailQuote, _siteUrl?: string) {
+  const firstName = quote.name.trim().split(/\s+/)[0] || "Guest";
+  const fromDate = format(parseISO(quote.arrival), "d MMMM yyyy");
+  const toDate = format(parseISO(quote.departure), "d MMMM yyyy");
+  const party = partyDescription(quote);
+  const rows = [
+    ...quote.calculation.rateBreakdown.map((line) => ({
+      textLabel: `${line.nights} ${line.nights === 1 ? "night" : "nights"} × ${money.format(line.rate)} — ${line.period}`,
+      htmlLabel: `${line.nights} ${line.nights === 1 ? "night" : "nights"} × <strong>${money.format(line.rate)}</strong> — ${escapeHtml(line.period)}`,
+      amount: line.total,
+    })),
+    ...(quote.calculation.longStayDiscount ? [{ textLabel: "Long-stay discount", htmlLabel: "Long-stay discount", amount: quote.calculation.longStayDiscount }] : []),
+    ...(quote.calculation.shortStayLevy ? [{ textLabel: "Four-night short-stay charge", htmlLabel: "Four-night short-stay charge", amount: quote.calculation.shortStayLevy }] : []),
+    { textLabel: "ABST — 17% of accommodation and applicable charges", htmlLabel: "ABST — 17% of accommodation and applicable charges", amount: quote.calculation.abst },
+    {
+      textLabel: `Government levy — ${quote.calculation.levyGuests} guests aged 6+ × ${quote.calculation.nights} nights × $5`,
+      htmlLabel: `Government levy — ${quote.calculation.levyGuests} guests aged 6+ × ${quote.calculation.nights} nights × <strong>$5</strong>`,
+      amount: quote.calculation.governmentLevy,
+    },
+    { textLabel: "Administration fee — 5% including the refundable $2,000 security deposit", htmlLabel: "Administration fee — 5% including the refundable <strong>$2,000</strong> security deposit", amount: quote.calculation.fees },
   ];
-  const textLines = lines.map(([label, amount]) => `${label}: ${money.format(amount)}`).join("\n");
-  const htmlLines = lines.map(([label, amount]) => `<tr><td style="padding:8px 0;border-bottom:1px solid #dde5e2">${escapeHtml(label)}</td><td style="padding:8px 0;border-bottom:1px solid #dde5e2;text-align:right"><strong>${money.format(amount)}</strong></td></tr>`).join("");
-  const subject = `Your Coco Palms quotation ${quote.reference}`;
-  const text = `Hello ${quote.name},\n\nThank you for considering Coco Palms Antigua.\n\nStay: ${dates}\nAdults: ${quote.adults}\nChildren aged 6–17: ${quote.childrenSixToSeventeen}\nChildren under 6: ${quote.childrenUnderSix}\n\n${textLines}\nQuotation total: ${money.format(quote.calculation.quotationTotal)}\nDue to confirm: ${money.format(quote.calculation.dueToConfirm)}\nBalance due: ${money.format(quote.calculation.balanceDue)}\nRefundable security deposit: ${money.format(quote.calculation.securityDeposit)}\n\nView your quotation: ${link}\n\nThis quotation does not reserve your dates.\n\nCoco Palms Antigua`;
-  const html = `<div style="font-family:Avenir,Arial,sans-serif;color:#111;max-width:680px;margin:auto"><div style="background:#071725;color:white;padding:28px"><h1 style="margin:0">Coco Palms Antigua</h1><p style="margin:8px 0 0">Quotation ${quote.reference}</p></div><div style="padding:28px"><p>Hello ${escapeHtml(quote.name)},</p><p>Thank you for considering Coco Palms Antigua.</p><p><strong>${escapeHtml(dates)}</strong><br>Adults: ${quote.adults}<br>Children aged 6–17: ${quote.childrenSixToSeventeen}<br>Children under 6: ${quote.childrenUnderSix}</p><table style="width:100%;border-collapse:collapse">${htmlLines}<tr><td style="padding:14px 0;font-size:18px">Quotation total</td><td style="padding:14px 0;text-align:right;font-size:18px"><strong>${money.format(quote.calculation.quotationTotal)}</strong></td></tr></table><p>Due to confirm: <strong>${money.format(quote.calculation.dueToConfirm)}</strong><br>Balance due: <strong>${money.format(quote.calculation.balanceDue)}</strong><br>Separate refundable security deposit: <strong>${money.format(quote.calculation.securityDeposit)}</strong></p><p><a href="${escapeHtml(link)}" style="display:inline-block;background:#0b4f7c;color:white;padding:12px 18px;text-decoration:none">View your quotation</a></p><p style="font-size:13px;color:#5e6872">This quotation does not reserve your dates.</p></div></div>`;
+  const summaryRows = [
+    { label: "Quotation total", amount: quote.calculation.quotationTotal },
+    { label: "Due on booking", amount: quote.calculation.dueToConfirm },
+    { label: "Balance due 10 weeks before arrival", amount: quote.calculation.balanceDue },
+  ];
+  const textRows = [
+    ...rows.map((row) => `${row.textLabel}: ${money.format(row.amount)}`),
+    ...summaryRows.map((row) => `${row.label}: ${money.format(row.amount)}`),
+  ].join("\n");
+  const htmlRows = [...rows.map((row) => ({ label: row.htmlLabel, amount: row.amount })), ...summaryRows]
+    .map((row) => `<tr><td style="padding:8px 0;border-bottom:1px solid #dde5e2">${row.label}</td><td style="padding:8px 0;border-bottom:1px solid #dde5e2;text-align:right;white-space:nowrap"><strong>${money.format(row.amount)}</strong></td></tr>`)
+    .join("");
+  const subject = "Coco Palms Enquiry";
+  const text = `Dear ${firstName},\n\nThank you for your interest in Coco Palms.\n\nWe’re very pleased to tell you that Coco Palms is available for ${quote.calculation.nights} ${quote.calculation.nights === 1 ? "night" : "nights"} between ${fromDate} and ${toDate}.\n\nThe cost of the booking would be ${money.format(quote.calculation.quotationTotal)} USD for ${party}.\n\nAn additional, refundable deposit of ${money.format(quote.calculation.securityDeposit)} USD is also required.\n\nA breakdown of the quotation is as follows\n\n${textRows}\n\nSeparate refundable security deposit: ${money.format(quote.calculation.securityDeposit)}\n\nPlease let us know if you would like to proceed with a booking or if we can answer any further questions for you.\n\nRegards\n\nCoco Palms Team`;
+  const html = `<div style="font-family:Avenir,Arial,sans-serif;color:#111;max-width:680px;margin:auto"><div style="background:#071725;color:white;padding:28px"><h1 style="margin:0">Coco Palms Antigua</h1></div><div style="padding:28px"><p>Dear ${escapeHtml(firstName)},</p><p>Thank you for your interest in Coco Palms.</p><p>We’re very pleased to tell you that Coco Palms is available for ${quote.calculation.nights} ${quote.calculation.nights === 1 ? "night" : "nights"} between ${escapeHtml(fromDate)} and ${escapeHtml(toDate)}.</p><p>The cost of the booking would be <strong>${money.format(quote.calculation.quotationTotal)} USD</strong> for ${escapeHtml(party)}.</p><p>An additional, refundable deposit of <strong>${money.format(quote.calculation.securityDeposit)} USD</strong> is also required.</p><p>A breakdown of the quotation is as follows</p><table style="width:100%;border-collapse:collapse">${htmlRows}</table><p>Separate refundable security deposit: <strong>${money.format(quote.calculation.securityDeposit)}</strong></p><p>Please let us know if you would like to proceed with a booking or if we can answer any further questions for you.</p><p>Regards<br>Coco Palms Team</p></div></div>`;
   return { subject, text, html };
 }

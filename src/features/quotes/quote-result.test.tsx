@@ -35,4 +35,10 @@ describe("QuoteResult", () => {
     expect(screen.getByText("Due on booking")).toBeInTheDocument();
     expect(screen.queryByText("Due to confirm")).not.toBeInTheDocument();
   });
+
+  it("keeps a useful on-screen message when email delivery fails", () => {
+    render(<QuoteResult calculation={calculation} emailSent={false} />);
+
+    expect(screen.getByText("Your quotation is displayed here, but the email could not be sent. Please keep this page open and contact us if you need a copy.")).toBeInTheDocument();
+  });
 });

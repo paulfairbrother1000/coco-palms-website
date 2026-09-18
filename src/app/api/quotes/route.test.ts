@@ -71,29 +71,56 @@ describe("POST /api/quotes", () => {
     expect(result.quote_id).toBeUndefined();
   });
 
-  it("returns a safe configuration error without exposing database details", async () => {
+  it("emails and displays the calculated quotation when persistence errors", async () => {
+    const sendCustomerQuote = vi.fn().mockResolvedValue(undefined);
     const handler = createQuotePostHandler({
       getUnavailableRanges: vi.fn().mockResolvedValue([]),
       createWebsiteQuote: vi.fn().mockRejectedValue(new Error("SUPABASE_SERVICE_ROLE_KEY missing")),
+      sendCustomerQuote,
     });
     const response = await handler(request(validBody));
+    const result = await response.json();
 
-    expect(response.status).toBe(503);
-    expect(await response.json()).toEqual({ error: "Quotation service is temporarily unavailable." });
+    expect(response.status).toBe(200);
+    expect(result.emailSent).toBe(true);
+    expect(result.calculation.quotationTotal).toBe(10492.9);
+    expect(sendCustomerQuote).toHaveBeenCalledOnce();
   });
 
-  it("returns an immediate calculator quotation when persistence is not configured", async () => {
+  it("emails and returns an immediate calculator quotation when persistence is not configured", async () => {
+    const sendCustomerQuote = vi.fn().mockResolvedValue(undefined);
     const handler = createQuotePostHandler({
       getUnavailableRanges: vi.fn().mockResolvedValue([]),
       createWebsiteQuote: vi.fn().mockResolvedValue(null),
+      sendCustomerQuote,
     });
     const response = await handler(request(validBody));
     const result = await response.json();
 
     expect(response.status).toBe(200);
     expect(result.publicToken).toBeUndefined();
-    expect(result.emailSent).toBe(false);
+    expect(result.emailSent).toBe(true);
     expect(result.calculation.quotationTotal).toBe(10492.9);
     expect(result.calculation.fees).toBe(594.9);
+    expect(sendCustomerQuote).toHaveBeenCalledWith(expect.objectContaining({
+      name: "Paul Fairbrother",
+      email: "paul@example.com",
+      adults: 2,
+      calculation: expect.objectContaining({ quotationTotal: 10492.9 }),
+    }));
+  });
+
+  it("keeps the on-screen quotation when fallback email delivery fails", async () => {
+    const handler = createQuotePostHandler({
+      getUnavailableRanges: vi.fn().mockResolvedValue([]),
+      createWebsiteQuote: vi.fn().mockResolvedValue(null),
+      sendCustomerQuote: vi.fn().mockRejectedValue(new Error("delivery failed")),
+    });
+    const response = await handler(request(validBody));
+    const result = await response.json();
+
+    expect(response.status).toBe(200);
+    expect(result.emailSent).toBe(false);
+    expect(result.calculation.quotationTotal).toBe(10492.9);
   });
 });

@@ -21,7 +21,7 @@ export function QuoteResult({ calculation: quote, publicToken, emailSent }: { ca
     <div className="payment-summary"><p><span>Due on booking</span><strong>{money.format(quote.dueToConfirm)}</strong></p><p><span>Balance due 10 weeks before arrival</span><strong>{money.format(quote.balanceDue)}</strong></p><p><span>Separate refundable security deposit</span><strong>{money.format(quote.securityDeposit)}</strong></p></div>
     {emailSent === true && <p className="form-note">A copy has been emailed to you.</p>}
     {emailSent === false && publicToken && <p className="form-note">Your quotation is saved, but the email could not be sent. Keep this page open while we resolve it.</p>}
-    {emailSent === false && !publicToken && <p className="form-note">This quotation is displayed here immediately. Email delivery will be enabled when the secure mail connection is configured.</p>}
+    {emailSent === false && !publicToken && <p className="form-note">Your quotation is displayed here, but the email could not be sent. Please keep this page open and contact us if you need a copy.</p>}
     <p className="form-note">This quotation does not reserve the dates. Selecting Book Now sends an enquiry to Coco Palms.</p>
     <BookNowButton token={publicToken} />
   </section>;
