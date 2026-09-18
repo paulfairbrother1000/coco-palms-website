@@ -1,0 +1,76 @@
+import Image from "next/image";
+import { readdirSync } from "node:fs";
+import path from "node:path";
+import { buildGallerySlots } from "@/features/gallery/build-gallery-slots";
+import { galleryImagesFromFilenames } from "@/features/gallery/gallery-files";
+import { createPublicSupabaseClient } from "@/lib/supabase/public";
+
+export const metadata = { title: "Gallery" };
+export const revalidate = 300;
+
+const fallbackSections = [
+  { id: "exterior", title: "Exterior", copy: "Waterfront terraces, private pool and wide spaces for outdoor living." },
+  { id: "interior", title: "Interior", copy: "A calm, contemporary great room designed for time together." },
+  { id: "local-area", title: "Local Area", copy: "Antigua’s harbours, beaches and sailing landscape beyond the villa." },
+];
+
+function localGalleryImages(section: string, title: string) {
+  const directory = path.join(process.cwd(), "public", "images", "gallery", section);
+  return galleryImagesFromFilenames(section, title, readdirSync(directory));
+}
+
+export default async function GalleryPage() {
+  const client = createPublicSupabaseClient();
+  const [{ data: dbSections }, { data: dbImages }] = await Promise.all([
+    client.from("gallery_sections").select("id,slug,title,description").order("sort_order"),
+    client.from("gallery_images").select("section_id,storage_path,label,alt_text,position").eq("published", true).order("position"),
+  ]);
+
+  const sections = fallbackSections.map((fallback) => {
+    const section = dbSections?.find((value) => value.slug === fallback.id);
+    const databaseImages = (dbImages ?? [])
+      .filter((image) => image.section_id === section?.id)
+      .map((image) => ({
+        position: image.position,
+        src: client.storage.from("coco-palms-gallery").getPublicUrl(image.storage_path).data.publicUrl,
+        label: image.label,
+        alt: image.alt_text,
+      }));
+    const title = section?.title ?? fallback.title;
+    const localImages = localGalleryImages(fallback.id, title);
+    const fallbackImage = localImages[0] ?? { src: "/images/cocopalmshero2.jpg", label: `${title} 1`, alt: `${title} 1` };
+
+    return {
+      ...fallback,
+      title,
+      copy: section?.description ?? fallback.copy,
+      slots: buildGallerySlots({ title, fallbackImage, images: [...databaseImages, ...localImages] }),
+    };
+  });
+
+  return <>
+    <section className="page-hero">
+      <span className="eyebrow">Gallery</span>
+      <h1>Coco Palms and Antigua</h1>
+      <p>Each collection has room for 12 photographs. Labels can be updated as new images are added.</p>
+    </section>
+    {sections.map((section) => <section className="section gallery-section" id={section.id} key={section.id}>
+      <div className="section-heading">
+        <span className="eyebrow">Gallery collection</span>
+        <h2>{section.title}</h2>
+        <p>{section.copy}</p>
+      </div>
+      <div className="gallery-grid">
+        {section.slots.map((slot) => <figure className={slot.placeholder ? "gallery-placeholder" : undefined} key={slot.position}>
+          {slot.placeholder ? <div aria-label={`${slot.label} image placeholder`}>
+            <span className="gallery-placeholder-number">{String(slot.position).padStart(2, "0")}</span>
+            <span>Photo coming soon</span>
+          </div> : <div>
+            <Image src={slot.src} alt={slot.alt} fill sizes="(max-width: 800px) 100vw, 50vw" unoptimized={slot.src.startsWith("http")} />
+          </div>}
+          <figcaption>{slot.label}</figcaption>
+        </figure>)}
+      </div>
+    </section>)}
+  </>;
+}
