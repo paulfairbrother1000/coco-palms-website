@@ -30,4 +30,20 @@ describe("POST /api/contact", () => {
       replyTo: "alex@example.com",
     }));
   });
+
+  it("still sends the enquiry when contact storage is unavailable", async () => {
+    mocks.rpc.mockResolvedValueOnce({ error: { message: "database unavailable" } });
+
+    const response = await POST(new Request("http://localhost/api/contact", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ name: "Alex Guest", email: "alex@example.com", message: "Are these dates available?" }),
+    }) as never);
+
+    expect(response.status).toBe(201);
+    expect(mocks.sendEmail).toHaveBeenCalledWith(expect.objectContaining({
+      to: "hello@cocopalms-antigua.com",
+      replyTo: "alex@example.com",
+    }));
+  });
 });

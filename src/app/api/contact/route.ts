@@ -21,8 +21,13 @@ export async function POST(request:NextRequest){
 
   const v=parsed.data;
   const wantsPromos=v.wantsPromos==="true";
-  const{error}=await createPublicSupabaseClient().rpc("create_contact_enquiry",{p_name:v.name,p_email:v.email,p_message:v.message,p_wants_promos:wantsPromos});
-  if(error)return NextResponse.json({error:"Message could not be saved."},{status:503});
+  let stored=true;
+  try {
+    const{error}=await createPublicSupabaseClient().rpc("create_contact_enquiry",{p_name:v.name,p_email:v.email,p_message:v.message,p_wants_promos:wantsPromos});
+    if(error)stored=false;
+  } catch {
+    stored=false;
+  }
 
   try {
     await sendEmail({
@@ -36,5 +41,5 @@ export async function POST(request:NextRequest){
     return NextResponse.json({error:"Your message was saved, but the notification email could not be sent. Please email us directly."},{status:503});
   }
 
-  return NextResponse.json({ok:true},{status:201});
+  return NextResponse.json({ok:true,stored},{status:201});
 }
