@@ -20,22 +20,31 @@ function localGalleryImages(section: string, title: string) {
 }
 
 export default async function GalleryPage() {
-  const client = createPublicSupabaseClient();
-  const [{ data: dbSections }, { data: dbImages }] = await Promise.all([
-    client.from("gallery_sections").select("id,slug,title,description").order("sort_order"),
-    client.from("gallery_images").select("section_id,storage_path,label,alt_text,position").eq("published", true).order("position"),
-  ]);
+  let client: ReturnType<typeof createPublicSupabaseClient> | null = null;
+  let dbSections: Array<{ id: string; slug: string; title: string; description: string }> = [];
+  let dbImages: Array<{ section_id: string; storage_path: string; label: string; alt_text: string; position: number }> = [];
+  try {
+    client = createPublicSupabaseClient();
+    const [sectionsResult, imagesResult] = await Promise.all([
+      client.from("gallery_sections").select("id,slug,title,description").order("sort_order"),
+      client.from("gallery_images").select("section_id,storage_path,label,alt_text,position").eq("published", true).order("position"),
+    ]);
+    dbSections = (sectionsResult.data ?? []) as typeof dbSections;
+    dbImages = (imagesResult.data ?? []) as typeof dbImages;
+  } catch {
+    client = null;
+  }
 
   const sections = fallbackSections.map((fallback) => {
     const section = dbSections?.find((value) => value.slug === fallback.id);
-    const databaseImages = (dbImages ?? [])
+    const databaseImages = client ? dbImages
       .filter((image) => image.section_id === section?.id)
       .map((image) => ({
         position: image.position,
         src: client.storage.from("coco-palms-gallery").getPublicUrl(image.storage_path).data.publicUrl,
         label: image.label,
         alt: image.alt_text,
-      }));
+      })) : [];
     const title = section?.title ?? fallback.title;
     const localImages = localGalleryImages(fallback.id, title);
     const fallbackImage = localImages[0] ?? { src: "/images/cocopalmshero2.jpg", label: `${title} 1`, alt: `${title} 1` };
