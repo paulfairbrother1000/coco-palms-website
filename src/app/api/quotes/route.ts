@@ -3,7 +3,7 @@ import { calculateQuote, validateQuoteRequest } from "@/features/quotes/calculat
 import { COCO_PALMS_ICAL_URL, loadUnavailableRanges } from "@/features/availability/load-unavailable-ranges";
 import { mapDatabaseCalculation, quoteReference, type PublicQuote } from "@/features/quotes/public-quote";
 import { quoteRequestSchema, type QuoteRequest } from "@/features/quotes/quote-schema";
-import { renderQuotationEmail, type QuotationEmailQuote } from "@/features/quotes/quotation-email";
+import { createQuotationEmailMessage, type QuotationEmailQuote } from "@/features/quotes/quotation-email";
 import { sendEmail } from "@/lib/email/resend";
 import { createAdminSupabaseClient } from "@/lib/supabase/admin";
 import { createPublicSupabaseClient } from "@/lib/supabase/public";
@@ -51,8 +51,9 @@ function defaultDependencies(): Dependencies {
       return data as StoredQuote;
     },
     async sendCustomerQuote(quote) {
-      const content = renderQuotationEmail(quote);
-      await sendEmail({ to: quote.email, ...content, replyTo: "hello@cocopalms-antigua.com" });
+      const deploymentHost = process.env.VERCEL_PROJECT_PRODUCTION_URL;
+      const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? (deploymentHost ? `https://${deploymentHost}` : "https://coco-palms-dev-site.vercel.app");
+      await sendEmail(createQuotationEmailMessage(quote, siteUrl));
     },
   };
 }

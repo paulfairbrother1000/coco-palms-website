@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { renderQuotationEmail } from "./quotation-email";
+import { createQuotationEmailMessage, renderQuotationEmail } from "./quotation-email";
 import type { PublicQuote } from "./public-quote";
 
 const quote: PublicQuote = {
@@ -38,10 +38,18 @@ const quote: PublicQuote = {
 };
 
 describe("renderQuotationEmail", () => {
+  it("addresses the customer and copies Coco Palms", () => {
+    const email = createQuotationEmailMessage(quote, "https://preview.example.com");
+
+    expect(email.to).toBe("paul@example.com");
+    expect(email.cc).toBe("hello@cocopalms-antigua.com");
+    expect(email.replyTo).toBe("hello@cocopalms-antigua.com");
+  });
+
   it("uses the requested copy and includes the website quotation breakdown", () => {
     const email = renderQuotationEmail(quote, "https://preview.example.com");
 
-    expect(email.subject).toBe("Coco Palms Enquiry");
+    expect(email.subject).toBe("Coco Palms Quotation for Paul Fairbrother");
     expect(email.text).toContain("Dear Paul,");
     expect(email.text).toContain("Thank you for your interest in Coco Palms.");
     expect(email.text).toContain("available for 7 nights between 1 June 2027 and 8 June 2027");
@@ -55,6 +63,9 @@ describe("renderQuotationEmail", () => {
     expect(email.html).toContain("<strong>$8,809.75 USD</strong>");
     expect(email.html).toContain("<strong>$1,000.00</strong>");
     expect(email.html).toContain("<strong>$7,000.00</strong>");
+    expect(email.html).toContain('src="https://preview.example.com/images/cocopalms-logo.jpg"');
+    expect(email.html).toContain('alt="Coco Palms Antigua"');
+    expect(email.html).not.toContain("background:#071725");
     expect(email.html).toContain("Regards<br>Coco Palms Team");
   });
 
