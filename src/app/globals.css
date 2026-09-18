@@ -41,3 +41,4 @@ button{border-radius:8px}
 .availability-pill{background:#e5f7fb;color:#087fa8}
 .page-hero{padding-top:clamp(3rem,6vw,5.5rem);padding-bottom:clamp(2.5rem,4vw,4rem)}
 .page-hero+.section{padding-top:clamp(2.5rem,4vw,4rem)}
+.location-collage{display:block;width:100%;height:auto;margin-top:2rem}

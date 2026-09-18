@@ -10,7 +10,6 @@ const expectedAmenities = [
   "Private boat dock",
   "Outdoor kitchen",
   "Outdoor shower",
-  "Fire pit",
   "Kayaks and stand-up paddle boards",
   "Coffee machine",
   "Broadband with guest wifi",
@@ -31,6 +30,19 @@ describe("Location and amenities page", () => {
     for (const amenity of expectedAmenities) {
       expect(screen.getByText(amenity)).toBeInTheDocument();
     }
-    expect(container.querySelectorAll(".amenity")).toHaveLength(19);
+    expect(screen.queryByText("Fire pit")).not.toBeInTheDocument();
+    expect(container.querySelectorAll(".amenity")).toHaveLength(18);
+  });
+
+  it("shows the Coco Palms location collage beneath the Google Maps link", () => {
+    render(<LocationPage />);
+
+    const mapLink = screen.getByRole("link", { name: "Open in Google Maps" });
+    const collage = screen.getByRole("img", {
+      name: "Coco Palms villa, pool, private dock and waterfront views",
+    });
+
+    expect(mapLink.nextElementSibling).toBe(collage);
+    expect(mapLink.parentElement).toBe(collage.parentElement);
   });
 });
