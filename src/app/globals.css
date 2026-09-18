@@ -25,3 +25,7 @@ h1,h2,h3,.brand,.quote-form legend,.gallery-placeholder-number{font-family:var(-
 .contact-details,.rates-card,.quote-invitation{background:#155eef}
 @media(max-width:600px){.brand{height:70px}.brand-logo{height:60px}.hero-title{font-size:clamp(1.75rem,7.8vw,2.5rem);letter-spacing:-.045em}.hero-content{padding-left:1.2rem;padding-right:1.2rem}}
 @media(max-width:980px){.quote-journey{grid-template-columns:1fr}.quote-journey .quote-result{position:static}}
+.quotation-overview{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(320px,.75fr);gap:2rem;align-items:start;margin-bottom:2.5rem}
+.quotation-overview .quotation-intro{margin-bottom:0}
+.rates-card .form-note{color:rgba(255,255,255,.82)}
+@media(max-width:980px){.quotation-overview{grid-template-columns:1fr}}

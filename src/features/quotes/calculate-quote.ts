@@ -1,4 +1,5 @@
 import type { QuoteCalculation, QuoteInput, SecondaryDiscount } from "./types";
+import { PUBLISHED_RATE_BANDS } from "./published-rates";
 
 const DAY_MS = 86_400_000;
 const SECONDARY_PRIORITY: Exclude<SecondaryDiscount, null>[] = ["two-week", "four-week", "early-bird"];
@@ -21,10 +22,14 @@ function nightsBetween(arrival: string, departure: string) {
 function ratePeriod(date: Date) {
   const month = date.getUTCMonth() + 1;
   const day = date.getUTCDate();
-  if ((month === 12 && day >= 18) || (month === 1 && day <= 3)) return { period: "18th Dec to 3rd Jan", rate: 1500 };
-  if ((month === 5 && day >= 15) || (month > 5 && month < 11) || (month === 11 && day <= 15)) return { period: "15th May to 15th Nov", rate: 1200 };
-  if (month === 11 || month === 12) return { period: "16th Nov to 17th Dec", rate: 1250 };
-  return { period: "4th Jan to 14th May", rate: 1250 };
+  const band = (month === 12 && day >= 18) || (month === 1 && day <= 3)
+    ? PUBLISHED_RATE_BANDS.festive
+    : (month === 5 && day >= 15) || (month > 5 && month < 11) || (month === 11 && day <= 15)
+      ? PUBLISHED_RATE_BANDS.summer
+      : month === 11 || month === 12
+        ? PUBLISHED_RATE_BANDS.preFestive
+        : PUBLISHED_RATE_BANDS.winterSpring;
+  return { period: band.calculationPeriod, rate: band.nightlyRate };
 }
 
 function overlapsFestive(arrival: string, departure: string) {

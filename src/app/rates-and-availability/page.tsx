@@ -1,6 +1,7 @@
 import { AvailabilityCalendar, type UnavailableRange } from "@/features/availability/availability-calendar";
 import { COCO_PALMS_ICAL_URL, loadUnavailableRanges } from "@/features/availability/load-unavailable-ranges";
 import { createPublicSupabaseClient } from "@/lib/supabase/public";
+import { PublishedRatesCard } from "@/features/quotes/published-rates-card";
 
 export const metadata = { title: "Rates & Availability" };
 export const dynamic = "force-dynamic";
@@ -22,5 +23,5 @@ export default async function AvailabilityPage() {
       return (data ?? []) as UnavailableRange[];
     },
   });
-  return <><section className="page-hero"><span className="eyebrow">Plan with confidence</span><h1>Rates & Availability</h1><p>Unavailable dates are blanked out directly from the Coco Palms Google Calendar. Select available arrival and departure dates to begin your quotation.</p></section><section className="section availability-layout"><AvailabilityCalendar ranges={ranges} /><aside className="rates-card"><span className="eyebrow">Nightly rates</span><h3>Published rates</h3><dl><div><dt>15 May – 15 November</dt><dd>$1,200</dd></div><div><dt>16 November – 17 December</dt><dd>$1,250</dd></div><div><dt>18 December – 3 January</dt><dd>$1,500</dd></div><div><dt>4 January – 14 May</dt><dd>$1,250</dd></div></dl><p>Minimum stay is 5 nights. Four nights may be available with a $500 short-stay levy. A 10-night minimum applies over the festive period.</p><p className="form-note">All rates are USD and subject to taxes, government levy and fees shown in your quotation.</p></aside></section></>;
+  return <><section className="page-hero"><span className="eyebrow">Plan with confidence</span><h1>Rates & Availability</h1><p>Unavailable dates are blanked out directly from the Coco Palms Google Calendar. Select available arrival and departure dates to begin your quotation.</p></section><section className="section availability-layout"><AvailabilityCalendar ranges={ranges} /><PublishedRatesCard /></section></>;
 }
