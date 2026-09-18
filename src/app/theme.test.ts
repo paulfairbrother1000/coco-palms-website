@@ -15,6 +15,11 @@ describe("site theme", () => {
     expect(css).toContain(".quotation-overview .quotation-intro{grid-column:1");
   });
 
+  it("keeps the transition from internal page headers to content compact", () => {
+    expect(css).toContain(".page-hero{padding-top:clamp(3rem,6vw,5.5rem);padding-bottom:clamp(2.5rem,4vw,4rem)}");
+    expect(css).toContain(".page-hero+.section{padding-top:clamp(2.5rem,4vw,4rem)}");
+  });
+
   it("rounds quotation links and native buttons consistently", () => {
     expect(css).toMatch(/\.button\{[^}]*border-radius:8px/);
     expect(css).toContain("button{border-radius:8px}");
