@@ -170,8 +170,11 @@ export function BookNowButton({
       disabled={!token || !details || disabled || status !== "idle"}
       onClick={() => setStatus("confirming")}
     >
-      {status === "sent" ? "Request sent" : "Book Now"}
+      {disabled ? "Quotation expired" : status === "sent" ? "Request sent" : "Book Now"}
     </button>
+    {disabled && <p className="form-note booking-expired-note">
+      This quotation has expired. A new quotation is required before you can proceed. <a className="text-link" href="/get-quotation">Get a new quotation</a>
+    </p>}
     {status === "sent" && <p ref={completionRef} className="form-note" role="status" tabIndex={-1}>Thank you. Coco Palms has received your request. Your dates are not secured until your booking is confirmed and the required deposit has been paid.</p>}
     {confirmationDialog}
   </div>;

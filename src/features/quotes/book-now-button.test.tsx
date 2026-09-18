@@ -18,6 +18,15 @@ const details = {
 describe("BookNowButton", () => {
   beforeEach(() => vi.restoreAllMocks());
 
+  it("replaces the booking action with a clear route to a new quotation when the quote has expired", () => {
+    render(<BookNowButton token="quote-token" details={details} disabled />);
+
+    expect(screen.getByRole("button", { name: "Quotation expired" })).toBeDisabled();
+    expect(screen.getByText("This quotation has expired. A new quotation is required before you can proceed.")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Get a new quotation" })).toHaveAttribute("href", "/get-quotation");
+    expect(screen.queryByRole("button", { name: "Book Now" })).not.toBeInTheDocument();
+  });
+
   it("opens a named confirmation dialog with every booking detail before fetching", async () => {
     const fetchMock = vi.spyOn(global, "fetch");
     const user = userEvent.setup();

@@ -49,4 +49,6 @@ button{border-radius:8px}
 .booking-confirmation-warning{background:#edf9fc;border-left:4px solid var(--teal);padding:1rem}
 .booking-confirmation-actions{display:flex;justify-content:flex-end;gap:.75rem;flex-wrap:wrap}
 .booking-confirmation-back{background:#e9eef2;color:var(--deep)}
+.book-now-action .quote-submit:disabled{background:#d9e0e6;color:#5e6872;cursor:not-allowed;opacity:1}
+.booking-expired-note{margin-top:.8rem}.booking-expired-note .text-link{text-decoration:underline}
 @media(max-width:520px){.booking-confirmation-actions .button{width:100%}}

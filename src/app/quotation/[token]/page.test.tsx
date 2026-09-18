@@ -61,7 +61,8 @@ describe("QuotationPage", () => {
 
     render(await QuotationPage({ params: Promise.resolve({ token: "quote-token" }) }));
 
-    expect(screen.getByText(/quotation has expired/i)).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Book Now" })).toBeDisabled();
+    expect(screen.getAllByText(/quotation has expired/i)).toHaveLength(2);
+    expect(screen.getByRole("button", { name: "Quotation expired" })).toBeDisabled();
+    expect(screen.getByRole("link", { name: "Get a new quotation" })).toHaveAttribute("href", "/get-quotation");
   });
 });
