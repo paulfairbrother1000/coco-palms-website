@@ -12,6 +12,10 @@ describe("gallery page", () => {
     render(await GalleryPage());
 
     expect(screen.getByRole("heading", { name: "Coco Palms and Antigua" })).toBeInTheDocument();
-    expect(screen.getByRole("img", { name: "Exterior 1" })).toBeInTheDocument();
+    expect(screen.queryByText(/Each collection has room for 12 photographs/i)).not.toBeInTheDocument();
+    expect(screen.getByRole("img", { name: "Interior 1" })).toBeInTheDocument();
+
+    const collectionHeadings = screen.getAllByRole("heading", { level: 2 });
+    expect(collectionHeadings.map((heading) => heading.textContent)).toEqual(["Interior", "Exterior", "Local Area"]);
   });
 });

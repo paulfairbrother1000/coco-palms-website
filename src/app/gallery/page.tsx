@@ -9,8 +9,8 @@ export const metadata = { title: "Gallery" };
 export const revalidate = 300;
 
 const fallbackSections = [
-  { id: "exterior", title: "Exterior", copy: "Waterfront terraces, private pool and wide spaces for outdoor living." },
   { id: "interior", title: "Interior", copy: "A calm, contemporary great room designed for time together." },
+  { id: "exterior", title: "Exterior", copy: "Waterfront terraces, private pool and wide spaces for outdoor living." },
   { id: "local-area", title: "Local Area", copy: "Antigua’s harbours, beaches and sailing landscape beyond the villa." },
 ];
 
@@ -61,7 +61,6 @@ export default async function GalleryPage() {
     <section className="page-hero">
       <span className="eyebrow">Gallery</span>
       <h1>Coco Palms and Antigua</h1>
-      <p>Each collection has room for 12 photographs. Labels can be updated as new images are added.</p>
     </section>
     {sections.map((section) => <section className="section gallery-section" id={section.id} key={section.id}>
       <div className="section-heading">

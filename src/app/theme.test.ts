@@ -24,4 +24,9 @@ describe("site theme", () => {
     expect(css).toMatch(/\.button\{[^}]*border-radius:8px/);
     expect(css).toContain("button{border-radius:8px}");
   });
+
+  it("uses one compact gap between large headings and their following copy", () => {
+    expect(css).toContain(":where(h1,h2)+p{margin-top:.75rem}");
+    expect(css).toContain(".page-hero p{font-size:1.15rem;max-width:700px;margin-top:.75rem}");
+  });
 });
