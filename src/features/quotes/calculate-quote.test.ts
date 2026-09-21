@@ -94,7 +94,11 @@ describe("validateQuoteRequest", () => {
 
   it("allows four nights with the short-stay levy and rejects shorter stays", () => {
     expect(validateQuoteRequest({ arrival: "2027-06-01", departure: "2027-06-05", adults: 2, childrenSixToSeventeen: 0, childrenUnderSix: 0 })).toEqual(null);
-    expect(validateQuoteRequest({ arrival: "2027-06-01", departure: "2027-06-04", adults: 2, childrenSixToSeventeen: 0, childrenUnderSix: 0 })).toMatch(/minimum stay/i);
+    expect(validateQuoteRequest({ arrival: "2027-06-01", departure: "2027-06-04", adults: 2, childrenSixToSeventeen: 0, childrenUnderSix: 0 })).toBe("Minimum stay is 5 nights. Four night stays are available with an additional $500 short-stay levy.");
+
+    const quote = calculateQuote({ arrival: "2027-06-01", departure: "2027-06-05", adults: 2, childrenSixToSeventeen: 0, childrenUnderSix: 0 });
+    expect(quote.nights).toBe(4);
+    expect(quote.shortStayLevy).toBe(500);
   });
 
   it("requires ten nights when the stay overlaps the festive period", () => {
