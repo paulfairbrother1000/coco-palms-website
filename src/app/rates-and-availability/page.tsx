@@ -23,5 +23,5 @@ export default async function AvailabilityPage() {
       return (data ?? []) as UnavailableRange[];
     },
   });
-  return <><section className="page-hero"><span className="eyebrow">Plan with confidence</span><h1>Rates & Availability</h1><p>Unavailable dates are blanked out directly from the Coco Palms Google Calendar. Select available arrival and departure dates to begin your quotation.</p></section><section className="section availability-layout"><AvailabilityCalendar ranges={ranges} /><PublishedRatesCard /></section></>;
+  return <><section className="page-hero"><span className="eyebrow">Plan with confidence</span><h1>Rates & Availability</h1><p>Select available arrival and departure dates to begin your quotation.</p></section><section className="section availability-layout"><AvailabilityCalendar ranges={ranges} /><PublishedRatesCard /></section></>;
 }
