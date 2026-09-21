@@ -10,7 +10,7 @@ export function PublishedRatesCard() {
       <dt>{band.displayPeriod}</dt>
       <dd>{money.format(band.nightlyRate)}</dd>
     </div>)}</dl>
-    <p>Minimum stay is 5 nights. (Four nights are considered but are subject to a $500 short-stay levy.)</p>
+    <p>Minimum stay is 5 nights. (Four night stays are available with an additional $500 short-stay levy.)</p>
     <p className="form-note">All rates are USD and subject to taxes, government levy and fees which are shown in your quotation.</p>
   </aside>;
 }
