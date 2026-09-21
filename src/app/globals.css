@@ -63,3 +63,6 @@ button{border-radius:8px}
 .intro-image{position:relative;min-height:520px;overflow:hidden}
 @media(max-width:900px){.intro{grid-template-columns:1fr}.intro-image{min-height:440px}}
 @media(max-width:520px){.intro-image{min-height:340px}}
+
+/* Bring substantive page content into the first desktop viewport. */
+@media(min-width:901px){h1{font-size:clamp(4rem,8vw,7.25rem)}h2{font-size:clamp(2.4rem,4.5vw,4rem)}.page-hero{padding-top:3.5rem;padding-bottom:2.5rem}.page-hero+.section{padding-top:2.5rem}}

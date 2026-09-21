@@ -14,6 +14,10 @@ describe("gallery page", () => {
     expect(screen.getByRole("heading", { name: "Coco Palms and Antigua" })).toBeInTheDocument();
     expect(screen.queryByText(/Each collection has room for 12 photographs/i)).not.toBeInTheDocument();
     expect(screen.getByRole("img", { name: "Interior 1" })).toBeInTheDocument();
+    expect(screen.getByRole("img", { name: "Interior 10" })).toBeInTheDocument();
+    expect(screen.queryByRole("img", { name: "Interior 11" })).not.toBeInTheDocument();
+    expect(screen.getByLabelText("Interior 11 image placeholder")).toBeInTheDocument();
+    expect(screen.getByLabelText("Interior 12 image placeholder")).toBeInTheDocument();
 
     const collectionHeadings = screen.getAllByRole("heading", { level: 2 });
     expect(collectionHeadings.map((heading) => heading.textContent)).toEqual(["Interior", "Exterior", "Local Area"]);

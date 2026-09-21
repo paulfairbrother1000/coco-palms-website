@@ -16,8 +16,9 @@ describe("site theme", () => {
   });
 
   it("keeps the transition from internal page headers to content compact", () => {
-    expect(css).toContain(".page-hero{padding-top:clamp(3rem,6vw,5.5rem);padding-bottom:clamp(2.5rem,4vw,4rem)}");
-    expect(css).toContain(".page-hero+.section{padding-top:clamp(2.5rem,4vw,4rem)}");
+    expect(css).toContain("@media(min-width:901px){h1{font-size:clamp(4rem,8vw,7.25rem)}h2{font-size:clamp(2.4rem,4.5vw,4rem)}");
+    expect(css).toContain(".page-hero{padding-top:3.5rem;padding-bottom:2.5rem}");
+    expect(css).toContain(".page-hero+.section{padding-top:2.5rem}");
   });
 
   it("rounds quotation links and native buttons consistently", () => {
