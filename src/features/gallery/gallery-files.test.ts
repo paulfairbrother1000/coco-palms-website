@@ -10,4 +10,16 @@ describe("galleryImagesFromFilenames", () => {
         { position: 12, src: "/images/gallery/exterior/image12.jpg", label: "Exterior 12", alt: "Exterior 12" },
       ]);
   });
+
+  it("recognises an MP4 gallery item and gives it a matching poster", () => {
+    expect(galleryImagesFromFilenames("local-area", "Local Area", ["image12-poster.jpg", "image12.mp4"]))
+      .toEqual([{
+        position: 12,
+        src: "/images/gallery/local-area/image12.mp4",
+        poster: "/images/gallery/local-area/image12-poster.jpg",
+        mediaType: "video",
+        label: "Local Area 12",
+        alt: "Local Area 12",
+      }]);
+  });
 });

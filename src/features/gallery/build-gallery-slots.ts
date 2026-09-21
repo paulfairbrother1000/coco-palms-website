@@ -3,6 +3,8 @@ type GalleryImage = {
   src: string;
   label: string;
   alt: string;
+  mediaType?: "image" | "video";
+  poster?: string;
 };
 
 export type GallerySlot =

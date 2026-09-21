@@ -19,6 +19,11 @@ describe("gallery page", () => {
     expect(screen.getByLabelText("Interior 11 image placeholder")).toBeInTheDocument();
     expect(screen.getByLabelText("Interior 12 image placeholder")).toBeInTheDocument();
 
+    expect(screen.getByRole("img", { name: "Nelson’s Dockyard" })).toBeInTheDocument();
+    const localVideo = screen.getByLabelText("Antigua and Jolly Harbour video");
+    expect(localVideo).toHaveAttribute("src", "/images/gallery/local-area/image12.mp4");
+    expect(localVideo).toHaveAttribute("poster", "/images/gallery/local-area/image12-poster.jpg");
+
     const collectionHeadings = screen.getAllByRole("heading", { level: 2 });
     expect(collectionHeadings.map((heading) => heading.textContent)).toEqual(["Interior", "Exterior", "Local Area"]);
   });

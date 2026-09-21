@@ -14,9 +14,30 @@ const fallbackSections = [
   { id: "local-area", title: "Local Area", copy: "Antigua’s harbours, beaches and sailing landscape beyond the villa." },
 ];
 
+const localAreaCaptions = [
+  "Nelson’s Dockyard",
+  "Salt Plage",
+  "Catherine’s Café",
+  "Rokuni",
+  "Sheer Rocks",
+  "Jolly Harbour – Sheer Rocks",
+  "Jolly Harbour – Miracles",
+  "Jolly Harbour – Al Porto",
+  "Jolly Harbour Tennis",
+  "Jolly Harbour Pickleball Courts",
+  "Jolly Harbour Gym",
+  "Antigua and Jolly Harbour",
+];
+
 function localGalleryImages(section: string, title: string) {
   const directory = path.join(process.cwd(), "public", "images", "gallery", section);
-  return galleryImagesFromFilenames(section, title, readdirSync(directory));
+  const images = galleryImagesFromFilenames(section, title, readdirSync(directory));
+  if (section !== "local-area") return images;
+
+  return images.map((image) => {
+    const label = localAreaCaptions[image.position - 1] ?? image.label;
+    return { ...image, label, alt: image.mediaType === "video" ? `${label} video` : label };
+  });
 }
 
 export default async function GalleryPage() {
@@ -74,7 +95,9 @@ export default async function GalleryPage() {
             <span className="gallery-placeholder-number">{String(slot.position).padStart(2, "0")}</span>
             <span>Photo coming soon</span>
           </div> : <div>
-            <Image src={slot.src} alt={slot.alt} fill sizes="(max-width: 800px) 100vw, 50vw" unoptimized={slot.src.startsWith("http")} />
+            {slot.mediaType === "video"
+              ? <video aria-label={slot.alt} controls playsInline preload="metadata" poster={slot.poster} src={slot.src} />
+              : <Image src={slot.src} alt={slot.alt} fill sizes="(max-width: 800px) 100vw, 50vw" unoptimized={slot.src.startsWith("http")} />}
           </div>}
           <figcaption>{slot.label}</figcaption>
         </figure>)}
