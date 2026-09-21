@@ -31,7 +31,7 @@ describe("quotation page introduction", () => {
 
     const introduction = screen.getByText(/a 50% deposit confirms your stay/i).closest(".quotation-intro");
     expect(introduction).toContainElement(screen.getByRole("heading", { name: "Rates" }));
-    expect(screen.getByText("Minimum stay is 5 nights. (Four nights are considered but are subject to a $500 short-stay levy.)")).toBeInTheDocument();
+    expect(screen.getByText("Minimum stay is 5 nights. (Four night stays are available with an additional $500 short-stay levy.)")).toBeInTheDocument();
     expect(screen.getByText("All rates are USD and subject to taxes, government levy and fees which are shown in your quotation.")).toBeInTheDocument();
   });
 });

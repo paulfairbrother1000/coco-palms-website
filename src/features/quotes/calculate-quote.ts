@@ -50,7 +50,7 @@ export function validateQuoteRequest(input: QuoteInput): string | null {
   if (guests < 1) return "Add at least one guest.";
   if (guests > 8) return "Coco Palms accommodates up to 8 guests, including children under 6.";
   if (overlapsFestive(input.arrival, input.departure) && nights < 10) return "A minimum stay of 10 nights applies over the festive period.";
-  if (nights < 4) return "The minimum stay is 5 nights. A 4-night stay is available with a $500 short-stay levy.";
+  if (nights < 4) return "Minimum stay is 5 nights. Four night stays are available with an additional $500 short-stay levy.";
   return null;
 }
 
