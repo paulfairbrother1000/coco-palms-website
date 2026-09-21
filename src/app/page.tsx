@@ -12,7 +12,6 @@ export default function HomePage() {
   return <>
     <section className="hero">
       <Image src="/images/cocopalmshero2.jpg" alt="Coco Palms pool and covered waterfront terrace" fill priority quality={92} sizes="100vw" />
-      <div className="hero-shade" />
       <div className="hero-content"><span className="eyebrow light">Jolly Harbour · Antigua</span><h1 className="hero-title">Welcome to Coco Palms</h1><p>Your private waterfront escape in the Caribbean.</p><div className="hero-actions"><Link className="button" href="/get-quotation">Get Quotation</Link><Link className="text-link light" href="/rates-and-availability">View availability <ArrowRight size={18} /></Link></div></div>
     </section>
     <section className="highlights" aria-label="Villa highlights"><span><Waves />Waterfront</span><span><Users />Sleeps 8</span><span><BedDouble />4 bedrooms</span><span><Palmtree />Private pool</span><span><MapPin />Jolly Harbour</span></section>
