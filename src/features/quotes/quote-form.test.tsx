@@ -39,6 +39,41 @@ describe("QuoteForm", () => {
     expect(await screen.findByRole("heading", { name: "June 2027" })).toBeInTheDocument();
     expect(screen.getByText(/children under 6 are not charged/i)).toBeInTheDocument();
     expect(screen.getByLabelText("Children aged 6 or over")).toBeInTheDocument();
+    expect(screen.getByText("Select your arrival date, then your departure date.")).toBeInTheDocument();
+    expect(screen.queryByText(/usual minimum/i)).not.toBeInTheDocument();
+  });
+
+  it("lets mobile users adjust every party number with explicit buttons", async () => {
+    vi.spyOn(global, "fetch").mockResolvedValueOnce(new Response(JSON.stringify({ ranges: [] }), { status: 200 }));
+    const user = userEvent.setup();
+    render(<QuoteForm />);
+
+    await screen.findByRole("heading", { name: "June 2027" });
+    expect(screen.getByRole("button", { name: "Decrease Adults" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Increase Adults" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Decrease Children aged 6 or over" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Increase Children aged 6 or over" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Decrease Children under 6" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Increase Children under 6" })).toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: "Increase Children under 6" }));
+    expect(screen.getByLabelText("Children under 6")).toHaveValue(1);
+  });
+
+  it("keeps party selectors within their allowed limits", async () => {
+    vi.spyOn(global, "fetch").mockResolvedValueOnce(new Response(JSON.stringify({ ranges: [] }), { status: 200 }));
+    const user = userEvent.setup();
+    render(<QuoteForm />);
+
+    await screen.findByRole("heading", { name: "June 2027" });
+    await user.click(screen.getByRole("button", { name: "Decrease Children under 6" }));
+    expect(screen.getByLabelText("Children under 6")).toHaveValue(0);
+
+    const adults = screen.getByLabelText("Adults");
+    await user.clear(adults);
+    await user.type(adults, "1");
+    await user.click(screen.getByRole("button", { name: "Decrease Adults" }));
+    expect(adults).toHaveValue(1);
   });
 
   it("submits the selected stay and displays an itemised quote with Book Now", async () => {

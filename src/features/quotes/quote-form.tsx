@@ -2,7 +2,7 @@
 
 import { format, parseISO } from "date-fns";
 import { useSearchParams } from "next/navigation";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useId, useState } from "react";
 import { QuotationCalendar } from "@/features/availability/quotation-calendar";
 import type { UnavailableRange } from "@/features/availability/date-range";
 import type { QuoteCalculation, QuoteConfirmationDetails } from "./types";
@@ -14,6 +14,34 @@ type QuoteResponse = {
   emailSent?: boolean;
   confirmation?: QuoteConfirmationDetails;
 };
+
+type PartyNumberInputProps = {
+  label: string;
+  name: string;
+  min: number;
+  max: number;
+  defaultValue: number;
+};
+
+function PartyNumberInput({ label, name, min, max, defaultValue }: PartyNumberInputProps) {
+  const id = useId();
+  const [value, setValue] = useState(String(defaultValue));
+
+  function adjust(delta: number) {
+    const parsed = Number(value);
+    const current = value === "" || !Number.isFinite(parsed) ? min : parsed;
+    setValue(String(Math.min(max, Math.max(min, current + delta))));
+  }
+
+  return <div className="party-number-field">
+    <label htmlFor={id}>{label}</label>
+    <div className="party-number-control">
+      <button className="party-step-button" type="button" aria-label={`Decrease ${label}`} onClick={() => adjust(-1)}>−</button>
+      <input id={id} required name={name} type="number" min={min} max={max} value={value} onChange={(event) => setValue(event.target.value)} />
+      <button className="party-step-button" type="button" aria-label={`Increase ${label}`} onClick={() => adjust(1)}>+</button>
+    </div>
+  </div>;
+}
 
 export function QuoteForm() {
   const params = useSearchParams();
@@ -78,7 +106,7 @@ export function QuoteForm() {
         {calendarError ? <p className="form-error" role="alert">{calendarError}</p> : <QuotationCalendar ranges={ranges} arrival={arrival} departure={departure} onChange={(nextArrival, nextDeparture) => { setArrival(nextArrival); setDeparture(nextDeparture); setQuote(null); }} />}
         <div className="selected-stay"><span className="eyebrow">Selected stay</span><strong>{arrival ? format(parseISO(arrival), "d MMMM yyyy") : "Choose arrival"} — {departure ? format(parseISO(departure), "d MMMM yyyy") : "choose departure"}</strong></div>
       </fieldset>
-      <fieldset><legend>Your party</legend><p className="form-note">All children count towards the maximum occupancy of 8. Children under 6 are not charged the government levy.</p><div className="form-grid three"><label>Adults<input required name="adults" type="number" min="1" max="8" defaultValue="2" /></label><label>Children aged 6 or over<input required name="childrenSixToSeventeen" type="number" min="0" max="8" defaultValue="0" /></label><label>Children under 6<input required name="childrenUnderSix" type="number" min="0" max="8" defaultValue="0" /></label></div></fieldset>
+      <fieldset><legend>Your party</legend><p className="form-note">All children count towards the maximum occupancy of 8. Children under 6 are not charged the government levy.</p><div className="form-grid three"><PartyNumberInput label="Adults" name="adults" min={1} max={8} defaultValue={2} /><PartyNumberInput label="Children aged 6 or over" name="childrenSixToSeventeen" min={0} max={8} defaultValue={0} /><PartyNumberInput label="Children under 6" name="childrenUnderSix" min={0} max={8} defaultValue={0} /></div></fieldset>
       <fieldset><legend>Your details</legend><div className="form-grid"><label>Name<input required name="name" autoComplete="name" /></label><label>Email<input required name="email" type="email" autoComplete="email" /></label></div></fieldset>
       <label className="consent"><input required type="checkbox" /> I agree that Coco Palms may use these details to prepare and email my quotation.</label>
       {error && <p className="form-error" role="alert">{error}</p>}

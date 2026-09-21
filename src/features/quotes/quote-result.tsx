@@ -27,7 +27,7 @@ export function QuoteResult({
       {quote.shortStayLevy !== 0 && <div><span>Four-night short-stay charge</span><strong>{money.format(quote.shortStayLevy)}</strong></div>}
       <div><span>ABST — 17% of accommodation and applicable charges</span><strong>{money.format(quote.abst)}</strong></div>
       <div><span>Government levy — {quote.levyGuests} guests aged 6+ × {quote.nights} nights × $5</span><strong>{money.format(quote.governmentLevy)}</strong></div>
-      <div><span>Administration fee — 5% including the refundable $2,000 security deposit</span><strong>{money.format(quote.fees)}</strong></div>
+      <div><span>Administration fee — 5% applied to all charges including the security deposit</span><strong>{money.format(quote.fees)}</strong></div>
     </div>
     <div className="quote-total"><span>Quotation total</span><strong>{money.format(quote.quotationTotal)}</strong></div>
     <div className="payment-summary"><p><span>Due on booking</span><strong>{money.format(quote.dueToConfirm)}</strong></p><p><span>Balance due 10 weeks before arrival</span><strong>{money.format(quote.balanceDue)}</strong></p><p><span>Separate refundable security deposit</span><strong>{money.format(quote.securityDeposit)}</strong></p></div>

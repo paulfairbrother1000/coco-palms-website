@@ -54,6 +54,6 @@ export function QuotationCalendar({ ranges, arrival, departure, onChange }: Prop
       })}
     </div>
     <div className="calendar-key"><span><i className="available" />Available</span><span><i className="unavailable" />Unavailable</span><span><i className="selected-key" />Your stay</span></div>
-    <p className="form-note">Select your arrival date, then your departure date. The usual minimum is five nights. Four nights are available with a $500 charge; festive stays require ten nights.</p>
+    <p className="form-note">Select your arrival date, then your departure date.</p>
   </div>;
 }

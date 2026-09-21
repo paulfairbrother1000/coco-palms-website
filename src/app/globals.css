@@ -66,3 +66,6 @@ button{border-radius:8px}
 
 /* Bring substantive page content into the first desktop viewport. */
 @media(min-width:901px){h1{font-size:clamp(4rem,8vw,7.25rem)}h2{font-size:clamp(2.4rem,4.5vw,4rem)}.page-hero{padding-top:3.5rem;padding-bottom:2.5rem}.page-hero+.section{padding-top:2.5rem}}
+
+.party-number-field{display:flex;flex-direction:column;gap:.4rem}.party-number-control input{width:100%}.party-step-button{display:none}
+@media(max-width:600px){.party-number-control{display:grid;grid-template-columns:48px minmax(0,1fr) 48px}.party-number-control input{border-radius:0;text-align:center}.party-step-button{display:grid;place-items:center;border:1px solid #aebbc5;background:#fff;color:var(--ink);font:inherit;font-size:1.5rem;font-weight:700;min-height:48px;cursor:pointer}.party-step-button:first-child{border-radius:8px 0 0 8px;border-right:0}.party-step-button:last-child{border-radius:0 8px 8px 0;border-left:0}.party-step-button:focus-visible{outline:3px solid rgba(47,128,183,.28);outline-offset:1px}}

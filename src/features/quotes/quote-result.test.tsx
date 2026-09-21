@@ -44,7 +44,7 @@ describe("QuoteResult", () => {
     expect(screen.getByText("7 nights × $1,000.00 — 15th May to 15th Nov")).toBeInTheDocument();
     expect(screen.getByText("ABST — 17% of accommodation and applicable charges")).toBeInTheDocument();
     expect(screen.getByText("Government levy — 2 guests aged 6+ × 7 nights × $5")).toBeInTheDocument();
-    expect(screen.getByText("Administration fee — 5% including the refundable $2,000 security deposit")).toBeInTheDocument();
+    expect(screen.getByText("Administration fee — 5% applied to all charges including the security deposit")).toBeInTheDocument();
     expect(screen.getByText("Due on booking")).toBeInTheDocument();
     expect(screen.queryByText("Due to confirm")).not.toBeInTheDocument();
   });
