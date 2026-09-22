@@ -63,6 +63,9 @@ describe("Location and amenities page", () => {
     }
     expect(screen.queryByText(/^Palms$/i)).not.toBeInTheDocument();
     expect(screen.getAllByText(/Approx\./i).length).toBeGreaterThanOrEqual(12);
+    expect(screen.getByRole("link", { name: /Al Porto/i })).toHaveAttribute("href", "https://www.instagram.com/alporto_antigua/");
+    expect(screen.getByRole("link", { name: /Miracles/i })).toHaveAttribute("href", "https://www.facebook.com/miraclesantigua/");
+    expect(screen.getByRole("link", { name: /The Hut/i })).toHaveAttribute("href", "https://thehutlittlejumby.com/");
   });
 
   it("features charters collecting from the mooring and concierge support", () => {
