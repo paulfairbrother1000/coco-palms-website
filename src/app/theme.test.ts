@@ -39,4 +39,22 @@ describe("site theme", () => {
   it("reserves equal desktop label height for the quotation party fields", () => {
     expect(css).toContain("@media(min-width:601px){.party-number-field>label{min-height:3rem}}");
   });
+
+  it("renders gallery captions in regular-weight italics", () => {
+    const style = document.createElement("style");
+    style.textContent = css;
+    document.head.append(style);
+    const gallery = document.createElement("div");
+    gallery.className = "gallery-grid";
+    const caption = document.createElement("figcaption");
+    gallery.append(caption);
+    document.body.append(gallery);
+
+    const computed = getComputedStyle(caption);
+    expect(computed.fontStyle).toBe("italic");
+    expect(computed.fontWeight).toBe("400");
+
+    gallery.remove();
+    style.remove();
+  });
 });

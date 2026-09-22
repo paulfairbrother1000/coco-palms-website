@@ -15,18 +15,33 @@ const fallbackSections = [
 ];
 
 const localAreaCaptions = [
-  "Nelson’s Dockyard",
-  "Salt Plage",
-  "Catherine’s Café",
-  "Rokuni",
-  "Sheer Rocks",
-  "Jolly Harbour – Sheer Rocks",
-  "Jolly Harbour – Miracles",
-  "Jolly Harbour – Al Porto",
-  "Jolly Harbour Tennis",
-  "Jolly Harbour Pickleball Courts",
-  "Jolly Harbour Gym",
-  "Antigua and Jolly Harbour",
+  "Historic Nelson’s Dockyard, a UNESCO World Heritage Site.",
+  "Beachfront relaxation at Salt Plage.",
+  "Relaxed beachfront dining at Catherine’s Café.",
+  "Contemporary Asian-inspired dining at Rokuni.",
+  "Sheer Rocks’ spectacular clifftop dining setting.",
+  "Beautifully presented Caribbean flavours at Sheer Rocks.",
+  "Miracles restaurant, close to the entrance of Jolly Harbour.",
+  "Waterside Italian dining at Al Porto in Jolly Harbour.",
+  "Tennis courts at the Jolly Harbour Sports Centre.",
+  "Pickleball courts at the Jolly Harbour Sports Centre.",
+  "The fully equipped gym at the Jolly Harbour Sports Centre.",
+  "Discover Antigua’s turquoise water and the relaxed pace of Jolly Harbour.",
+];
+
+const exteriorCaptions = [
+  "Wine and a sharing board beside the water.",
+  "The covered terrace overlooking the pool and harbour at sunset.",
+  "Sunset dining on the covered waterside terrace.",
+  "Poolside mornings with uninterrupted harbour views.",
+  "Complimentary kayaks ready for exploring Jolly Harbour.",
+  "Golden sunset views from the private dock.",
+  "Outdoor kitchen and bar for relaxed poolside entertaining.",
+  "Generous covered lounge seating beside the pool.",
+  "Direct boat access from the private Coco Palms dock.",
+  "Al fresco dining beside the pool.",
+  "The private swimming pool beneath the Antiguan sun.",
+  "Outdoor kitchen overlooking the harbour at sunset.",
 ];
 
 const interiorCaptions = [
@@ -49,6 +64,8 @@ function localGalleryImages(section: string, title: string) {
   const images = galleryImagesFromFilenames(section, title, readdirSync(directory));
   const captions = section === "interior"
     ? interiorCaptions
+    : section === "exterior"
+      ? exteriorCaptions
     : section === "local-area"
       ? localAreaCaptions
       : null;
