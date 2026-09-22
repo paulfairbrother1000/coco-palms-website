@@ -37,6 +37,20 @@ function request(body: unknown) {
 }
 
 describe("POST /api/quotes", () => {
+  it("rejects an arrival that does not provide five days notice", async () => {
+    const createWebsiteQuote = vi.fn();
+    const handler = createQuotePostHandler({
+      getUnavailableRanges: vi.fn(),
+      createWebsiteQuote,
+      now: () => new Date("2027-05-28T12:00:00Z"),
+    });
+    const response = await handler(request({ ...validBody, arrival: "2027-06-01", departure: "2027-06-08" }));
+
+    expect(response.status).toBe(400);
+    expect(await response.json()).toEqual({ error: "Bookings require at least 5 days' notice." });
+    expect(createWebsiteQuote).not.toHaveBeenCalled();
+  });
+
   it("rejects a party larger than eight before calling Supabase", async () => {
     const createWebsiteQuote = vi.fn();
     const handler = createQuotePostHandler({ getUnavailableRanges: vi.fn(), createWebsiteQuote });

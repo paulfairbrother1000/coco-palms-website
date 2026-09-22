@@ -92,13 +92,21 @@ describe("validateQuoteRequest", () => {
     expect(validateQuoteRequest({ arrival: "2027-06-01", departure: "2027-06-06", adults: 6, childrenSixToSeventeen: 1, childrenUnderSix: 2 })).toContain("up to 8 guests");
   });
 
-  it("allows four nights with the short-stay levy and rejects shorter stays", () => {
-    expect(validateQuoteRequest({ arrival: "2027-06-01", departure: "2027-06-05", adults: 2, childrenSixToSeventeen: 0, childrenUnderSix: 0 })).toEqual(null);
-    expect(validateQuoteRequest({ arrival: "2027-06-01", departure: "2027-06-04", adults: 2, childrenSixToSeventeen: 0, childrenUnderSix: 0 })).toBe("Minimum stay is 5 nights. Four night stays are available with an additional $500 short-stay levy.");
+  it("requires a minimum stay of five nights", () => {
+    expect(validateQuoteRequest({ arrival: "2027-06-01", departure: "2027-06-05", adults: 2, childrenSixToSeventeen: 0, childrenUnderSix: 0 }, new Date("2027-05-01T12:00:00Z"))).toBe("Minimum stay is 5 nights.");
+    expect(validateQuoteRequest({ arrival: "2027-06-01", departure: "2027-06-06", adults: 2, childrenSixToSeventeen: 0, childrenUnderSix: 0 }, new Date("2027-05-01T12:00:00Z"))).toEqual(null);
 
-    const quote = calculateQuote({ arrival: "2027-06-01", departure: "2027-06-05", adults: 2, childrenSixToSeventeen: 0, childrenUnderSix: 0 });
-    expect(quote.nights).toBe(4);
-    expect(quote.shortStayLevy).toBe(500);
+    const quote = calculateQuote({ arrival: "2027-06-01", departure: "2027-06-06", adults: 2, childrenSixToSeventeen: 0, childrenUnderSix: 0 }, new Date("2027-05-01T12:00:00Z"));
+    expect(quote.nights).toBe(5);
+    expect(quote.shortStayLevy).toBe(0);
+  });
+
+  it("requires five days booking notice using the Antigua calendar date", () => {
+    const now = new Date("2027-06-01T03:30:00Z"); // 31 May in Antigua
+    const input = { departure: "2027-06-10", adults: 2, childrenSixToSeventeen: 0, childrenUnderSix: 0 };
+
+    expect(validateQuoteRequest({ ...input, arrival: "2027-06-04" }, now)).toBe("Bookings require at least 5 days' notice.");
+    expect(validateQuoteRequest({ ...input, arrival: "2027-06-05" }, now)).toEqual(null);
   });
 
   it("requires ten nights when the stay overlaps the festive period", () => {

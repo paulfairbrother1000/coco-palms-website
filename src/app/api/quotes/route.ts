@@ -15,6 +15,7 @@ type Dependencies = {
   getUnavailableRanges: (start: string, end: string) => Promise<UnavailableRange[]>;
   createWebsiteQuote: (value: { arrival: string; departure: string; partySize: number; adults: number; childrenSixToSeventeen: number; underSixCount: number; contactEmail: string; contactName: string }) => Promise<StoredQuote | null>;
   sendCustomerQuote?: (quote: QuotationEmailQuote) => Promise<void>;
+  now?: () => Date;
 };
 
 function defaultDependencies(): Dependencies {
@@ -63,13 +64,14 @@ export function createQuotePostHandler(dependencies: Dependencies) {
     const parsed = quoteRequestSchema.safeParse(await request.json().catch(() => null));
     if (!parsed.success) return NextResponse.json({ error: parsed.error.issues[0]?.message ?? "Please check your details." }, { status: 400 });
     const value: QuoteRequest = parsed.data;
-    const validationError = validateQuoteRequest(value);
+    const now = dependencies.now?.() ?? new Date();
+    const validationError = validateQuoteRequest(value, now);
     if (validationError) return NextResponse.json({ error: validationError }, { status: 400 });
 
     try {
       const ranges = await dependencies.getUnavailableRanges(value.arrival, value.departure);
       if (ranges.some((range) => range.start_date < value.departure && range.end_date > value.arrival)) return NextResponse.json({ error: "Coco Palms is not available for those dates." }, { status: 409 });
-      const localCalculation = calculateQuote({ arrival: value.arrival, departure: value.departure, adults: value.adults, childrenSixToSeventeen: value.childrenSixToSeventeen, childrenUnderSix: value.childrenUnderSix });
+      const localCalculation = calculateQuote({ arrival: value.arrival, departure: value.departure, adults: value.adults, childrenSixToSeventeen: value.childrenSixToSeventeen, childrenUnderSix: value.childrenUnderSix }, now);
       let stored: StoredQuote | null = null;
       try {
         stored = await dependencies.createWebsiteQuote({ arrival: value.arrival, departure: value.departure, partySize: value.adults + value.childrenSixToSeventeen + value.childrenUnderSix, adults: value.adults, childrenSixToSeventeen: value.childrenSixToSeventeen, underSixCount: value.childrenUnderSix, contactEmail: value.email, contactName: value.name });
@@ -86,7 +88,6 @@ export function createQuotePostHandler(dependencies: Dependencies) {
         });
       }
       const calculation = mapDatabaseCalculation(stored.calculation);
-      const now = new Date();
       const quote: PublicQuote = { token: stored.public_token, reference: quoteReference(stored.public_token), name: value.name, email: value.email, arrival: value.arrival, departure: value.departure, adults: value.adults, childrenSixToSeventeen: value.childrenSixToSeventeen, childrenUnderSix: value.childrenUnderSix, createdAt: now.toISOString(), expiresAt: new Date(now.getTime() + 72 * 60 * 60 * 1000).toISOString(), calculation };
       let emailSent = false;
       try { await dependencies.sendCustomerQuote?.(quote); emailSent = Boolean(dependencies.sendCustomerQuote); } catch { emailSent = false; }

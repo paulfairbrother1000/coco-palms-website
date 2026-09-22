@@ -22,4 +22,25 @@ describe("unavailable calendar dates", () => {
     expect(day).toHaveTextContent("5");
     vi.useRealTimers();
   });
+
+  it("shows today and the following four Antigua dates as unavailable", () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2027-06-01T12:00:00Z"));
+    render(<QuotationCalendar ranges={[]} arrival="" departure="" onChange={vi.fn()} />);
+
+    expect(screen.getByRole("button", { name: "June 1, 2027, unavailable" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "June 5, 2027, unavailable" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "June 6, 2027, available" })).toBeEnabled();
+    vi.useRealTimers();
+  });
+
+  it("prevents choosing a departure before the five-night minimum", () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2027-06-01T12:00:00Z"));
+    render(<QuotationCalendar ranges={[]} arrival="2027-06-10" departure="" onChange={vi.fn()} />);
+
+    expect(screen.getByRole("button", { name: "June 14, 2027, unavailable" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "June 15, 2027, available" })).toBeEnabled();
+    vi.useRealTimers();
+  });
 });
