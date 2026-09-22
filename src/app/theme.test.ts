@@ -30,4 +30,9 @@ describe("site theme", () => {
     expect(css).toContain(":where(h1,h2)+p{margin-top:.75rem}");
     expect(css).toContain(".page-hero p{font-size:1.15rem;max-width:700px;margin-top:.75rem}");
   });
+
+  it("sizes the homepage hero panel with its responsive heading", () => {
+    expect(css).toContain(".hero-content{width:100%;max-width:none}");
+    expect(css).toContain(".hero-title{font-size:clamp(2.5rem,6.5vw,7.25rem);white-space:nowrap}");
+  });
 });
