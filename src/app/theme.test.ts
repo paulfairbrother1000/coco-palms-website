@@ -35,4 +35,8 @@ describe("site theme", () => {
     expect(css).toContain(".hero-content{width:100%;max-width:none}");
     expect(css).toContain(".hero-title{font-size:clamp(2.5rem,6.5vw,7.25rem);white-space:nowrap}");
   });
+
+  it("reserves equal desktop label height for the quotation party fields", () => {
+    expect(css).toContain("@media(min-width:601px){.party-number-field>label{min-height:3rem}}");
+  });
 });
