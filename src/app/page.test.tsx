@@ -9,6 +9,7 @@ describe("home page", () => {
     for (const link of screen.getAllByRole("link", { name: /get quotation/i })) {
       expect(link).toHaveAttribute("href", "/rates-and-availability");
     }
+    expect(screen.queryByRole("link", { name: /view availability/i })).not.toBeInTheDocument();
     expect(container.querySelector(".hero-copy-panel")).toBeInTheDocument();
     expect(container.querySelector(".hero-shade")).not.toBeInTheDocument();
   });
