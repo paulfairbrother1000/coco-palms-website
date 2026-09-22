@@ -29,13 +29,33 @@ const localAreaCaptions = [
   "Antigua and Jolly Harbour",
 ];
 
+const interiorCaptions = [
+  "Elegant indoor dining for eight, overlooking the lounge and pool.",
+  "Spacious open-plan lounge with comfortable seating and a large-screen television.",
+  "Fully equipped and modern kitchen.",
+  "Ocean-facing bedroom with walk-in dressing room, 55-inch TV and ensuite bathroom with twin basins, shower and WC.",
+  "Master bedroom – super-king-size bed, television and safe, with an ensuite bathroom featuring twin basins, shower, bath and WC.",
+  "Bedroom 3 – two king-size beds, television, safe, wardrobe and drawers.",
+  "Bedroom 4 – king-size bed, television, safe, wardrobe and drawers.",
+  "House bathroom – twin basins, shower and WC.",
+  "Utility room – washing and drying facilities.",
+  "Open-plan kitchen and living space beneath a vaulted ceiling.",
+  "Built-in bean-to-cup coffee machine for fresh coffee at any time.",
+  "Relax in the master ensuite’s deep soaking bath.",
+];
+
 function localGalleryImages(section: string, title: string) {
   const directory = path.join(process.cwd(), "public", "images", "gallery", section);
   const images = galleryImagesFromFilenames(section, title, readdirSync(directory));
-  if (section !== "local-area") return images;
+  const captions = section === "interior"
+    ? interiorCaptions
+    : section === "local-area"
+      ? localAreaCaptions
+      : null;
+  if (!captions) return images;
 
   return images.map((image) => {
-    const label = localAreaCaptions[image.position - 1] ?? image.label;
+    const label = captions[image.position - 1] ?? image.label;
     return { ...image, label, alt: image.mediaType === "video" ? `${label} video` : label };
   });
 }
