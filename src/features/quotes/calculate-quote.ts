@@ -1,5 +1,6 @@
 import type { QuoteCalculation, QuoteInput, SecondaryDiscount } from "./types";
 import { PUBLISHED_RATE_BANDS } from "./published-rates";
+import { earliestArrivalDate, MINIMUM_STAY_NIGHTS } from "@/features/availability/booking-policy";
 
 const DAY_MS = 86_400_000;
 const SECONDARY_PRIORITY: Exclude<SecondaryDiscount, null>[] = ["two-week", "four-week", "early-bird"];
@@ -43,19 +44,24 @@ function overlapsFestive(arrival: string, departure: string) {
   }).some(Boolean);
 }
 
-export function validateQuoteRequest(input: QuoteInput): string | null {
+function localDateIso(date: Date) {
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+}
+
+export function validateQuoteRequest(input: QuoteInput, now = new Date()): string | null {
   const nights = nightsBetween(input.arrival, input.departure);
   const guests = input.adults + input.childrenSixToSeventeen + input.childrenUnderSix;
   if (!input.arrival || !input.departure || nights <= 0) return "Choose valid arrival and departure dates.";
   if (guests < 1) return "Add at least one guest.";
   if (guests > 8) return "Coco Palms accommodates up to 8 guests, including children under 6.";
+  if (input.arrival < localDateIso(earliestArrivalDate(now))) return "Bookings require at least 5 days' notice.";
   if (overlapsFestive(input.arrival, input.departure) && nights < 10) return "A minimum stay of 10 nights applies over the festive period.";
-  if (nights < 4) return "Minimum stay is 5 nights. Four night stays are available with an additional $500 short-stay levy.";
+  if (nights < MINIMUM_STAY_NIGHTS) return "Minimum stay is 5 nights.";
   return null;
 }
 
-export function calculateQuote(input: QuoteInput): QuoteCalculation {
-  const validationError = validateQuoteRequest(input);
+export function calculateQuote(input: QuoteInput, now = new Date()): QuoteCalculation {
+  const validationError = validateQuoteRequest(input, now);
   if (validationError) throw new Error(validationError);
 
   const nights = nightsBetween(input.arrival, input.departure);
@@ -76,14 +82,14 @@ export function calculateQuote(input: QuoteInput): QuoteCalculation {
   const afterLongStay = accommodation + longStayDiscount;
   const secondaryDiscount = secondaryDiscountType ? -(afterLongStay * DISCOUNT_RATE[secondaryDiscountType]) : 0;
   const discountedAccommodation = afterLongStay + secondaryDiscount;
-  const shortStayLevy = nights === 4 ? 500 : 0;
-  const abst = (discountedAccommodation + shortStayLevy) * 0.17;
+  const shortStayLevy = 0;
+  const abst = discountedAccommodation * 0.17;
   const guests = input.adults + input.childrenSixToSeventeen + input.childrenUnderSix;
   const levyGuests = input.adults + input.childrenSixToSeventeen;
   const governmentLevy = levyGuests * 5 * nights;
   const securityDeposit = 2000;
-  const fees = (discountedAccommodation + shortStayLevy + abst + governmentLevy + securityDeposit) * 0.05;
-  const quotationTotal = discountedAccommodation + shortStayLevy + abst + governmentLevy + fees;
+  const fees = (discountedAccommodation + abst + governmentLevy + securityDeposit) * 0.05;
+  const quotationTotal = discountedAccommodation + abst + governmentLevy + fees;
   return {
     nights,
     guests,

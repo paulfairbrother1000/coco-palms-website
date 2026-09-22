@@ -1,8 +1,9 @@
 "use client";
 
-import { addMonths, eachDayOfInterval, endOfMonth, format, getDay, isBefore, isSameDay, parseISO, startOfDay, startOfMonth } from "date-fns";
+import { addMonths, eachDayOfInterval, endOfMonth, format, getDay, isBefore, isSameDay, parseISO, startOfMonth } from "date-fns";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useMemo, useState } from "react";
+import { antiguaToday, isBeforeEarliestArrival, isTooShortDeparture } from "./booking-policy";
 import { canSelectRange, dateIso, isDateUnavailable, type UnavailableRange } from "./date-range";
 
 type Props = {
@@ -13,7 +14,8 @@ type Props = {
 };
 
 export function QuotationCalendar({ ranges, arrival, departure, onChange }: Props) {
-  const today = startOfDay(new Date());
+  const now = new Date();
+  const today = antiguaToday(now);
   const arrivalDate = arrival ? parseISO(arrival) : null;
   const departureDate = departure ? parseISO(departure) : null;
   const [month, setMonth] = useState(startOfMonth(arrivalDate ?? today));
@@ -21,7 +23,7 @@ export function QuotationCalendar({ ranges, arrival, departure, onChange }: Prop
   const selectedNights = useMemo(() => arrivalDate && departureDate ? eachDayOfInterval({ start: arrivalDate, end: departureDate }).slice(0, -1).map(dateIso) : [], [arrivalDate, departureDate]);
 
   function choose(date: Date) {
-    if (isBefore(date, today) || isDateUnavailable(date, ranges)) return;
+    if (isBeforeEarliestArrival(date, now) || isDateUnavailable(date, ranges) || isTooShortDeparture(date, arrivalDate)) return;
     if (!arrivalDate || departureDate || !isBefore(arrivalDate, date)) {
       onChange(dateIso(date), "");
       return;
@@ -39,14 +41,13 @@ export function QuotationCalendar({ ranges, arrival, departure, onChange }: Prop
     <div className="calendar-grid">
       {Array.from({ length: getDay(startOfMonth(month)) }, (_, index) => <span key={`empty-${index}`} />)}
       {days.map((date) => {
-        const blocked = isDateUnavailable(date, ranges);
-        const past = isBefore(date, today);
+        const blocked = isDateUnavailable(date, ranges) || isBeforeEarliestArrival(date, now) || isTooShortDeparture(date, arrivalDate);
         const selected = (arrivalDate && isSameDay(date, arrivalDate)) || (departureDate && isSameDay(date, departureDate));
         const inRange = selectedNights.includes(dateIso(date));
         return <button
           type="button"
           key={date.toISOString()}
-          disabled={blocked || past}
+          disabled={blocked}
           aria-label={`${format(date, "MMMM d, yyyy")}${blocked ? ", unavailable" : ", available"}`}
           className={selected ? "selected" : inRange ? "in-range" : blocked ? "blocked" : ""}
           onClick={() => choose(date)}
