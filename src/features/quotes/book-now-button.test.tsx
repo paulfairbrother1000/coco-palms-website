@@ -23,7 +23,7 @@ describe("BookNowButton", () => {
 
     expect(screen.getByRole("button", { name: "Quotation expired" })).toBeDisabled();
     expect(screen.getByText("This quotation has expired. A new quotation is required before you can proceed.")).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Get a new quotation" })).toHaveAttribute("href", "/get-quotation");
+    expect(screen.getByRole("link", { name: "Get a new quotation" })).toHaveAttribute("href", "/rates-and-availability");
     expect(screen.queryByRole("button", { name: "Book Now" })).not.toBeInTheDocument();
   });
 

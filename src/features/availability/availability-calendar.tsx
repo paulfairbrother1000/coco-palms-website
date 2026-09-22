@@ -31,6 +31,6 @@ export function AvailabilityCalendar({ ranges }: { ranges: UnavailableRange[] })
       return <button key={date.toISOString()} disabled={blocked || past} aria-label={`${format(date,"MMMM d, yyyy")}${blocked ? ", unavailable" : ", available"}`} className={selected ? "selected" : blocked ? "blocked" : ""} onClick={() => choose(date)}>{format(date,"d")}</button>;
     })}</div>
     <div className="calendar-key"><span><i className="available" />Available</span><span><i className="unavailable" />Unavailable</span></div>
-    <div className="calendar-selection"><div><span className="eyebrow">Selected stay</span><strong>{arrival ? format(arrival,"MMM d, yyyy") : "Choose arrival"} — {departure ? format(departure,"MMM d, yyyy") : "choose departure"}</strong></div>{arrival && departure && <Link className="button" href={`/get-quotation?arrival=${dateIso(arrival)}&departure=${dateIso(departure)}`}>Get Quotation</Link>}</div>
+    <div className="calendar-selection"><div><span className="eyebrow">Selected stay</span><strong>{arrival ? format(arrival,"MMM d, yyyy") : "Choose arrival"} — {departure ? format(departure,"MMM d, yyyy") : "choose departure"}</strong></div>{arrival && departure && <Link className="button" href={`/rates-and-availability?arrival=${dateIso(arrival)}&departure=${dateIso(departure)}`}>Get Quotation</Link>}</div>
   </div>;
 }

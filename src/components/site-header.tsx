@@ -25,7 +25,7 @@ export function SiteHeader() {
       </button>
       <nav className={open ? "nav-links open" : "nav-links"} aria-label="Main navigation">
         {links.map(([label, href]) => <Link key={href} href={href} onClick={() => setOpen(false)}>{label}</Link>)}
-        <Link className="button button-small" href="/get-quotation" onClick={() => setOpen(false)}>Get Quotation</Link>
+        <Link className="button button-small" href="/rates-and-availability" onClick={() => setOpen(false)}>Get Quotation</Link>
       </nav>
     </header>
   );

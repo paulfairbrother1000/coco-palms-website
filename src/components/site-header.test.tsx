@@ -8,4 +8,12 @@ describe("SiteHeader", () => {
     expect(screen.getByRole("img", { name: "Coco Palms Antigua West Indies" }).getAttribute("src"))
       .toContain("cocopalms-logo.jpg");
   });
+
+  it("uses the rates and availability page for the quotation journey", () => {
+    render(<SiteHeader />);
+    expect(screen.getByRole("link", { name: "Get Quotation" })).toHaveAttribute(
+      "href",
+      "/rates-and-availability",
+    );
+  });
 });
