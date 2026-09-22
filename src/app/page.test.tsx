@@ -6,7 +6,10 @@ describe("home page", () => {
   it("introduces Coco Palms and leads with the quotation journey", () => {
     const { container } = render(<HomePage />);
     expect(screen.getByRole("heading", { name: "Welcome to Coco Palms" })).toHaveClass("hero-title");
-    expect(screen.getAllByRole("link", { name: /get quotation/i })[0]).toHaveAttribute("href", "/get-quotation");
+    for (const link of screen.getAllByRole("link", { name: /get quotation/i })) {
+      expect(link).toHaveAttribute("href", "/rates-and-availability");
+    }
+    expect(container.querySelector(".hero-copy-panel")).toBeInTheDocument();
     expect(container.querySelector(".hero-shade")).not.toBeInTheDocument();
   });
 

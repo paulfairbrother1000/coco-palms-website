@@ -1,9 +1,21 @@
-import { Suspense } from "react";
-import { QuoteForm } from "@/features/quotes/quote-form";
-import { PublishedRatesCard } from "@/features/quotes/published-rates-card";
+import { permanentRedirect } from "next/navigation";
 
-export const metadata = { title: "Get Quotation" };
+type SearchParams = Promise<{
+  arrival?: string | string[];
+  departure?: string | string[];
+}>;
 
-export default function GetQuotationPage() {
-  return <><section className="page-hero"><span className="eyebrow">Plan your stay</span><h1>Get Quotation</h1><p>Select available dates and enter your party details for an immediate, itemised quotation.</p></section><section className="section quotation-page"><div className="quotation-overview"><div className="quotation-intro"><span className="eyebrow">Coco Palms Antigua</span><h2>Your waterfront stay</h2><p>Rates are in USD.</p><p>A 50% deposit confirms your stay and the balance is due ten weeks before arrival.</p><PublishedRatesCard /></div></div><Suspense fallback={<p>Loading quotation calendar…</p>}><QuoteForm /></Suspense></section></>;
+const isoDate = /^\d{4}-\d{2}-\d{2}$/;
+
+export default async function GetQuotationPage({ searchParams }: { searchParams: SearchParams }) {
+  const params = await searchParams;
+  const destination = new URLSearchParams();
+  const arrival = typeof params.arrival === "string" ? params.arrival : "";
+  const departure = typeof params.departure === "string" ? params.departure : "";
+
+  if (isoDate.test(arrival)) destination.set("arrival", arrival);
+  if (isoDate.test(departure)) destination.set("departure", departure);
+
+  const query = destination.toString();
+  permanentRedirect(`/rates-and-availability${query ? `?${query}` : ""}`);
 }
