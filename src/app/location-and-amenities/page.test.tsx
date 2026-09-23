@@ -73,7 +73,7 @@ describe("Location and amenities page", () => {
     expect(screen.getByRole("link", { name: /The Hut/i })).toHaveAttribute("href", "https://thehutlittlejumby.com/");
   });
 
-  it("places Nobu Barbuda beside The Hut with its official link and sea distance", () => {
+  it("places Nobu Barbuda beside The Hut with its official link and boat distance", () => {
     const { container } = render(<LocationPage />);
     const restaurantCards = Array.from(
       container.querySelectorAll<HTMLElement>(".dining-guide-section .location-directory-card"),
@@ -88,7 +88,7 @@ describe("Location and amenities page", () => {
       "href",
       "https://www.noburestaurants.com/barbuda/contact-and-hours",
     );
-    expect(nobuLink.closest("article")).toHaveTextContent("Approx. 31 nautical miles by sea");
+    expect(nobuLink.closest("article")).toHaveTextContent("Approx. 31 nautical miles by boat");
   });
 
   it("links both nearby beaches to driving directions from Coco Palms", () => {
