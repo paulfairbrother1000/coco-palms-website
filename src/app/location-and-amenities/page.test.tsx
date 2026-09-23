@@ -79,7 +79,7 @@ describe("Location and amenities page", () => {
     );
     expect(screen.getByRole("link", { name: /North Beach/i })).toHaveAttribute(
       "href",
-      "https://www.google.com/maps/dir/?api=1&origin=Coco+Palms%2C+Jolly+Harbour%2C+Antigua&destination=Mosquito+Cove%2C+Antigua&travelmode=driving",
+      "https://www.google.com/maps/dir/?api=1&origin=Coco+Palms%2C+Jolly+Harbour%2C+Antigua&destination=17.0705184%2C-61.8835008&travelmode=driving",
     );
   });
 
@@ -89,7 +89,7 @@ describe("Location and amenities page", () => {
       ["Jolly Harbour village", "Approx. 1.1 miles"],
       ["Jolly Harbour Sports Village", "Approx. 1.4 miles"],
       ["South Beach (Jolly Beach)", "Approx. 1.8 miles"],
-      ["North Beach", "Approx. 1.5 miles"],
+      ["North Beach", "Approx. 0.6 miles"],
       ["Al Porto", "Approx. 0.7 miles"],
       ["Fat Urchin", "Approx. 0.9 miles"],
       ["Miracles", "Approx. 1.4 miles"],
