@@ -91,6 +91,18 @@ const closeToHome = [
     href: "https://www.jollyharbourantigua.com/sports-village/",
     copy: "The Sports Village offers an athletic club, swimming pool, tennis and pickleball courts.",
   },
+  {
+    name: "South Beach (Jolly Beach)",
+    distance: "Approx. 1.8 miles",
+    href: "https://www.google.com/maps/dir/?api=1&origin=Coco+Palms%2C+Jolly+Harbour%2C+Antigua&destination=Jolly+Beach%2C+Antigua&travelmode=driving",
+    copy: "Get directions to Jolly Harbour’s long white-sand South Beach.",
+  },
+  {
+    name: "North Beach",
+    distance: "Approx. 1.5 miles",
+    href: "https://www.google.com/maps/dir/?api=1&origin=Coco+Palms%2C+Jolly+Harbour%2C+Antigua&destination=Mosquito+Cove%2C+Antigua&travelmode=driving",
+    copy: "Get directions to the quieter North Beach, also known as Mosquito Cove.",
+  },
 ] as const;
 
 const restaurants = [
