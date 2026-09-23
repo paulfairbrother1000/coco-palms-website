@@ -116,7 +116,7 @@ const restaurants = [
   { name: "Loose Cannon", distance: "Approx. 15.7 miles", href: "https://www.loosecannonbeachbar.com/", copy: "A lively beach bar and restaurant on Galleon Beach." },
   { name: "Shirley Heights", distance: "Approx. 16.4 miles", href: "https://shirleyheightslookout.com/", copy: "Panoramic harbour views, barbecue and the famous Sunday gathering." },
   { name: "The Hut", distance: "Approx. 18 miles by boat", href: "https://thehutlittlejumby.com/", copy: "A destination beach restaurant on Little Jumby, best reached from the water." },
-  { name: "Nobu Barbuda", distance: "Approx. 31 nautical miles by sea", href: "https://www.noburestaurants.com/barbuda/contact-and-hours", copy: "Destination dining on Princess Diana Beach, Barbuda, reached by boat from Coco Palms." },
+  { name: "Nobu Barbuda", distance: "Approx. 31 nautical miles by boat", href: "https://www.noburestaurants.com/barbuda/contact-and-hours", copy: "Destination dining on Princess Diana Beach, Barbuda, reached by boat from Coco Palms." },
 ] as const;
 
 const charters = [
