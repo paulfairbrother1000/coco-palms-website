@@ -54,8 +54,8 @@ describe("gallery page", () => {
     }
 
     const localAreaCaptions = [
+      "Beachfront relaxation at Salt Plage on Dickenson Bay.",
       "Historic Nelson’s Dockyard, a UNESCO World Heritage Site.",
-      "Beachfront relaxation at Salt Plage.",
       "Relaxed beachfront dining at Catherine’s Café.",
       "Contemporary Asian-inspired dining at Rokuni.",
       "Sheer Rocks’ spectacular clifftop dining setting.",
@@ -65,12 +65,17 @@ describe("gallery page", () => {
       "Tennis courts at the Jolly Harbour Sports Centre.",
       "Pickleball courts at the Jolly Harbour Sports Centre.",
       "The fully equipped gym at the Jolly Harbour Sports Centre.",
+      "The magnificent Jolly Beach.",
     ];
-    for (const caption of localAreaCaptions) {
+    for (const caption of localAreaCaptions.slice(0, -1)) {
       expect(screen.getByRole("img", { name: caption })).toBeInTheDocument();
       expect(screen.getByText(caption)).toBeInTheDocument();
     }
-    const localVideoCaption = "Discover Antigua’s turquoise water and the relaxed pace of Jolly Harbour.";
+    const renderedLocalAreaCaptions = Array.from(document.querySelectorAll("#local-area figcaption"))
+      .map((caption) => caption.textContent);
+    expect(renderedLocalAreaCaptions).toEqual(localAreaCaptions);
+
+    const localVideoCaption = localAreaCaptions.at(-1)!;
     const localVideo = screen.getByLabelText(`${localVideoCaption} video`);
     expect(localVideo).toHaveAttribute("src", "/images/gallery/local-area/image12.mp4");
     expect(localVideo).toHaveAttribute("poster", "/images/gallery/local-area/image12-poster.jpg");

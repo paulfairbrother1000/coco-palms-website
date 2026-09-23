@@ -15,8 +15,8 @@ const fallbackSections = [
 ];
 
 const localAreaCaptions = [
+  "Beachfront relaxation at Salt Plage on Dickenson Bay.",
   "Historic Nelson’s Dockyard, a UNESCO World Heritage Site.",
-  "Beachfront relaxation at Salt Plage.",
   "Relaxed beachfront dining at Catherine’s Café.",
   "Contemporary Asian-inspired dining at Rokuni.",
   "Sheer Rocks’ spectacular clifftop dining setting.",
@@ -26,7 +26,7 @@ const localAreaCaptions = [
   "Tennis courts at the Jolly Harbour Sports Centre.",
   "Pickleball courts at the Jolly Harbour Sports Centre.",
   "The fully equipped gym at the Jolly Harbour Sports Centre.",
-  "Discover Antigua’s turquoise water and the relaxed pace of Jolly Harbour.",
+  "The magnificent Jolly Beach.",
 ];
 
 const exteriorCaptions = [

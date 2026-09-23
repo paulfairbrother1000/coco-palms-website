@@ -40,7 +40,7 @@ describe("site theme", () => {
     expect(css).toContain("@media(min-width:601px){.party-number-field>label{min-height:3rem}}");
   });
 
-  it("renders gallery captions in regular-weight italics", () => {
+  it("renders gallery captions in plain regular-weight text", () => {
     const style = document.createElement("style");
     style.textContent = css;
     document.head.append(style);
@@ -51,7 +51,7 @@ describe("site theme", () => {
     document.body.append(gallery);
 
     const computed = getComputedStyle(caption);
-    expect(computed.fontStyle).toBe("italic");
+    expect(computed.fontStyle).toBe("normal");
     expect(computed.fontWeight).toBe("400");
 
     gallery.remove();
