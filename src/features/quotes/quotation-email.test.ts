@@ -60,6 +60,9 @@ describe("renderQuotationEmail", () => {
     expect(email.text).toContain("Quotation total: $8,809.75");
     expect(email.text).toContain("Due on booking: $4,404.88");
     expect(email.text).toContain("Balance due 10 weeks before arrival: $4,404.87");
+    expect(email.text).toContain(
+      "This quotation is based on the rates, taxes and fees in effect when it was issued and is valid for 10 days. After that, prices may change and a new quotation may be required.",
+    );
     expect(email.html).toContain("<strong>$8,809.75 USD</strong>");
     expect(email.html).toContain("<strong>$1,000.00</strong>");
     expect(email.html).toContain("<strong>$7,000.00</strong>");
@@ -67,6 +70,7 @@ describe("renderQuotationEmail", () => {
     expect(email.html).toContain('alt="Coco Palms Antigua"');
     expect(email.html).not.toContain("background:#071725");
     expect(email.html).toContain("Regards<br>Coco Palms Team");
+    expect(email.html).toContain("is valid for 10 days");
   });
 
   it("omits party groups with a zero count", () => {

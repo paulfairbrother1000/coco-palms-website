@@ -47,6 +47,9 @@ describe("QuoteResult", () => {
     expect(screen.getByText("Administration fee — 5% applied to all charges including the security deposit")).toBeInTheDocument();
     expect(screen.getByText("Due on booking")).toBeInTheDocument();
     expect(screen.queryByText("Due to confirm")).not.toBeInTheDocument();
+    expect(screen.getByText(
+      "This quotation is based on the rates, taxes and fees in effect when it was issued and is valid for 10 days. After that, prices may change and a new quotation may be required.",
+    )).toBeInTheDocument();
   });
 
   it("keeps a useful on-screen message when email delivery fails", () => {

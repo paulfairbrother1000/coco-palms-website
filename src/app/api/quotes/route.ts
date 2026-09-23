@@ -4,6 +4,7 @@ import { COCO_PALMS_ICAL_URL, loadUnavailableRanges } from "@/features/availabil
 import { mapDatabaseCalculation, quoteReference, type PublicQuote } from "@/features/quotes/public-quote";
 import { quoteRequestSchema, type QuoteRequest } from "@/features/quotes/quote-schema";
 import { createQuotationEmailMessage, type QuotationEmailQuote } from "@/features/quotes/quotation-email";
+import { quoteExpiryDate } from "@/features/quotes/quote-validity";
 import { sendEmail } from "@/lib/email/resend";
 import { createAdminSupabaseClient } from "@/lib/supabase/admin";
 import { createPublicSupabaseClient } from "@/lib/supabase/public";
@@ -88,7 +89,7 @@ export function createQuotePostHandler(dependencies: Dependencies) {
         });
       }
       const calculation = mapDatabaseCalculation(stored.calculation);
-      const quote: PublicQuote = { token: stored.public_token, reference: quoteReference(stored.public_token), name: value.name, email: value.email, arrival: value.arrival, departure: value.departure, adults: value.adults, childrenSixToSeventeen: value.childrenSixToSeventeen, childrenUnderSix: value.childrenUnderSix, createdAt: now.toISOString(), expiresAt: new Date(now.getTime() + 72 * 60 * 60 * 1000).toISOString(), calculation };
+      const quote: PublicQuote = { token: stored.public_token, reference: quoteReference(stored.public_token), name: value.name, email: value.email, arrival: value.arrival, departure: value.departure, adults: value.adults, childrenSixToSeventeen: value.childrenSixToSeventeen, childrenUnderSix: value.childrenUnderSix, createdAt: now.toISOString(), expiresAt: quoteExpiryDate(now).toISOString(), calculation };
       let emailSent = false;
       try { await dependencies.sendCustomerQuote?.(quote); emailSent = Boolean(dependencies.sendCustomerQuote); } catch { emailSent = false; }
       return NextResponse.json({ publicToken: stored.public_token, calculation, emailSent }, { status: 201 });

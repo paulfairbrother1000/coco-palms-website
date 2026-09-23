@@ -73,7 +73,13 @@ describe("POST /api/quotes", () => {
 
   it("saves a quotation and returns only its public result", async () => {
     const createWebsiteQuote = vi.fn().mockResolvedValue({ public_token: "public-token", calculation: databaseCalculation });
-    const handler = createQuotePostHandler({ getUnavailableRanges: vi.fn().mockResolvedValue([]), createWebsiteQuote });
+    const sendCustomerQuote = vi.fn().mockResolvedValue(undefined);
+    const handler = createQuotePostHandler({
+      getUnavailableRanges: vi.fn().mockResolvedValue([]),
+      createWebsiteQuote,
+      sendCustomerQuote,
+      now: () => new Date("2026-09-23T12:00:00Z"),
+    });
     const response = await handler(request(validBody));
     const result = await response.json();
 
@@ -83,6 +89,10 @@ describe("POST /api/quotes", () => {
     expect(result.calculation.quotationTotal).toBe(10492.9);
     expect(result.calculation.rateBreakdown).toHaveLength(1);
     expect(result.quote_id).toBeUndefined();
+    expect(sendCustomerQuote).toHaveBeenCalledWith(expect.objectContaining({
+      createdAt: "2026-09-23T12:00:00.000Z",
+      expiresAt: "2026-10-03T12:00:00.000Z",
+    }));
   });
 
   it("emails and displays the calculated quotation when persistence errors", async () => {
