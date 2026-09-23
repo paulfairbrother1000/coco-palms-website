@@ -45,6 +45,9 @@ describe("Location and amenities page", () => {
   it("provides nearby recommendations, useful distances and booking links", () => {
     render(<LocationPage />);
 
+    expect(screen.getByRole("heading", { name: "Restaurants to discover" })).toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "Restaurants worth discovering" })).not.toBeInTheDocument();
+
     for (const venue of [
       "Jolly Harbour village",
       "Jolly Harbour Sports Village",

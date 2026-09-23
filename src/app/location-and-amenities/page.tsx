@@ -195,7 +195,7 @@ export default function LocationPage() {
       <section className="section dining-guide-section">
         <div className="section-heading">
           <span className="eyebrow">From marina favourites to destination dining</span>
-          <h2>Restaurants worth discovering</h2>
+          <h2>Restaurants to discover</h2>
           <p>Driving distances are approximate from Coco Palms and are included as a simple planning guide.</p>
         </div>
         <div className="location-directory">
