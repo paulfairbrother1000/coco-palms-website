@@ -96,7 +96,7 @@ describe("Location and amenities page", () => {
 
     expect(screen.getByRole("link", { name: /South Beach \(Jolly Beach\)/i })).toHaveAttribute(
       "href",
-      "https://www.google.com/maps/dir/?api=1&origin=Coco+Palms%2C+Jolly+Harbour%2C+Antigua&destination=Jolly+Beach%2C+Antigua&travelmode=driving",
+      "https://www.google.com/maps/dir/?api=1&origin=Coco+Palms%2C+Jolly+Harbour%2C+Antigua&destination=17.0670921%2C-61.8885747&travelmode=driving",
     );
     expect(screen.getByRole("link", { name: /North Beach/i })).toHaveAttribute(
       "href",
@@ -109,7 +109,7 @@ describe("Location and amenities page", () => {
     const expectedDistances = [
       ["Jolly Harbour village", "Approx. 1.1 miles"],
       ["Jolly Harbour Sports Village", "Approx. 1.4 miles"],
-      ["South Beach (Jolly Beach)", "Approx. 1.8 miles"],
+      ["South Beach (Jolly Beach)", "Approx. 1.6 miles"],
       ["North Beach", "Approx. 0.7 miles"],
       ["Al Porto", "Approx. 0.7 miles"],
       ["Fat Urchin", "Approx. 0.9 miles"],

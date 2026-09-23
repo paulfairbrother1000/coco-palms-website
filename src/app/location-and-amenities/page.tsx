@@ -93,8 +93,8 @@ const closeToHome = [
   },
   {
     name: "South Beach (Jolly Beach)",
-    distance: "Approx. 1.8 miles",
-    href: "https://www.google.com/maps/dir/?api=1&origin=Coco+Palms%2C+Jolly+Harbour%2C+Antigua&destination=Jolly+Beach%2C+Antigua&travelmode=driving",
+    distance: "Approx. 1.6 miles",
+    href: "https://www.google.com/maps/dir/?api=1&origin=Coco+Palms%2C+Jolly+Harbour%2C+Antigua&destination=17.0670921%2C-61.8885747&travelmode=driving",
     copy: "Get directions to Jolly Harbour’s long white-sand South Beach.",
   },
   {
