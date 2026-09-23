@@ -99,9 +99,9 @@ const closeToHome = [
   },
   {
     name: "North Beach",
-    distance: "Approx. 1.5 miles",
-    href: "https://www.google.com/maps/dir/?api=1&origin=Coco+Palms%2C+Jolly+Harbour%2C+Antigua&destination=Mosquito+Cove%2C+Antigua&travelmode=driving",
-    copy: "Get directions to the quieter North Beach, also known as Mosquito Cove.",
+    distance: "Approx. 0.6 miles",
+    href: "https://www.google.com/maps/dir/?api=1&origin=Coco+Palms%2C+Jolly+Harbour%2C+Antigua&destination=17.0705184%2C-61.8835008&travelmode=driving",
+    copy: "Get directions to the North Beach public access entrance in Jolly Harbour.",
   },
 ] as const;
 
