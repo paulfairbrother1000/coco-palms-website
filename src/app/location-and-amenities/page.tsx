@@ -99,9 +99,9 @@ const closeToHome = [
   },
   {
     name: "North Beach",
-    distance: "Approx. 0.6 miles",
-    href: "https://www.google.com/maps/dir/?api=1&origin=Coco+Palms%2C+Jolly+Harbour%2C+Antigua&destination=17.0705184%2C-61.8835008&travelmode=driving",
-    copy: "Get directions to the North Beach public access entrance in Jolly Harbour.",
+    distance: "Approx. 0.7 miles",
+    href: "https://www.google.com/maps/dir/?api=1&origin=Coco+Palms%2C+Jolly+Harbour%2C+Antigua&destination=17.0760346%2C-61.8899019&travelmode=driving",
+    copy: "Get directions to North Beach at the western tip of Jolly Harbour’s North Finger.",
   },
 ] as const;
 
