@@ -68,6 +68,32 @@ describe("Location and amenities page", () => {
     expect(screen.getByRole("link", { name: /The Hut/i })).toHaveAttribute("href", "https://thehutlittlejumby.com/");
   });
 
+  it("shows verified driving distances from Coco Palms", () => {
+    const { container } = render(<LocationPage />);
+    const expectedDistances = [
+      ["Jolly Harbour village", "Approx. 1.1 miles"],
+      ["Jolly Harbour Sports Village", "Approx. 1.4 miles"],
+      ["Al Porto", "Approx. 0.7 miles"],
+      ["Fat Urchin", "Approx. 0.9 miles"],
+      ["Miracles", "Approx. 1.4 miles"],
+      ["Rokuni", "Approx. 1.6 miles"],
+      ["Sheer Rocks", "Approx. 2.8 miles"],
+      ["Wild Tamarind", "Approx. 3 miles"],
+      ["Catherine’s Café", "Approx. 15.5 miles"],
+      ["Loose Cannon", "Approx. 15.7 miles"],
+      ["Shirley Heights", "Approx. 16.4 miles"],
+      ["The Hut", "Approx. 18 miles by boat"],
+    ] as const;
+
+    for (const [venue, distance] of expectedDistances) {
+      const link = screen.getByRole("link", { name: new RegExp(venue, "i") });
+      expect(link.closest("article")).toHaveTextContent(distance);
+    }
+    expect(container.querySelector(".dining-guide-section .section-heading p")).toHaveTextContent(
+      "Driving distances are approximate from Coco Palms",
+    );
+  });
+
   it("features charters collecting from the mooring and concierge support", () => {
     render(<LocationPage />);
 
