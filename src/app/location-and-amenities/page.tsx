@@ -81,28 +81,28 @@ const locationImages = [
 const closeToHome = [
   {
     name: "Jolly Harbour village",
-    distance: "Approx. 1.2 miles",
+    distance: "Approx. 1.1 miles",
     href: "https://www.jollyharbourantigua.com/",
     copy: "The marina village brings together a supermarket, shops, cafés, bars and useful holiday services.",
   },
   {
     name: "Jolly Harbour Sports Village",
-    distance: "Approx. 1.5 miles",
+    distance: "Approx. 1.4 miles",
     href: "https://www.jollyharbourantigua.com/sports-village/",
     copy: "The Sports Village offers an athletic club, swimming pool, tennis and pickleball courts.",
   },
 ] as const;
 
 const restaurants = [
-  { name: "Al Porto", distance: "Approx. 1.2 miles", href: "https://www.instagram.com/alporto_antigua/", copy: "Waterside Italian dining in Jolly Harbour." },
-  { name: "Fat Urchin", distance: "Approx. 1.4 miles", href: "https://faturchin.com/", copy: "A relaxed public house and coastal kitchen at Jolly Harbour Marina." },
-  { name: "Miracles", distance: "Approx. 1.3 miles", href: "https://www.facebook.com/miraclesantigua/", copy: "A popular local restaurant close to the Jolly Harbour entrance." },
-  { name: "Rokuni", distance: "Approx. 2.2 miles", href: "https://rokuni-antigua.com/", copy: "Asian-inspired sharing plates and cocktails at Sugar Ridge." },
+  { name: "Al Porto", distance: "Approx. 0.7 miles", href: "https://www.instagram.com/alporto_antigua/", copy: "Waterside Italian dining in Jolly Harbour." },
+  { name: "Fat Urchin", distance: "Approx. 0.9 miles", href: "https://faturchin.com/", copy: "A relaxed public house and coastal kitchen at Jolly Harbour Marina." },
+  { name: "Miracles", distance: "Approx. 1.4 miles", href: "https://www.facebook.com/miraclesantigua/", copy: "A popular local restaurant close to the Jolly Harbour entrance." },
+  { name: "Rokuni", distance: "Approx. 1.6 miles", href: "https://rokuni-antigua.com/", copy: "Asian-inspired sharing plates and cocktails at Sugar Ridge." },
   { name: "Sheer Rocks", distance: "Approx. 2.8 miles", href: "https://sheer-rocks.com/", copy: "Clifftop dining, daybeds and sunset views above Ffryes Beach." },
   { name: "Wild Tamarind", distance: "Approx. 3 miles", href: "https://www.instagram.com/wildtamarindrestaurant/", copy: "Contemporary Caribbean dining overlooking the west coast." },
-  { name: "Catherine’s Café", distance: "Approx. 10.5 miles", href: "https://catherines-cafe.com/", copy: "French-inspired beachfront dining at Pigeon Point." },
-  { name: "Loose Cannon", distance: "Approx. 12 miles", href: "https://www.loosecannonbeachbar.com/", copy: "A lively beach bar and restaurant on Galleon Beach." },
-  { name: "Shirley Heights", distance: "Approx. 12.5 miles", href: "https://shirleyheightslookout.com/", copy: "Panoramic harbour views, barbecue and the famous Sunday gathering." },
+  { name: "Catherine’s Café", distance: "Approx. 15.5 miles", href: "https://catherines-cafe.com/", copy: "French-inspired beachfront dining at Pigeon Point." },
+  { name: "Loose Cannon", distance: "Approx. 15.7 miles", href: "https://www.loosecannonbeachbar.com/", copy: "A lively beach bar and restaurant on Galleon Beach." },
+  { name: "Shirley Heights", distance: "Approx. 16.4 miles", href: "https://shirleyheightslookout.com/", copy: "Panoramic harbour views, barbecue and the famous Sunday gathering." },
   { name: "The Hut", distance: "Approx. 18 miles by boat", href: "https://thehutlittlejumby.com/", copy: "A destination beach restaurant on Little Jumby, best reached from the water." },
 ] as const;
 
@@ -184,7 +184,7 @@ export default function LocationPage() {
         <div className="section-heading">
           <span className="eyebrow">From marina favourites to destination dining</span>
           <h2>Restaurants worth discovering</h2>
-          <p>Distances are approximate from Coco Palms and are included as a simple planning guide.</p>
+          <p>Driving distances are approximate from Coco Palms and are included as a simple planning guide.</p>
         </div>
         <div className="location-directory">
           {restaurants.map((restaurant) => <DirectoryCard {...restaurant} key={restaurant.name} />)}
