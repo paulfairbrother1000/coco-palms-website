@@ -47,34 +47,34 @@ const amenities = [
 
 const locationImages = [
   {
-    src: "/images/location/coco-palms-aerial.jpg",
-    alt: "Aerial view of the Coco Palms pool, terrace, garden and private mooring",
-    className: "location-photo location-photo-anchor",
+    src: "/images/location/coco-palms-mooring-twilight.jpg",
+    alt: "Sunrise across Jolly Harbour from the Coco Palms private dock",
+    className: "location-photo location-photo-sunrise",
   },
   {
     src: "/images/location/coco-palms-sunset-terrace.jpg",
     alt: "Coco Palms terrace and pool beneath a pink Antiguan sunset",
-    className: "location-photo location-photo-portrait",
+    className: "location-photo location-photo-detail-top",
   },
   {
-    src: "/images/location/coco-palms-pool-at-night.jpg",
-    alt: "The illuminated Coco Palms pool and covered terrace at night",
-    className: "location-photo location-photo-night",
+    src: "/images/location/shirley-heights.jpg",
+    alt: "Shirley Heights overlooking English and Falmouth Harbours",
+    className: "location-photo location-photo-detail-bottom",
   },
   {
-    src: "/images/location/coco-palms-mooring-twilight.jpg",
-    alt: "The private Coco Palms mooring looking across Jolly Harbour at twilight",
-    className: "location-photo location-photo-portrait",
+    src: "/images/location/coco-palms-aerial.jpg",
+    alt: "Aerial view of the Coco Palms pool, terrace, garden and private mooring",
+    className: "location-photo location-photo-bottom-left",
   },
   {
-    src: "/images/location/coco-palms-pool-sunset.jpg",
-    alt: "Coco Palms infinity pool overlooking the harbour at sunset",
-    className: "location-photo location-photo-portrait",
+    src: "/images/location/kayaks-and-paddleboards.jpg",
+    alt: "Kayaks and paddleboards lined up on the private dock",
+    className: "location-photo location-photo-bottom-middle",
   },
   {
     src: "/images/location/coco-palms-waterfront-sunset.jpg",
     alt: "Coco Palms viewed from its waterfront mooring beneath a golden sunset",
-    className: "location-photo location-photo-waterfront",
+    className: "location-photo location-photo-bottom-right",
   },
 ] as const;
 
@@ -108,10 +108,11 @@ const closeToHome = [
 const restaurants = [
   { name: "Al Porto", distance: "Approx. 0.7 miles", href: "https://www.instagram.com/alporto_antigua/", copy: "Waterside Italian dining in Jolly Harbour." },
   { name: "Fat Urchin", distance: "Approx. 0.9 miles", href: "https://faturchin.com/", copy: "A relaxed public house and coastal kitchen at Jolly Harbour Marina." },
+  { name: "Roca Pantry, Butcher’s Block & Wine Cellar", distance: "Approx. 1.6 miles", href: "https://roca-antigua.com/", copy: "The Rocks Group’s modern pantry, deli, butcher, bakery and wine cellar at Sugar Ridge." },
   { name: "Miracles", distance: "Approx. 1.4 miles", href: "https://www.facebook.com/miraclesantigua/", copy: "A popular local restaurant close to the Jolly Harbour entrance." },
   { name: "Rokuni", distance: "Approx. 1.6 miles", href: "https://rokuni-antigua.com/", copy: "Asian-inspired sharing plates and cocktails at Sugar Ridge." },
   { name: "Sheer Rocks", distance: "Approx. 2.8 miles", href: "https://sheer-rocks.com/", copy: "Clifftop dining, daybeds and sunset views above Ffryes Beach." },
-  { name: "Wild Tamarind", distance: "Approx. 3 miles", href: "https://www.instagram.com/wildtamarindrestaurant/", copy: "Contemporary Caribbean dining overlooking the west coast." },
+  { name: "Wild Tamarind", distance: "Approx. 3 miles", href: "https://www.instagram.com/wildtamarindrestaurant/", copy: "Contemporary Caribbean dining beside Ffryes Beach." },
   { name: "Catherine’s Café", distance: "Approx. 15.5 miles", href: "https://catherines-cafe.com/", copy: "French-inspired beachfront dining at Pigeon Point." },
   { name: "Loose Cannon", distance: "Approx. 15.7 miles", href: "https://www.loosecannonbeachbar.com/", copy: "A lively beach bar and restaurant on Galleon Beach." },
   { name: "Shirley Heights", distance: "Approx. 16.4 miles", href: "https://shirleyheightslookout.com/", copy: "Panoramic harbour views, barbecue and the famous Sunday gathering." },
@@ -156,15 +157,15 @@ export default function LocationPage() {
           <span className="eyebrow">At home on the harbour</span>
           <h2>A relaxed base for discovering Antigua</h2>
           <p>
-            Spend slow mornings beside your private pool, leave by boat from the dock, or explore
-            the beaches, restaurants, shops and activities around Jolly Harbour. Antigua’s coves,
-            sailing and historic harbours are within easy reach.
+            Spend slow mornings beside the pool, leave by boat directly from the private dock and
+            explore the beaches, restaurants, shops and activities around Jolly Harbour. Antigua’s
+            iconic oceanside locations and historic harbours are within easy reach.
           </p>
           <a className="text-link" href="https://goo.gl/maps/JfrmfU2js8Hwmnqq8" target="_blank" rel="noreferrer">
             <MapPin aria-hidden="true" /> Open Coco Palms in Google Maps
           </a>
         </div>
-        <div className="location-mosaic" aria-label="Coco Palms waterfront views">
+        <div className="location-mosaic location-area-mosaic" aria-label="Coco Palms waterfront views">
           {locationImages.map((image) => (
             <figure className={image.className} key={image.src}>
               <Image

@@ -9,7 +9,7 @@ export const metadata = { title: "Gallery" };
 export const revalidate = 300;
 
 const fallbackSections = [
-  { id: "interior", title: "Interior", copy: "A calm, contemporary great room designed for time together." },
+  { id: "interior", title: "Interior", copy: "Contemporary spaces for relaxing." },
   { id: "exterior", title: "Exterior", copy: "Waterfront terraces, private pool and wide spaces for outdoor living." },
   { id: "local-area", title: "Local Area", copy: "Antigua’s harbours, beaches and sailing landscape beyond the villa." },
 ];
@@ -30,11 +30,11 @@ const localAreaCaptions = [
 ];
 
 const exteriorCaptions = [
-  "Wine and a sharing board beside the water.",
-  "The covered terrace overlooking the pool and harbour at sunset.",
+  "Sundowner spaces. Perfect for sharing.",
+  "Covered terrace with sunset views across the harbour.",
   "Sunset dining on the covered waterside terrace.",
   "Poolside mornings with uninterrupted harbour views.",
-  "Complimentary kayaks ready for exploring Jolly Harbour.",
+  "Exploring Jolly Harbour and the beaches beyond.",
   "Golden sunset views from the private dock.",
   "Outdoor kitchen and bar for relaxed poolside entertaining.",
   "Generous covered lounge seating beside the pool.",
@@ -45,16 +45,16 @@ const exteriorCaptions = [
 ];
 
 const interiorCaptions = [
-  "Elegant indoor dining for eight, overlooking the lounge and pool.",
-  "Spacious open-plan lounge with comfortable seating and a large-screen television.",
+  "Indoor dining for 8 in the great room.",
+  "Spacious open-plan lounge with comfortable seating and large-screen TV.",
   "Fully equipped and modern kitchen.",
-  "Ocean-facing bedroom with walk-in dressing room, 55-inch TV and ensuite bathroom with twin basins, shower and WC.",
-  "Master bedroom – super-king-size bed, television and safe, with an ensuite bathroom featuring twin basins, shower, bath and WC.",
-  "Bedroom 3 – two king-size beds, television, safe, wardrobe and drawers.",
-  "Bedroom 4 – king-size bed, television, safe, wardrobe and drawers.",
-  "House bathroom – twin basins, shower and WC.",
-  "Utility room – washing and drying facilities.",
-  "Open-plan kitchen and living space beneath a vaulted ceiling.",
+  "Ocean-facing principal bedroom suite with Emperor bed, dressing room, 55-inch TV, AC, safe and ensuite shower room with twin basins, WC and walk-in rain shower.",
+  "Master bedroom suite with Eastern King bed, AC, TV, safe and ensuite bathroom with twin basins, freestanding bathtub and walk-in rain shower.",
+  "3rd bedroom with 2 king-size beds, AC, TV and safe.",
+  "4th bedroom with Super King-size bed, AC, TV and safe.",
+  "House bathroom with twin basins, WC and walk-in rain shower.",
+  "Laundry room with washer and dryer.",
+  "Open-plan kitchen and lounging space beneath the vaulted ceiling.",
   "Built-in bean-to-cup coffee machine for fresh coffee at any time.",
   "Relax in the master ensuite’s deep soaking bath.",
 ];
@@ -110,8 +110,19 @@ export default async function GalleryPage() {
     return {
       ...fallback,
       title,
-      copy: section?.description ?? fallback.copy,
-      slots: buildGallerySlots({ title, fallbackImage, images: [...databaseImages, ...localImages] }),
+      copy: fallback.id === "interior" ? fallback.copy : section?.description ?? fallback.copy,
+      slots: buildGallerySlots({
+        title,
+        fallbackImage,
+        images: [...databaseImages, ...localImages],
+        captions: fallback.id === "interior"
+          ? interiorCaptions
+          : fallback.id === "exterior"
+            ? exteriorCaptions
+            : fallback.id === "local-area"
+              ? localAreaCaptions
+              : undefined,
+      }),
     };
   });
 

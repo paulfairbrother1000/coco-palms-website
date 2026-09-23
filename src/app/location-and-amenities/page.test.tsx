@@ -40,6 +40,20 @@ describe("Location and amenities page", () => {
     expect(screen.getByText(/Coco Palms is situated on Harbour Island/)).toBeInTheDocument();
     expect(screen.getAllByTestId("location-mosaic-image")).toHaveLength(6);
     expect(screen.queryByRole("img", { name: /location collage/i })).not.toBeInTheDocument();
+    expect(screen.getByRole("img", { name: /sunrise across Jolly Harbour/i })).toHaveAttribute(
+      "src",
+      expect.stringContaining("%2Fimages%2Flocation%2Fcoco-palms-mooring-twilight.jpg"),
+    );
+    expect(screen.getByRole("img", { name: /kayaks and paddleboards lined up on the private dock/i })).toHaveAttribute(
+      "src",
+      expect.stringContaining("%2Fimages%2Flocation%2Fkayaks-and-paddleboards.jpg"),
+    );
+    expect(screen.getByRole("img", { name: /Shirley Heights overlooking English and Falmouth Harbours/i })).toHaveAttribute(
+      "src",
+      expect.stringContaining("%2Fimages%2Flocation%2Fshirley-heights.jpg"),
+    );
+    expect(screen.getByText(/leave by boat directly from the private dock/i)).toBeInTheDocument();
+    expect(screen.getByText(/Antigua’s iconic oceanside locations and historic harbours are within easy reach/i)).toBeInTheDocument();
   });
 
   it("provides nearby recommendations, useful distances and booking links", () => {
@@ -55,6 +69,7 @@ describe("Location and amenities page", () => {
       "North Beach",
       "Al Porto",
       "Fat Urchin",
+      "Roca Pantry, Butcher’s Block & Wine Cellar",
       "Sheer Rocks",
       "Rokuni",
       "Catherine’s Café",
@@ -71,6 +86,8 @@ describe("Location and amenities page", () => {
     expect(screen.getByRole("link", { name: /Al Porto/i })).toHaveAttribute("href", "https://www.instagram.com/alporto_antigua/");
     expect(screen.getByRole("link", { name: /Miracles/i })).toHaveAttribute("href", "https://www.facebook.com/miraclesantigua/");
     expect(screen.getByRole("link", { name: /The Hut/i })).toHaveAttribute("href", "https://thehutlittlejumby.com/");
+    expect(screen.getByRole("link", { name: /Roca Pantry/i })).toHaveAttribute("href", "https://roca-antigua.com/");
+    expect(screen.getByRole("link", { name: "Wild Tamarind" }).closest("article")).toHaveTextContent("Ffryes Beach");
   });
 
   it("places Nobu Barbuda beside The Hut with its official link and boat distance", () => {

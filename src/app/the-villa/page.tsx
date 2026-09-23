@@ -10,8 +10,8 @@ const villaImages = [
     className: "location-photo location-photo-anchor",
   },
   {
-    src: "/images/villa/pool-waterline.jpg",
-    alt: "Coco Palms terrace viewed across the swimming pool",
+    src: "/images/villa/great-room.jpg",
+    alt: "Coco Palms great room beneath the vaulted ceiling",
     className: "location-photo location-photo-portrait",
   },
   {
@@ -20,13 +20,13 @@ const villaImages = [
     className: "location-photo location-photo-night",
   },
   {
-    src: "/images/villa/pool-at-night.jpg",
-    alt: "The illuminated Coco Palms pool and terrace at night",
+    src: "/images/villa/dining-area.jpg",
+    alt: "Indoor dining for 8 in the Coco Palms great room",
     className: "location-photo location-photo-portrait",
   },
   {
-    src: "/images/villa/pool-and-dock-aerial.jpg",
-    alt: "Aerial view of the Coco Palms pool beside the private dock",
+    src: "/images/villa/bedroom.jpg",
+    alt: "Coco Palms bedroom with a four-poster bed",
     className: "location-photo location-photo-portrait",
   },
   {
@@ -38,10 +38,10 @@ const villaImages = [
 
 export default function VillaPage() {
   return <>
-    <section className="page-hero">
+    <section className="page-hero villa-page-hero">
       <span className="eyebrow">The villa</span>
       <h1>Contemporary waterfront living</h1>
-      <p>Built for easy days with family and friends, Coco Palms sleeps up to eight guests across four spacious bedrooms.</p>
+      <p>Built for easy days with family and friends, Coco Palms sleeps up to 8 guests across 4 spacious bedrooms.</p>
     </section>
     <section className="section split-feature">
       <div className="location-mosaic villa-mosaic" aria-label="Coco Palms villa views">
@@ -57,15 +57,17 @@ export default function VillaPage() {
       </div>
       <div>
         <span className="eyebrow">Room to gather</span>
-        <h2>Bright, open and made for sharing</h2>
+        <h2 className="balanced-heading"><span>Bright, open and</span><span>made for sharing</span></h2>
         <p>The great room brings the kitchen, dining and living spaces together beneath a high vaulted ceiling. Wide doors open directly to the covered terrace, pool and harbour beyond.</p>
         <ul className="feature-list">
-          <li>Four spacious bedrooms</li>
+          <li>4 spacious bedrooms</li>
           <li>Two ensuite bathrooms plus a house bathroom</li>
-          <li>Private swimming pool and waterside lounging deck</li>
-          <li>Covered outdoor dining and bar area</li>
-          <li>Private dock</li>
-          <li>Gated Jolly Harbour setting</li>
+          <li>Private swimming pool</li>
+          <li>Covered outdoor kitchen with BBQ, bar area and dining for 10</li>
+          <li>Private boat dock and waterside lounging deck</li>
+          <li>Set within Jolly Harbour’s gated community with 24/7 security, an on-site supermarket, sports facilities, a pharmacy, and waterside bars and restaurants</li>
+          <li>Kayaks and paddleboards for aqua adventures</li>
+          <li>AC in all bedrooms</li>
         </ul>
         <Link className="button" href="/rates-and-availability">Get Quotation</Link>
       </div>

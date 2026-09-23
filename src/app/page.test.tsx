@@ -17,6 +17,11 @@ describe("home page", () => {
   it("shows the slow-down photograph and orders the gallery tiles interior first", () => {
     render(<HomePage />);
 
+    expect(screen.getByRole("img", { name: "Coco Palms pool and covered waterfront terrace" })).toHaveAttribute(
+      "src",
+      expect.stringContaining("%2Fimages%2Fvilla-hero.jpg"),
+    );
+
     expect(screen.getByRole("img", { name: "Coco Palms outdoor living beside the pool" })).toHaveAttribute(
       "src",
       expect.stringContaining("%2Fimages%2Fcocopalmshero4.jpg"),
@@ -32,5 +37,15 @@ describe("home page", () => {
       "src",
       expect.stringContaining("%2Fimages%2Finterior-7.jpg"),
     );
+  });
+
+  it("uses the approved homepage wording and numerals", () => {
+    render(<HomePage />);
+
+    expect(screen.getByText(/contemporary 4-bedroom villa/i)).toBeInTheDocument();
+    expect(screen.getByText("Waterfront terraces, poolside lounging and front-row seats for sunset over the harbour.")).toBeInTheDocument();
+    expect(screen.getByText("Clear turquoise waters, white-sand beaches and all the colour of Antigua close at hand.")).toBeInTheDocument();
+    expect(screen.getByText(/calculate the price, including fees and taxes/i)).toBeInTheDocument();
+    expect(screen.queryByText(/published rates, taxes and fees/i)).not.toBeInTheDocument();
   });
 });

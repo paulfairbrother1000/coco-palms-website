@@ -10,7 +10,7 @@ const googleAnalyticsId = "G-MN0HKR5NYZ";
 
 export const metadata: Metadata = {
   title: { default: "Coco Palms Antigua | Waterfront Villa", template: "%s | Coco Palms Antigua" },
-  description: "A contemporary four-bedroom waterfront villa with a private pool in Jolly Harbour, Antigua.",
+  description: "A contemporary 4-bedroom waterfront villa with a private pool in Jolly Harbour, Antigua.",
   icons: {
     icon: [{ url: "/images/cocopalms-logo.jpg", type: "image/jpeg" }],
     shortcut: "/images/cocopalms-logo.jpg",

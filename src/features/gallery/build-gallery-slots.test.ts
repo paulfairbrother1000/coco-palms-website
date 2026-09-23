@@ -54,4 +54,32 @@ describe("buildGallerySlots", () => {
       placeholder: false,
     });
   });
+
+  it("applies approved captions to published database images", () => {
+    const slots = buildGallerySlots({
+      title: "Interior",
+      fallbackImage: {
+        src: "/images/interior-great-room.jpg",
+        label: "The great room",
+        alt: "The great room",
+      },
+      images: [
+        {
+          position: 1,
+          src: "https://example.com/dining.jpg",
+          label: "Old database caption",
+          alt: "Old database alt text",
+        },
+      ],
+      captions: ["Indoor dining for 8 in the great room."],
+    });
+
+    expect(slots[0]).toEqual({
+      position: 1,
+      src: "https://example.com/dining.jpg",
+      label: "Indoor dining for 8 in the great room.",
+      alt: "Indoor dining for 8 in the great room.",
+      placeholder: false,
+    });
+  });
 });
