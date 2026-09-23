@@ -48,6 +48,8 @@ describe("Location and amenities page", () => {
     for (const venue of [
       "Jolly Harbour village",
       "Jolly Harbour Sports Village",
+      "South Beach (Jolly Beach)",
+      "North Beach",
       "Al Porto",
       "Fat Urchin",
       "Sheer Rocks",
@@ -59,7 +61,7 @@ describe("Location and amenities page", () => {
       "Miracles",
       "Shirley Heights",
     ]) {
-      expect(screen.getByRole("link", { name: new RegExp(venue, "i") })).toBeInTheDocument();
+      expect(screen.getByRole("link", { name: venue })).toBeInTheDocument();
     }
     expect(screen.queryByText(/^Palms$/i)).not.toBeInTheDocument();
     expect(screen.getAllByText(/Approx\./i).length).toBeGreaterThanOrEqual(12);
@@ -68,11 +70,26 @@ describe("Location and amenities page", () => {
     expect(screen.getByRole("link", { name: /The Hut/i })).toHaveAttribute("href", "https://thehutlittlejumby.com/");
   });
 
+  it("links both nearby beaches to driving directions from Coco Palms", () => {
+    render(<LocationPage />);
+
+    expect(screen.getByRole("link", { name: /South Beach \(Jolly Beach\)/i })).toHaveAttribute(
+      "href",
+      "https://www.google.com/maps/dir/?api=1&origin=Coco+Palms%2C+Jolly+Harbour%2C+Antigua&destination=Jolly+Beach%2C+Antigua&travelmode=driving",
+    );
+    expect(screen.getByRole("link", { name: /North Beach/i })).toHaveAttribute(
+      "href",
+      "https://www.google.com/maps/dir/?api=1&origin=Coco+Palms%2C+Jolly+Harbour%2C+Antigua&destination=Mosquito+Cove%2C+Antigua&travelmode=driving",
+    );
+  });
+
   it("shows verified driving distances from Coco Palms", () => {
     const { container } = render(<LocationPage />);
     const expectedDistances = [
       ["Jolly Harbour village", "Approx. 1.1 miles"],
       ["Jolly Harbour Sports Village", "Approx. 1.4 miles"],
+      ["South Beach (Jolly Beach)", "Approx. 1.8 miles"],
+      ["North Beach", "Approx. 1.5 miles"],
       ["Al Porto", "Approx. 0.7 miles"],
       ["Fat Urchin", "Approx. 0.9 miles"],
       ["Miracles", "Approx. 1.4 miles"],
@@ -86,7 +103,7 @@ describe("Location and amenities page", () => {
     ] as const;
 
     for (const [venue, distance] of expectedDistances) {
-      const link = screen.getByRole("link", { name: new RegExp(venue, "i") });
+      const link = screen.getByRole("link", { name: venue });
       expect(link.closest("article")).toHaveTextContent(distance);
     }
     expect(container.querySelector(".dining-guide-section .section-heading p")).toHaveTextContent(
