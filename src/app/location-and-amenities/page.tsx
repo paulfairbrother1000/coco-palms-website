@@ -46,7 +46,7 @@ const amenities = [
   [CarFront, "Ample off-road parking"],
   [ShieldCheck, "Gated community with 24/7 security"],
   [ConciergeBell, "On-island concierge services"],
-  [BrushCleaning, "Housekeeping"],
+  [BrushCleaning, "House keeping"],
 ] as const;
 
 const locationImages = [
@@ -99,7 +99,7 @@ const closeToHome = [
     name: "South Beach (Jolly Beach)",
     distance: "Approx. 1.6 miles",
     href: "https://www.google.com/maps/dir/?api=1&origin=Coco+Palms%2C+Jolly+Harbour%2C+Antigua&destination=17.0670921%2C-61.8885747&travelmode=driving",
-    copy: "Get directions to Jolly Harbour’s mile-long white-sand Beach.",
+    copy: "Get directions to Jolly Harbour’s mile long white-sand Beach.",
   },
   {
     name: "North Beach",
@@ -119,7 +119,7 @@ const restaurants = [
   { name: "Wild Tamarind", distance: "Approx. 3 miles", href: "https://www.instagram.com/wildtamarindrestaurant/", copy: "Contemporary Caribbean dining beside Ffryes Beach." },
   { name: "Catherine’s Café", distance: "Approx. 15.5 miles", href: "https://catherines-cafe.com/", copy: "French-inspired beachfront dining at Pigeon Point." },
   { name: "Loose Cannon", distance: "Approx. 15.7 miles", href: "https://www.loosecannonbeachbar.com/", copy: "A lively beach bar and restaurant on Galleon Beach." },
-  { name: "Shirley Heights", distance: "Approx. 16.4 miles", href: "https://shirleyheightslookout.com/", copy: "Iconic harbour views and the famous Reggae Heights BBQ party with live music." },
+  { name: "Shirley Heights", distance: "Approx. 16.4 miles", href: "https://shirleyheightslookout.com/", copy: "Iconic harbour views, and the famous Reggae Heights BBQ party with live music" },
   { name: "The Hut", distance: "Approx. 18 miles by boat", href: "https://thehutlittlejumby.com/", copy: "A destination beach restaurant on Little Jumby Island." },
   { name: "Nobu Barbuda", distance: "Approx. 31 nautical miles by boat", href: "https://www.noburestaurants.com/barbuda/contact-and-hours", copy: "Destination dining on Princess Diana Beach, Barbuda." },
 ] as const;

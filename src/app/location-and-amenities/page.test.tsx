@@ -22,7 +22,7 @@ const expectedAmenities = [
   "Ample off-road parking",
   "Gated community with 24/7 security",
   "On-island concierge services",
-  "Housekeeping",
+  "House keeping",
 ];
 
 describe("Location and amenities page", () => {
@@ -43,13 +43,13 @@ describe("Location and amenities page", () => {
     expect(screen.getByText("Coco Palms is situated on Harbour Island on Antigua’s West coast, within the gated Jolly Harbour community.")).toHaveClass("location-hero-summary");
     expect(screen.getByText("Fitness centre, swimming pool, volleyball, tennis and pickleball courts and café bar.")).toBeInTheDocument();
     expect(screen.getByText("The marina village brings together a supermarket, shops, cafés, bars, pharmacy and useful holiday services.")).toBeInTheDocument();
-    expect(screen.getByText("Get directions to Jolly Harbour’s mile-long white-sand Beach.")).toBeInTheDocument();
+    expect(screen.getByText("Get directions to Jolly Harbour’s mile long white-sand Beach.")).toBeInTheDocument();
     expect(screen.getByText("Get directions to Jolly Harbour’s sheltered North Beach.")).toBeInTheDocument();
     expect(screen.getByText("Waterside Mediterranean dining with Harbour views.")).toBeInTheDocument();
     expect(screen.getByText("A relaxed public house and coastal kitchen with Marina views.")).toBeInTheDocument();
     expect(screen.getByText("The Rocks Group’s modern pantry, butcher and wine cellar at Sugar Ridge.")).toBeInTheDocument();
     expect(screen.getByText("Clifftop dining, daybeds and sunset views above Little Ffryes Beach.")).toBeInTheDocument();
-    expect(screen.getByText("Iconic harbour views and the famous Reggae Heights BBQ party with live music.")).toBeInTheDocument();
+    expect(screen.getByText("Iconic harbour views, and the famous Reggae Heights BBQ party with live music")).toBeInTheDocument();
     expect(screen.getByText("A destination beach restaurant on Little Jumby Island.")).toBeInTheDocument();
     expect(screen.getByText("Destination dining on Princess Diana Beach, Barbuda.")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Amenities at a glance" })).toBeInTheDocument();
