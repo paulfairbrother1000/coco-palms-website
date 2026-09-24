@@ -243,8 +243,8 @@ export default function LocationPage() {
           <span className="eyebrow">Here when you need us</span>
           <h2>Let our concierge take care of the details</h2>
           <p>
-            Our on-island concierge can help with restaurant reservations, charter bookings and
-            anything else you need to make your stay run smoothly.
+            If you’re craving adventure or looking for special touches to make your experience
+            truly unforgettable, our on-island concierge can craft an itinerary that’s perfect for you.
           </p>
         </div>
       </section>

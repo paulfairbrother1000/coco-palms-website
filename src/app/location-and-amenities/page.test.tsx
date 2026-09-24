@@ -56,12 +56,12 @@ describe("Location and amenities page", () => {
     expect(screen.getByText("Secure your stay")).toBeInTheDocument();
   });
 
-  it("leaves the concierge callout unchanged", () => {
+  it("describes the on-island concierge service", () => {
     render(<LocationPage />);
 
     expect(screen.getByText("Here when you need us")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Let our concierge take care of the details" })).toBeInTheDocument();
-    expect(screen.getByText(/Our on-island concierge can help with restaurant reservations/)).toBeInTheDocument();
+    expect(screen.getByText("If you’re craving adventure or looking for special touches to make your experience truly unforgettable, our on-island concierge can craft an itinerary that’s perfect for you.")).toBeInTheDocument();
   });
 
   it("introduces the setting and the six supplied location photographs", () => {
@@ -186,6 +186,6 @@ describe("Location and amenities page", () => {
     expect(screen.getByRole("link", { name: /Antigua Vibes/i })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /Catch the Cat/i })).toBeInTheDocument();
     expect(screen.getByText(/pick you up directly from the Coco Palms mooring/i)).toBeInTheDocument();
-    expect(screen.getByText(/concierge can help with restaurant reservations, charter bookings and anything else/i)).toBeInTheDocument();
+    expect(screen.getByText(/our on-island concierge can craft an itinerary that’s perfect for you/i)).toBeInTheDocument();
   });
 });
