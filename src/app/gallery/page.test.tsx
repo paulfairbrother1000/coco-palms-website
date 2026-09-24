@@ -11,21 +11,23 @@ describe("gallery page", () => {
 
     render(await GalleryPage());
 
-    expect(screen.getByRole("heading", { name: "Coco Palms and Antigua" })).toBeInTheDocument();
+    expect(screen.queryByRole("heading", { level: 1 })).not.toBeInTheDocument();
+    expect(screen.queryByText("Coco Palms and Antigua")).not.toBeInTheDocument();
+    expect(screen.getAllByText("Gallery collection")[0]).toBeInTheDocument();
     expect(screen.queryByText(/Each collection has room for 12 photographs/i)).not.toBeInTheDocument();
     const interiorCaptions = [
-      "Indoor dining for 8 in the great room.",
-      "Spacious open-plan lounge with comfortable seating and large-screen TV.",
-      "Fully equipped and modern kitchen.",
-      "Ocean-facing principal bedroom suite with Emperor bed, dressing room, 55-inch TV, AC, safe and ensuite shower room with twin basins, WC and walk-in rain shower.",
-      "Master bedroom suite with Eastern King bed, AC, TV, safe and ensuite bathroom with twin basins, freestanding bathtub and walk-in rain shower.",
-      "3rd bedroom with 2 king-size beds, AC, TV and safe.",
-      "4th bedroom with Super King-size bed, AC, TV and safe.",
-      "House bathroom with twin basins, WC and walk-in rain shower.",
-      "Laundry room with washer and dryer.",
-      "Open-plan kitchen and lounging space beneath the vaulted ceiling.",
+      "Indoor dining for 8 in the Great Room.",
+      "Spacious open-plan Lounge with comfortable seating and large-screen TV.",
+      "Fully equipped and modern Kitchen.",
+      "Ocean-facing Principal Bedroom suite with Emperor bed, dressing room, 55-inch TV, AC, ceiling fan, safe and ensuite Shower Room with twin basins, WC and walk-in rain shower.",
+      "Primary Bedroom suite with Eastern King bed, AC, ceiling fan, TV, safe and ensuite Bathroom with twin basins, freestanding bathtub and walk-in rain shower.",
+      "3rd Bedroom with 2 king-size beds, AC, ceiling fan, TV and safe.",
+      "4th Bedroom with Super King-size bed, AC, ceiling fan, TV and safe.",
+      "House Bathroom with twin basins, WC and walk-in rain shower.",
+      "Laundry Room with washer and dryer.",
+      "Open-plan Kitchen and lounging space beneath the vaulted ceiling.",
       "Built-in bean-to-cup coffee machine for fresh coffee at any time.",
-      "Relax in the master ensuite’s deep soaking bath.",
+      "Relax in the Primary Ensuite’s deep soaking bath.",
     ];
 
     for (const caption of interiorCaptions) {
@@ -83,6 +85,8 @@ describe("gallery page", () => {
 
     const collectionHeadings = screen.getAllByRole("heading", { level: 2 });
     expect(collectionHeadings.map((heading) => heading.textContent)).toEqual(["Interior", "Exterior", "Local Area"]);
-    expect(screen.getByText("Contemporary spaces for relaxing.")).toBeInTheDocument();
+    expect(screen.getByText("Contemporary spaces to relax, recharge and wake up in paradise.")).toBeInTheDocument();
+    expect(screen.queryByText(/Master Bedroom/i)).not.toBeInTheDocument();
+    expect(screen.getAllByRole("img").every((image) => image.classList.contains("gallery-image-original"))).toBe(true);
   });
 });

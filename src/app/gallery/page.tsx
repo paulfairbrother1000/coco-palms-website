@@ -9,7 +9,7 @@ export const metadata = { title: "Gallery" };
 export const revalidate = 300;
 
 const fallbackSections = [
-  { id: "interior", title: "Interior", copy: "Contemporary spaces for relaxing." },
+  { id: "interior", title: "Interior", copy: "Contemporary spaces to relax, recharge and wake up in paradise." },
   { id: "exterior", title: "Exterior", copy: "Waterfront terraces, private pool and wide spaces for outdoor living." },
   { id: "local-area", title: "Local Area", copy: "Antigua’s harbours, beaches and sailing landscape beyond the villa." },
 ];
@@ -45,18 +45,18 @@ const exteriorCaptions = [
 ];
 
 const interiorCaptions = [
-  "Indoor dining for 8 in the great room.",
-  "Spacious open-plan lounge with comfortable seating and large-screen TV.",
-  "Fully equipped and modern kitchen.",
-  "Ocean-facing principal bedroom suite with Emperor bed, dressing room, 55-inch TV, AC, safe and ensuite shower room with twin basins, WC and walk-in rain shower.",
-  "Master bedroom suite with Eastern King bed, AC, TV, safe and ensuite bathroom with twin basins, freestanding bathtub and walk-in rain shower.",
-  "3rd bedroom with 2 king-size beds, AC, TV and safe.",
-  "4th bedroom with Super King-size bed, AC, TV and safe.",
-  "House bathroom with twin basins, WC and walk-in rain shower.",
-  "Laundry room with washer and dryer.",
-  "Open-plan kitchen and lounging space beneath the vaulted ceiling.",
+  "Indoor dining for 8 in the Great Room.",
+  "Spacious open-plan Lounge with comfortable seating and large-screen TV.",
+  "Fully equipped and modern Kitchen.",
+  "Ocean-facing Principal Bedroom suite with Emperor bed, dressing room, 55-inch TV, AC, ceiling fan, safe and ensuite Shower Room with twin basins, WC and walk-in rain shower.",
+  "Primary Bedroom suite with Eastern King bed, AC, ceiling fan, TV, safe and ensuite Bathroom with twin basins, freestanding bathtub and walk-in rain shower.",
+  "3rd Bedroom with 2 king-size beds, AC, ceiling fan, TV and safe.",
+  "4th Bedroom with Super King-size bed, AC, ceiling fan, TV and safe.",
+  "House Bathroom with twin basins, WC and walk-in rain shower.",
+  "Laundry Room with washer and dryer.",
+  "Open-plan Kitchen and lounging space beneath the vaulted ceiling.",
   "Built-in bean-to-cup coffee machine for fresh coffee at any time.",
-  "Relax in the master ensuite’s deep soaking bath.",
+  "Relax in the Primary Ensuite’s deep soaking bath.",
 ];
 
 function localGalleryImages(section: string, title: string) {
@@ -127,10 +127,6 @@ export default async function GalleryPage() {
   });
 
   return <>
-    <section className="page-hero">
-      <span className="eyebrow">Gallery</span>
-      <h1>Coco Palms and Antigua</h1>
-    </section>
     {sections.map((section) => <section className="section gallery-section" id={section.id} key={section.id}>
       <div className="section-heading">
         <span className="eyebrow">Gallery collection</span>
@@ -142,10 +138,10 @@ export default async function GalleryPage() {
           {slot.placeholder ? <div aria-label={`${slot.label} image placeholder`}>
             <span className="gallery-placeholder-number">{String(slot.position).padStart(2, "0")}</span>
             <span>Photo coming soon</span>
-          </div> : <div>
+          </div> : <div className={slot.mediaType === "video" ? "gallery-media gallery-video-media" : "gallery-media"}>
             {slot.mediaType === "video"
               ? <video aria-label={slot.alt} controls playsInline preload="metadata" poster={slot.poster} src={slot.src} />
-              : <Image src={slot.src} alt={slot.alt} fill sizes="(max-width: 800px) 100vw, 50vw" unoptimized={slot.src.startsWith("http")} />}
+              : <Image className="gallery-image-original" src={slot.src} alt={slot.alt} fill sizes="(max-width: 800px) 100vw, 50vw" unoptimized={slot.src.startsWith("http")} />}
           </div>}
           <figcaption>{slot.label}</figcaption>
         </figure>)}
