@@ -56,6 +56,7 @@ button{border-radius:8px}
 /* Keep the relationship between display headings and their copy compact and consistent. */
 :where(h1,h2)+p{margin-top:.75rem}
 .page-hero p{font-size:1.15rem;max-width:700px;margin-top:.75rem}
+.page-hero .location-hero-summary{max-width:none}
 .quote-invitation p{margin-top:.75rem}
 
 /* Home introduction image and copy. */
