@@ -45,9 +45,9 @@ describe("gallery page", () => {
       "Golden sunset views from the private dock.",
       "Outdoor kitchen and bar for relaxed poolside entertaining.",
       "Generous covered lounge seating beside the pool.",
-      "Direct boat access from the private Coco Palms dock.",
+      "Private boat dock",
       "Al fresco dining beside the pool.",
-      "The private swimming pool beneath the Antiguan sun.",
+      "Private swimming pool",
       "Outdoor kitchen overlooking the harbour at sunset.",
     ];
     for (const caption of exteriorCaptions) {
@@ -63,11 +63,11 @@ describe("gallery page", () => {
       "Sheer Rocks’ spectacular clifftop dining setting.",
       "Beautifully presented Caribbean flavours at Sheer Rocks.",
       "Miracles restaurant, close to the entrance of Jolly Harbour.",
-      "Waterside Italian dining at Al Porto in Jolly Harbour.",
-      "Tennis courts at the Jolly Harbour Sports Centre.",
-      "Pickleball courts at the Jolly Harbour Sports Centre.",
-      "The fully equipped gym at the Jolly Harbour Sports Centre.",
-      "The magnificent Jolly Beach.",
+      "Waterside Mediterranean dining at Al Porto in Jolly Harbour.",
+      "Floodlit tennis courts at Jolly Harbour Sports Village.",
+      "Floodlit pickleball courts at Jolly Harbour Sports Village.",
+      "Fully equipped, air-conditioned, 6,000 sq. ft. gym at Jolly Harbour Sports Village.",
+      "Nearby Jolly Beach",
     ];
     for (const caption of localAreaCaptions.slice(0, -1)) {
       expect(screen.getByRole("img", { name: caption })).toBeInTheDocument();
@@ -86,7 +86,11 @@ describe("gallery page", () => {
     const collectionHeadings = screen.getAllByRole("heading", { level: 2 });
     expect(collectionHeadings.map((heading) => heading.textContent)).toEqual(["Interior", "Exterior", "Local Area"]);
     expect(screen.getByText("Contemporary spaces to relax, recharge and wake up in paradise.")).toBeInTheDocument();
+    expect(screen.getByText("Boat dock, private pool and waterside terraces, built for outdoor living.")).toBeInTheDocument();
+    expect(screen.getByText("Beyond the villa, discover Antigua’s beaches, historic harbours and island vibe.")).toBeInTheDocument();
     expect(screen.queryByText(/Master Bedroom/i)).not.toBeInTheDocument();
     expect(screen.getAllByRole("img").every((image) => image.classList.contains("gallery-image-original"))).toBe(true);
+    expect(screen.getByRole("img", { name: exteriorCaptions[0] })).toHaveClass("gallery-image-exterior-1");
+    expect(screen.getByRole("img", { name: exteriorCaptions[1] })).toHaveClass("gallery-image-exterior-2");
   });
 });

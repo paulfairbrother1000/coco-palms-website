@@ -10,8 +10,8 @@ export const revalidate = 300;
 
 const fallbackSections = [
   { id: "interior", title: "Interior", copy: "Contemporary spaces to relax, recharge and wake up in paradise." },
-  { id: "exterior", title: "Exterior", copy: "Waterfront terraces, private pool and wide spaces for outdoor living." },
-  { id: "local-area", title: "Local Area", copy: "Antigua’s harbours, beaches and sailing landscape beyond the villa." },
+  { id: "exterior", title: "Exterior", copy: "Boat dock, private pool and waterside terraces, built for outdoor living." },
+  { id: "local-area", title: "Local Area", copy: "Beyond the villa, discover Antigua’s beaches, historic harbours and island vibe." },
 ];
 
 const localAreaCaptions = [
@@ -22,11 +22,11 @@ const localAreaCaptions = [
   "Sheer Rocks’ spectacular clifftop dining setting.",
   "Beautifully presented Caribbean flavours at Sheer Rocks.",
   "Miracles restaurant, close to the entrance of Jolly Harbour.",
-  "Waterside Italian dining at Al Porto in Jolly Harbour.",
-  "Tennis courts at the Jolly Harbour Sports Centre.",
-  "Pickleball courts at the Jolly Harbour Sports Centre.",
-  "The fully equipped gym at the Jolly Harbour Sports Centre.",
-  "The magnificent Jolly Beach.",
+  "Waterside Mediterranean dining at Al Porto in Jolly Harbour.",
+  "Floodlit tennis courts at Jolly Harbour Sports Village.",
+  "Floodlit pickleball courts at Jolly Harbour Sports Village.",
+  "Fully equipped, air-conditioned, 6,000 sq. ft. gym at Jolly Harbour Sports Village.",
+  "Nearby Jolly Beach",
 ];
 
 const exteriorCaptions = [
@@ -38,9 +38,9 @@ const exteriorCaptions = [
   "Golden sunset views from the private dock.",
   "Outdoor kitchen and bar for relaxed poolside entertaining.",
   "Generous covered lounge seating beside the pool.",
-  "Direct boat access from the private Coco Palms dock.",
+  "Private boat dock",
   "Al fresco dining beside the pool.",
-  "The private swimming pool beneath the Antiguan sun.",
+  "Private swimming pool",
   "Outdoor kitchen overlooking the harbour at sunset.",
 ];
 
@@ -110,7 +110,7 @@ export default async function GalleryPage() {
     return {
       ...fallback,
       title,
-      copy: fallback.id === "interior" ? fallback.copy : section?.description ?? fallback.copy,
+      copy: fallback.copy,
       slots: buildGallerySlots({
         title,
         fallbackImage,
@@ -141,7 +141,7 @@ export default async function GalleryPage() {
           </div> : <div className={slot.mediaType === "video" ? "gallery-media gallery-video-media" : "gallery-media"}>
             {slot.mediaType === "video"
               ? <video aria-label={slot.alt} controls playsInline preload="metadata" poster={slot.poster} src={slot.src} />
-              : <Image className="gallery-image-original" src={slot.src} alt={slot.alt} fill sizes="(max-width: 800px) 100vw, 50vw" unoptimized={slot.src.startsWith("http")} />}
+              : <Image className={`gallery-image-original gallery-image-${section.id}-${slot.position}`} src={slot.src} alt={slot.alt} fill sizes="(max-width: 800px) 100vw, 50vw" unoptimized={slot.src.startsWith("http")} />}
           </div>}
           <figcaption>{slot.label}</figcaption>
         </figure>)}

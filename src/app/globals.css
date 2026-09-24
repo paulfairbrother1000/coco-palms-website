@@ -110,8 +110,8 @@ button{border-radius:8px}
 @media(min-width:901px){.hero-copy-panel .hero-subtitle,.tile-section-title{white-space:nowrap}}
 @media(max-width:900px){.tile-overlay{grid-template-rows:auto auto auto}.tile-overlay .tile-copy{min-height:0}.highlights span{flex:0 0 auto}.tile-section-title{white-space:normal}}
 
-/* Preserve every gallery photograph's original proportions and brightness. */
-.gallery-grid figure:not(.gallery-placeholder)>.gallery-media{height:auto}
-.gallery-grid .gallery-image-original{position:relative!important;inset:auto!important;display:block;width:100%!important;height:auto!important;object-fit:contain!important;filter:none!important}
-.gallery-grid figure:not(.gallery-placeholder)>.gallery-video-media{height:auto;aspect-ratio:4/3;background:#071725}
+/* Keep gallery frames uniform while preserving original brightness and useful focal points. */
+.gallery-grid .gallery-image-original{object-fit:cover!important;filter:none!important}
+.gallery-grid .gallery-image-exterior-1{object-position:center 62%}
+.gallery-grid .gallery-image-exterior-2{object-position:center}
 @media(max-width:600px){.balanced-heading{width:100%}.balanced-heading span{text-align:left;text-align-last:auto}.split-feature .feature-list{grid-template-columns:1fr}.location-area-mosaic{display:grid;grid-template-columns:1fr;grid-auto-rows:auto}.location-area-mosaic .location-photo,.location-area-mosaic .location-photo-sunrise,.location-area-mosaic .location-photo-detail-top,.location-area-mosaic .location-photo-detail-bottom,.location-area-mosaic .location-photo-bottom-left,.location-area-mosaic .location-photo-bottom-middle,.location-area-mosaic .location-photo-bottom-right{grid-column:auto;grid-row:auto;min-height:280px}}
