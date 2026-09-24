@@ -28,7 +28,7 @@ describe("villa page", () => {
       "Private swimming pool",
       "Covered outdoor kitchen with BBQ, bar area and dining for 10",
       "Private boat dock and waterside lounging deck",
-      "Set within Jolly Harbour’s gated community with 24/7 security, an on-site supermarket, sports facilities, a pharmacy, and waterside bars and restaurants",
+      "Set within Jolly Harbour’s gated community with 24/7 security",
       "Kayaks and paddleboards for aqua adventures",
       "AC in all bedrooms",
     ]) {

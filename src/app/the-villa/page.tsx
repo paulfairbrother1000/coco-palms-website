@@ -65,7 +65,7 @@ export default function VillaPage() {
           <li>Private swimming pool</li>
           <li>Covered outdoor kitchen with BBQ, bar area and dining for 10</li>
           <li>Private boat dock and waterside lounging deck</li>
-          <li>Set within Jolly Harbour’s gated community with 24/7 security, an on-site supermarket, sports facilities, a pharmacy, and waterside bars and restaurants</li>
+          <li>Set within Jolly Harbour’s gated community with 24/7 security</li>
           <li>Kayaks and paddleboards for aqua adventures</li>
           <li>AC in all bedrooms</li>
         </ul>
