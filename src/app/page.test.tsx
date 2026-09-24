@@ -42,10 +42,27 @@ describe("home page", () => {
   it("uses the approved homepage wording and numerals", () => {
     render(<HomePage />);
 
-    expect(screen.getByText(/contemporary 4-bedroom villa/i)).toBeInTheDocument();
+    expect(screen.getByText(/welcome to coco palms, an exclusive luxury villa/i)).toBeInTheDocument();
+    expect(screen.getByText(/dedicated concierge service to tailor every detail of your stay/i)).toBeInTheDocument();
     expect(screen.getByText("Waterfront terraces, poolside lounging and front-row seats for sunset over the harbour.")).toBeInTheDocument();
     expect(screen.getByText("Clear turquoise waters, white-sand beaches and all the colour of Antigua close at hand.")).toBeInTheDocument();
     expect(screen.getByText(/calculate the price, including fees and taxes/i)).toBeInTheDocument();
     expect(screen.queryByText(/published rates, taxes and fees/i)).not.toBeInTheDocument();
+  });
+
+  it("shows the complete villa highlights in the approved order", () => {
+    const { container } = render(<HomePage />);
+    const highlights = container.querySelector(".highlights");
+
+    expect(highlights).not.toBeNull();
+    expect(Array.from(highlights!.querySelectorAll("span"), (item) => item.textContent)).toEqual([
+      "Waterfront",
+      "Sleeps 8",
+      "4 bedrooms",
+      "3 bathrooms",
+      "Private pool",
+      "Concierge",
+      "Jolly Harbour",
+    ]);
   });
 });
