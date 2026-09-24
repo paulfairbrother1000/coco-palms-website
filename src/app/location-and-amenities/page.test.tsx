@@ -4,8 +4,9 @@ import LocationPage from "./page";
 
 const expectedAmenities = [
   "Waterfront setting",
-  "Four bedrooms",
-  "Full kitchen",
+  "4 bedrooms",
+  "3 bathrooms",
+  "Fully fitted indoor kitchen",
   "Private swimming pool",
   "Private boat dock",
   "Outdoor kitchen",
@@ -15,12 +16,13 @@ const expectedAmenities = [
   "Broadband with guest wifi",
   "Indoor and al fresco dining",
   "Smart TVs, cable and Apple TV",
-  "AC and ceiling fans in all rooms",
+  "AC and ceiling fans",
   "Dishwasher",
   "Laundry room with Washer & Dryer",
   "Ample off-road parking",
   "Gated community with 24/7 security",
   "On-island concierge services",
+  "Housekeeping",
 ];
 
 describe("Location and amenities page", () => {
@@ -31,7 +33,35 @@ describe("Location and amenities page", () => {
       expect(screen.getByText(amenity)).toBeInTheDocument();
     }
     expect(screen.queryByText("Fire pit")).not.toBeInTheDocument();
-    expect(container.querySelectorAll(".amenity")).toHaveLength(18);
+    expect(container.querySelectorAll(".amenity")).toHaveLength(20);
+  });
+
+  it("shows the revised location, nearby venue and booking copy", () => {
+    render(<LocationPage />);
+
+    expect(screen.getByRole("heading", { name: "Prime Jolly Harbour location, on the water" })).toBeInTheDocument();
+    expect(screen.getByText("Coco Palms is situated on Harbour Island on Antigua’s West coast, within the gated Jolly Harbour community.")).toHaveClass("location-hero-summary");
+    expect(screen.getByText("Fitness centre, swimming pool, volleyball, tennis and pickleball courts and café bar.")).toBeInTheDocument();
+    expect(screen.getByText("The marina village brings together a supermarket, shops, cafés, bars, pharmacy and useful holiday services.")).toBeInTheDocument();
+    expect(screen.getByText("Get directions to Jolly Harbour’s mile-long white-sand Beach.")).toBeInTheDocument();
+    expect(screen.getByText("Get directions to Jolly Harbour’s sheltered North Beach.")).toBeInTheDocument();
+    expect(screen.getByText("Waterside Mediterranean dining with Harbour views.")).toBeInTheDocument();
+    expect(screen.getByText("A relaxed public house and coastal kitchen with Marina views.")).toBeInTheDocument();
+    expect(screen.getByText("The Rocks Group’s modern pantry, butcher and wine cellar at Sugar Ridge.")).toBeInTheDocument();
+    expect(screen.getByText("Clifftop dining, daybeds and sunset views above Little Ffryes Beach.")).toBeInTheDocument();
+    expect(screen.getByText("Iconic harbour views and the famous Reggae Heights BBQ party with live music.")).toBeInTheDocument();
+    expect(screen.getByText("A destination beach restaurant on Little Jumby Island.")).toBeInTheDocument();
+    expect(screen.getByText("Destination dining on Princess Diana Beach, Barbuda.")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Amenities at a glance" })).toBeInTheDocument();
+    expect(screen.getByText("Secure your stay")).toBeInTheDocument();
+  });
+
+  it("leaves the concierge callout unchanged", () => {
+    render(<LocationPage />);
+
+    expect(screen.getByText("Here when you need us")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Let our concierge take care of the details" })).toBeInTheDocument();
+    expect(screen.getByText(/Our on-island concierge can help with restaurant reservations/)).toBeInTheDocument();
   });
 
   it("introduces the setting and the six supplied location photographs", () => {
