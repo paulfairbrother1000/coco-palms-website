@@ -16,55 +16,56 @@ describe("gallery page", () => {
     expect(screen.getAllByText("Gallery collection")[0]).toBeInTheDocument();
     expect(screen.queryByText(/Each collection has room for 12 photographs/i)).not.toBeInTheDocument();
     const interiorCaptions = [
-      "Indoor dining for 8 in the Great Room.",
-      "Spacious open-plan Lounge with comfortable seating and large-screen TV.",
-      "Fully equipped and modern Kitchen.",
-      "Ocean-facing Principal Bedroom suite with Emperor bed, dressing room, 55-inch TV, AC, ceiling fan, safe and ensuite Shower Room with twin basins, WC and walk-in rain shower.",
-      "Primary Bedroom suite with Eastern King bed, AC, ceiling fan, TV, safe and ensuite Bathroom with twin basins, freestanding bathtub and walk-in rain shower.",
-      "3rd Bedroom with 2 king-size beds, AC, ceiling fan, TV and safe.",
-      "4th Bedroom with Super King-size bed, AC, ceiling fan, TV and safe.",
-      "House Bathroom with twin basins, WC and walk-in rain shower.",
-      "Laundry Room with washer and dryer.",
-      "Open-plan Kitchen and lounging space beneath the vaulted ceiling.",
-      "Built-in bean-to-cup coffee machine for fresh coffee at any time.",
-      "Relax in the Primary Ensuite’s deep soaking bath.",
-      "Flexible bedroom space for family stays.",
-      "Calm, comfortable and made for unwinding.",
-      "Restful nights beneath the vaulted ceiling.",
-      "A peaceful bedroom retreat.",
-      "The Great Room dressed for Christmas.",
-      "Poolside dining, reflected indoors.",
+      "Indoor dining for 8 in the Great Room",
+      "Spacious open-plan Lounge with comfortable seating and large-screen TV",
+      "Fully equipped and modern Kitchen",
+      "Ocean-facing Principal Bedroom suite with Emperor bed, dressing room, 55-inch TV, AC, ceiling fan, safe and ensuite Shower Room with twin basins, WC and walk-in rain shower",
+      "Primary Bedroom suite with Eastern King bed, AC, ceiling fan, TV, safe and ensuite Bathroom with twin basins, freestanding bathtub and walk-in rain shower",
+      "3rd Bedroom with 2 king-size beds, AC, ceiling fan, TV and safe",
+      "4th Bedroom with Super King-size bed, AC, ceiling fan, TV and safe",
+      "House Bathroom with twin basins, WC and walk-in rain shower",
+      "Laundry Room with washer and dryer",
+      "Open-plan Kitchen and lounging space beneath the vaulted ceiling",
+      "Built-in bean-to-cup coffee machine for fresh coffee at any time",
+      "Relax in the Primary Ensuite’s deep soaking bath",
+      "Flexible bedroom space for family stays",
+      "Calm, comfortable and made for unwinding",
+      "Primary Bedroom suite with Eastern King bed, AC, ceiling fan, TV, safe and ensuite Bathroom with twin basins, freestanding bathtub and walk-in rain shower",
+      "4th Bedroom with Super King-size bed, AC, ceiling fan, TV and safe",
+      "The Great Room dressed for Christmas",
+      "Poolside dining",
     ];
 
-    for (const caption of interiorCaptions) {
-      expect(screen.getByRole("img", { name: caption })).toBeInTheDocument();
-      expect(screen.getByText(caption)).toBeInTheDocument();
+    for (const caption of new Set(interiorCaptions)) {
+      const expectedCount = interiorCaptions.filter((value) => value === caption).length;
+      expect(screen.getAllByRole("img", { name: caption })).toHaveLength(expectedCount);
+      expect(screen.getAllByText(caption)).toHaveLength(expectedCount);
     }
     expect(screen.queryByLabelText(/Interior \d+ image placeholder/)).not.toBeInTheDocument();
 
     const exteriorCaptions = [
-      "Sundowner spaces. Perfect for sharing.",
-      "Covered terrace with sunset views across the harbour.",
-      "Sunset dining on the covered waterside terrace.",
-      "Poolside mornings with uninterrupted harbour views.",
-      "Exploring Jolly Harbour and the beaches beyond.",
-      "Golden sunset views from the private dock.",
-      "Outdoor kitchen and bar for relaxed poolside entertaining.",
-      "Generous covered lounge seating beside the pool.",
+      "Sundowner spaces. Perfect for sharing",
+      "Covered terrace with sunset views across the harbour",
+      "Sunset dining on the covered waterside terrace",
+      "Poolside mornings with uninterrupted harbour views",
+      "Exploring Jolly Harbour and the beaches beyond",
+      "Golden sunset views from the private dock",
+      "Outdoor kitchen and bar for relaxed poolside entertaining",
+      "Generous covered lounge seating beside the pool",
       "Private boat dock",
-      "Al fresco dining beside the pool.",
+      "Al fresco dining beside the pool",
       "Private swimming pool",
-      "Outdoor kitchen overlooking the harbour at sunset.",
-      "Poolside dining with a harbour view.",
-      "Island drinks with a harbour view.",
-      "Ready for adventures on the water.",
-      "Coco Palms from the water.",
-      "The pool glowing after dark.",
-      "Evenings made for poolside living.",
-      "Sunset colours across the terrace.",
-      "Waterside lounging after sunset.",
-      "Coco Palms beneath an Antiguan sunset.",
-      "Sunset over Jolly Harbour.",
+      "Outdoor kitchen overlooking the harbour at sunset",
+      "Poolside dining with a harbour view",
+      "Alfresco living",
+      "Kayaks and paddleboards, ready for adventures on the water",
+      "Spacious waterside seating",
+      "Barefoot evenings outdoors",
+      "Evenings made for poolside living",
+      "Front row seats to spectacular sunsets",
+      "Waterside lounging after sunset",
+      "Coco Palms at sunrise",
+      "Sunrise over Jolly Harbour",
     ];
     for (const caption of exteriorCaptions) {
       expect(screen.getByRole("img", { name: caption })).toBeInTheDocument();
@@ -72,22 +73,22 @@ describe("gallery page", () => {
     }
 
     const localAreaCaptions = [
-      "Beachfront relaxation at Salt Plage on Dickenson Bay.",
-      "Historic Nelson’s Dockyard, a UNESCO World Heritage Site.",
-      "Relaxed beachfront dining at Catherine’s Café.",
-      "Contemporary Asian-inspired dining at Rokuni.",
-      "Sheer Rocks’ spectacular clifftop dining setting.",
-      "Beautifully presented Caribbean flavours at Sheer Rocks.",
-      "Miracles restaurant, close to the entrance of Jolly Harbour.",
-      "Waterside Mediterranean dining at Al Porto in Jolly Harbour.",
-      "Floodlit tennis courts at Jolly Harbour Sports Village.",
-      "Floodlit pickleball courts at Jolly Harbour Sports Village.",
-      "Fully equipped, air-conditioned, 6,000 sq. ft. gym at Jolly Harbour Sports Village.",
+      "Beachfront relaxation at Salt Plage on Dickenson Bay",
+      "Historic Nelson’s Dockyard, a UNESCO World Heritage Site",
+      "Relaxed beachfront dining at Catherine’s Café",
+      "Contemporary Asian-inspired dining at Rokuni",
+      "Sheer Rocks’ spectacular clifftop dining setting",
+      "Beautifully presented Caribbean flavours at Sheer Rocks",
+      "Miracles restaurant, close to the entrance of Jolly Harbour",
+      "Waterside Mediterranean dining at Al Porto in Jolly Harbour",
+      "Floodlit tennis courts at Jolly Harbour Sports Village",
+      "Floodlit pickleball courts at Jolly Harbour Sports Village",
+      "Fully equipped, air-conditioned, 6,000 sq. ft. gym at Jolly Harbour Sports Village",
       "Nearby Jolly Beach",
-      "White sands and endless Caribbean blue.",
-      "Barefoot days on Antigua’s beaches.",
-      "The shoreline at golden hour.",
-      "Sunset, Antigua style.",
+      "White sands and endless Caribbean blue on Barbuda",
+      "Morning walks on nearby Jolly Beach",
+      "The shoreline at golden hour",
+      "Sunset, Antigua style",
     ];
     for (const [index, caption] of localAreaCaptions.entries()) {
       if (index === 11) continue;
@@ -107,7 +108,7 @@ describe("gallery page", () => {
 
     const collectionHeadings = screen.getAllByRole("heading", { level: 2 });
     expect(collectionHeadings.map((heading) => heading.textContent)).toEqual(["Interior", "Exterior", "Local Area"]);
-    expect(screen.getByText("Contemporary spaces to relax, recharge and wake up in paradise.")).toBeInTheDocument();
+    expect(screen.getByText("Contemporary spaces to wake up in paradise, relax and recharge.")).toBeInTheDocument();
     expect(screen.getByText("Boat dock, private pool and waterside terraces, built for outdoor living.")).toBeInTheDocument();
     expect(screen.getByText("Beyond the villa, discover Antigua’s beaches, historic harbours and island vibe.")).toBeInTheDocument();
     expect(screen.queryByText(/Master Bedroom/i)).not.toBeInTheDocument();
@@ -117,6 +118,9 @@ describe("gallery page", () => {
     expect(document.querySelectorAll("#interior figure")).toHaveLength(18);
     expect(document.querySelectorAll("#exterior figure")).toHaveLength(22);
     expect(document.querySelectorAll("#local-area figure")).toHaveLength(16);
+    expect(Array.from(document.querySelectorAll("figcaption"))
+      .every((caption) => !caption.textContent?.endsWith("."))).toBe(true);
+    expect(screen.getByRole("img", { name: "Poolside dining" })).toHaveClass("gallery-image-interior-18");
     expect(Array.from(document.querySelectorAll("#exterior figcaption")).slice(0, 6).map((caption) => caption.textContent))
       .toEqual([
         exteriorCaptions[0],
