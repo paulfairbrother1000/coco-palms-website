@@ -5,6 +5,30 @@ import GalleryPage from "./page";
 describe("gallery page", () => {
   afterEach(() => vi.unstubAllEnvs());
 
+  it("removes the selected photos and beach video together with their gallery captions", async () => {
+    vi.stubEnv("NEXT_PUBLIC_SUPABASE_URL", "");
+    vi.stubEnv("NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY", "");
+
+    render(await GalleryPage());
+
+    for (const [section, positions] of Object.entries({
+      interior: [5, 6, 7, 8],
+      exterior: [3, 5, 8],
+      "local-area": [6, 15],
+    })) {
+      for (const position of positions) {
+        expect(document.querySelector(`.gallery-image-${section}-${position}`)).toBeNull();
+      }
+    }
+    expect(document.querySelector('#local-area video[src="/images/gallery/local-area/image12.mp4"]')).toBeNull();
+    expect(screen.queryByText("Nearby Jolly Beach")).not.toBeInTheDocument();
+    expect(screen.queryByText("The shoreline at golden hour")).not.toBeInTheDocument();
+    expect(document.querySelectorAll("#interior figure")).toHaveLength(14);
+    expect(document.querySelectorAll("#exterior figure")).toHaveLength(19);
+    expect(document.querySelectorAll("#local-area figure")).toHaveLength(13);
+    expect(document.querySelector(".gallery-placeholder")).toBeNull();
+  });
+
   it("renders the local gallery when public Supabase configuration is absent", async () => {
     vi.stubEnv("NEXT_PUBLIC_SUPABASE_URL", "");
     vi.stubEnv("NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY", "");
@@ -36,8 +60,9 @@ describe("gallery page", () => {
       "Poolside dining",
     ];
 
-    for (const caption of new Set(interiorCaptions)) {
-      const expectedCount = interiorCaptions.filter((value) => value === caption).length;
+    const retainedInteriorCaptions = interiorCaptions.filter((_, index) => ![5, 6, 7, 8].includes(index + 1));
+    for (const caption of new Set(retainedInteriorCaptions)) {
+      const expectedCount = retainedInteriorCaptions.filter((value) => value === caption).length;
       expect(screen.getAllByRole("img", { name: caption })).toHaveLength(expectedCount);
       expect(screen.getAllByText(caption)).toHaveLength(expectedCount);
     }
@@ -67,7 +92,7 @@ describe("gallery page", () => {
       "Coco Palms at sunrise",
       "Sunrise over Jolly Harbour",
     ];
-    for (const caption of exteriorCaptions) {
+    for (const caption of exteriorCaptions.filter((_, index) => ![3, 5, 8].includes(index + 1))) {
       expect(screen.getByRole("img", { name: caption })).toBeInTheDocument();
       expect(screen.getByText(caption)).toBeInTheDocument();
     }
@@ -91,20 +116,15 @@ describe("gallery page", () => {
       "Sunset, Antigua style",
     ];
     for (const [index, caption] of localAreaCaptions.entries()) {
-      if (index === 11) continue;
+      if ([6, 12, 15].includes(index + 1)) continue;
       expect(screen.getByRole("img", { name: caption })).toBeInTheDocument();
       expect(screen.getByText(caption)).toBeInTheDocument();
     }
     const renderedLocalAreaCaptions = Array.from(document.querySelectorAll("#local-area figcaption"))
       .map((caption) => caption.textContent);
-    expect(renderedLocalAreaCaptions).toEqual([1, 2, 13, 3, 4, 5, 14, 6, 7, 8, 15, 9, 10, 11, 16, 12]
+    expect(renderedLocalAreaCaptions).toEqual([1, 2, 13, 3, 4, 5, 14, 7, 8, 9, 10, 11, 16]
       .map((position) => localAreaCaptions[position - 1]));
-
-    const localVideoCaption = localAreaCaptions[11];
-    const localVideo = screen.getByLabelText(`${localVideoCaption} video`);
-    expect(localVideo).toHaveAttribute("src", "/images/gallery/local-area/image12.mp4");
-    expect(localVideo).toHaveAttribute("poster", "/images/gallery/local-area/image12-poster.jpg");
-    expect(screen.getByText(localVideoCaption)).toBeInTheDocument();
+    expect(screen.queryByLabelText("Nearby Jolly Beach video")).not.toBeInTheDocument();
 
     const collectionHeadings = screen.getAllByRole("heading", { level: 2 });
     expect(collectionHeadings.map((heading) => heading.textContent)).toEqual(["Interior", "Exterior", "Local Area"]);
@@ -115,9 +135,9 @@ describe("gallery page", () => {
     expect(screen.getAllByRole("img").every((image) => image.classList.contains("gallery-image-original"))).toBe(true);
     expect(screen.getByRole("img", { name: exteriorCaptions[0] })).toHaveClass("gallery-image-exterior-1");
     expect(screen.getByRole("img", { name: exteriorCaptions[1] })).toHaveClass("gallery-image-exterior-2");
-    expect(document.querySelectorAll("#interior figure")).toHaveLength(18);
-    expect(document.querySelectorAll("#exterior figure")).toHaveLength(22);
-    expect(document.querySelectorAll("#local-area figure")).toHaveLength(16);
+    expect(document.querySelectorAll("#interior figure")).toHaveLength(14);
+    expect(document.querySelectorAll("#exterior figure")).toHaveLength(19);
+    expect(document.querySelectorAll("#local-area figure")).toHaveLength(13);
     expect(Array.from(document.querySelectorAll("figcaption"))
       .every((caption) => !caption.textContent?.endsWith("."))).toBe(true);
     expect(screen.getByRole("img", { name: "Poolside dining" })).toHaveClass("gallery-image-interior-18");
@@ -127,8 +147,8 @@ describe("gallery page", () => {
         exteriorCaptions[12],
         exteriorCaptions[1],
         exteriorCaptions[13],
-        exteriorCaptions[2],
         exteriorCaptions[14],
+        exteriorCaptions[3],
       ]);
   });
 });
