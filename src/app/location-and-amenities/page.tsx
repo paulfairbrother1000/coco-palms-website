@@ -2,7 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   Anchor,
+  Bath,
   BedDouble,
+  BrushCleaning,
   CarFront,
   Coffee,
   ConciergeBell,
@@ -26,8 +28,9 @@ export const metadata = { title: "Location & Amenities" };
 
 const amenities = [
   [Waves, "Waterfront setting"],
-  [BedDouble, "Four bedrooms"],
-  [CookingPot, "Full kitchen"],
+  [BedDouble, "4 bedrooms"],
+  [Bath, "3 bathrooms"],
+  [CookingPot, "Fully fitted indoor kitchen"],
   [Droplets, "Private swimming pool"],
   [Anchor, "Private boat dock"],
   [CookingPot, "Outdoor kitchen"],
@@ -37,12 +40,13 @@ const amenities = [
   [Wifi, "Broadband with guest wifi"],
   [UtensilsCrossed, "Indoor and al fresco dining"],
   [Tv, "Smart TVs, cable and Apple TV"],
-  [Fan, "AC and ceiling fans in all rooms"],
+  [Fan, "AC and ceiling fans"],
   [Sparkles, "Dishwasher"],
   [WashingMachine, "Laundry room with Washer & Dryer"],
   [CarFront, "Ample off-road parking"],
   [ShieldCheck, "Gated community with 24/7 security"],
   [ConciergeBell, "On-island concierge services"],
+  [BrushCleaning, "House keeping"],
 ] as const;
 
 const locationImages = [
@@ -83,41 +87,41 @@ const closeToHome = [
     name: "Jolly Harbour village",
     distance: "Approx. 1.1 miles",
     href: "https://www.jollyharbourantigua.com/",
-    copy: "The marina village brings together a supermarket, shops, cafés, bars and useful holiday services.",
+    copy: "The marina village brings together a supermarket, shops, cafés, bars, pharmacy and useful holiday services.",
   },
   {
     name: "Jolly Harbour Sports Village",
     distance: "Approx. 1.4 miles",
     href: "https://www.jollyharbourantigua.com/sports-village/",
-    copy: "The Sports Village offers an athletic club, swimming pool, tennis and pickleball courts.",
+    copy: "Fitness centre, swimming pool, volleyball, tennis and pickleball courts and café bar.",
   },
   {
     name: "South Beach (Jolly Beach)",
     distance: "Approx. 1.6 miles",
     href: "https://www.google.com/maps/dir/?api=1&origin=Coco+Palms%2C+Jolly+Harbour%2C+Antigua&destination=17.0670921%2C-61.8885747&travelmode=driving",
-    copy: "Get directions to Jolly Harbour’s long white-sand South Beach.",
+    copy: "Get directions to Jolly Harbour’s mile long white-sand Beach.",
   },
   {
     name: "North Beach",
     distance: "Approx. 0.7 miles",
     href: "https://www.google.com/maps/dir/?api=1&origin=Coco+Palms%2C+Jolly+Harbour%2C+Antigua&destination=17.0760346%2C-61.8899019&travelmode=driving",
-    copy: "Get directions to North Beach at the western tip of Jolly Harbour’s North Finger.",
+    copy: "Get directions to Jolly Harbour’s sheltered North Beach.",
   },
 ] as const;
 
 const restaurants = [
-  { name: "Al Porto", distance: "Approx. 0.7 miles", href: "https://www.instagram.com/alporto_antigua/", copy: "Waterside Italian dining in Jolly Harbour." },
-  { name: "Fat Urchin", distance: "Approx. 0.9 miles", href: "https://faturchin.com/", copy: "A relaxed public house and coastal kitchen at Jolly Harbour Marina." },
-  { name: "Roca Pantry, Butcher’s Block & Wine Cellar", distance: "Approx. 1.6 miles", href: "https://roca-antigua.com/", copy: "The Rocks Group’s modern pantry, deli, butcher, bakery and wine cellar at Sugar Ridge." },
+  { name: "Al Porto", distance: "Approx. 0.7 miles", href: "https://www.instagram.com/alporto_antigua/", copy: "Waterside Mediterranean dining with Harbour views." },
+  { name: "Fat Urchin", distance: "Approx. 0.9 miles", href: "https://faturchin.com/", copy: "A relaxed public house and coastal kitchen with Marina views." },
+  { name: "Roca Pantry, Butcher’s Block & Wine Cellar", distance: "Approx. 1.6 miles", href: "https://roca-antigua.com/", copy: "The Rocks Group’s modern pantry, butcher and wine cellar at Sugar Ridge." },
   { name: "Miracles", distance: "Approx. 1.4 miles", href: "https://www.facebook.com/miraclesantigua/", copy: "A popular local restaurant close to the Jolly Harbour entrance." },
   { name: "Rokuni", distance: "Approx. 1.6 miles", href: "https://rokuni-antigua.com/", copy: "Asian-inspired sharing plates and cocktails at Sugar Ridge." },
-  { name: "Sheer Rocks", distance: "Approx. 2.8 miles", href: "https://sheer-rocks.com/", copy: "Clifftop dining, daybeds and sunset views above Ffryes Beach." },
+  { name: "Sheer Rocks", distance: "Approx. 2.8 miles", href: "https://sheer-rocks.com/", copy: "Clifftop dining, daybeds and sunset views above Little Ffryes Beach." },
   { name: "Wild Tamarind", distance: "Approx. 3 miles", href: "https://www.instagram.com/wildtamarindrestaurant/", copy: "Contemporary Caribbean dining beside Ffryes Beach." },
   { name: "Catherine’s Café", distance: "Approx. 15.5 miles", href: "https://catherines-cafe.com/", copy: "French-inspired beachfront dining at Pigeon Point." },
   { name: "Loose Cannon", distance: "Approx. 15.7 miles", href: "https://www.loosecannonbeachbar.com/", copy: "A lively beach bar and restaurant on Galleon Beach." },
-  { name: "Shirley Heights", distance: "Approx. 16.4 miles", href: "https://shirleyheightslookout.com/", copy: "Panoramic harbour views, barbecue and the famous Sunday gathering." },
-  { name: "The Hut", distance: "Approx. 18 miles by boat", href: "https://thehutlittlejumby.com/", copy: "A destination beach restaurant on Little Jumby, best reached from the water." },
-  { name: "Nobu Barbuda", distance: "Approx. 31 nautical miles by boat", href: "https://www.noburestaurants.com/barbuda/contact-and-hours", copy: "Destination dining on Princess Diana Beach, Barbuda, reached by boat from Coco Palms." },
+  { name: "Shirley Heights", distance: "Approx. 16.4 miles", href: "https://shirleyheightslookout.com/", copy: "Iconic harbour views, and the famous Reggae Heights BBQ party with live music" },
+  { name: "The Hut", distance: "Approx. 18 miles by boat", href: "https://thehutlittlejumby.com/", copy: "A destination beach restaurant on Little Jumby Island." },
+  { name: "Nobu Barbuda", distance: "Approx. 31 nautical miles by boat", href: "https://www.noburestaurants.com/barbuda/contact-and-hours", copy: "Destination dining on Princess Diana Beach, Barbuda." },
 ] as const;
 
 const charters = [
@@ -145,10 +149,9 @@ export default function LocationPage() {
     <>
       <section className="page-hero">
         <span className="eyebrow">Jolly Harbour, Antigua</span>
-        <h1>Everything close, the water closer</h1>
-        <p>
-          Coco Palms is situated on Harbour Island on Antigua’s west coast, within the gated Jolly
-          Harbour community.
+        <h1>Prime Jolly Harbour location, on the water</h1>
+        <p className="location-hero-summary">
+          Coco Palms is situated on Harbour Island on Antigua’s West coast, within the gated Jolly Harbour community.
         </p>
       </section>
 
@@ -222,7 +225,7 @@ export default function LocationPage() {
       <section className="section amenities-section">
         <div className="section-heading">
           <span className="eyebrow">Made for an effortless stay</span>
-          <h2>Villa amenities</h2>
+          <h2>Amenities at a glance</h2>
         </div>
         <div className="amenities-grid">
           {amenities.map(([Icon, label]) => (
@@ -248,7 +251,7 @@ export default function LocationPage() {
 
       <section className="quote-invitation section">
         <div>
-          <span className="eyebrow light">Your dates, your party</span>
+          <span className="eyebrow light">Secure your stay</span>
           <h2>Build your personalised quotation</h2>
         </div>
         <Link className="button button-gold" href="/rates-and-availability">Get Quotation</Link>
