@@ -19,7 +19,13 @@ type BuildGallerySlotsInput = {
 };
 
 export function buildGallerySlots({ title, fallbackImage, images, captions }: BuildGallerySlotsInput): GallerySlot[] {
-  return Array.from({ length: 12 }, (_, index) => {
+  const finalPosition = Math.max(
+    12,
+    captions?.length ?? 0,
+    ...images.map((image) => image.position ?? 0),
+  );
+
+  return Array.from({ length: finalPosition }, (_, index) => {
     const position = index + 1;
     const image = images.find((candidate) => candidate.position === position) ?? (position === 1 ? fallbackImage : undefined);
 

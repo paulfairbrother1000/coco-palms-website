@@ -14,6 +14,12 @@ const fallbackSections = [
   { id: "local-area", title: "Local Area", copy: "Beyond the villa, discover Antigua’s beaches, historic harbours and island vibe." },
 ];
 
+const galleryDisplayOrders: Record<string, number[]> = {
+  interior: [1, 13, 2, 3, 14, 4, 15, 5, 6, 16, 7, 17, 8, 9, 18, 10, 11, 12],
+  exterior: [1, 13, 2, 14, 3, 15, 4, 16, 5, 17, 6, 18, 7, 19, 8, 20, 9, 21, 10, 22, 11, 12],
+  "local-area": [1, 2, 13, 3, 4, 5, 14, 6, 7, 8, 15, 9, 10, 11, 16, 12],
+};
+
 const localAreaCaptions = [
   "Beachfront relaxation at Salt Plage on Dickenson Bay.",
   "Historic Nelson’s Dockyard, a UNESCO World Heritage Site.",
@@ -27,6 +33,10 @@ const localAreaCaptions = [
   "Floodlit pickleball courts at Jolly Harbour Sports Village.",
   "Fully equipped, air-conditioned, 6,000 sq. ft. gym at Jolly Harbour Sports Village.",
   "Nearby Jolly Beach",
+  "White sands and endless Caribbean blue.",
+  "Barefoot days on Antigua’s beaches.",
+  "The shoreline at golden hour.",
+  "Sunset, Antigua style.",
 ];
 
 const exteriorCaptions = [
@@ -42,6 +52,16 @@ const exteriorCaptions = [
   "Al fresco dining beside the pool.",
   "Private swimming pool",
   "Outdoor kitchen overlooking the harbour at sunset.",
+  "Poolside dining with a harbour view.",
+  "Island drinks with a harbour view.",
+  "Ready for adventures on the water.",
+  "Coco Palms from the water.",
+  "The pool glowing after dark.",
+  "Evenings made for poolside living.",
+  "Sunset colours across the terrace.",
+  "Waterside lounging after sunset.",
+  "Coco Palms beneath an Antiguan sunset.",
+  "Sunset over Jolly Harbour.",
 ];
 
 const interiorCaptions = [
@@ -57,6 +77,12 @@ const interiorCaptions = [
   "Open-plan Kitchen and lounging space beneath the vaulted ceiling.",
   "Built-in bean-to-cup coffee machine for fresh coffee at any time.",
   "Relax in the Primary Ensuite’s deep soaking bath.",
+  "Flexible bedroom space for family stays.",
+  "Calm, comfortable and made for unwinding.",
+  "Restful nights beneath the vaulted ceiling.",
+  "A peaceful bedroom retreat.",
+  "The Great Room dressed for Christmas.",
+  "Poolside dining, reflected indoors.",
 ];
 
 function localGalleryImages(section: string, title: string) {
@@ -107,22 +133,28 @@ export default async function GalleryPage() {
     const localImages = localGalleryImages(fallback.id, title);
     const fallbackImage = localImages[0] ?? { src: "/images/cocopalmshero2.jpg", label: `${title} 1`, alt: `${title} 1` };
 
+    const slots = buildGallerySlots({
+      title,
+      fallbackImage,
+      images: [...databaseImages, ...localImages],
+      captions: fallback.id === "interior"
+        ? interiorCaptions
+        : fallback.id === "exterior"
+          ? exteriorCaptions
+          : fallback.id === "local-area"
+            ? localAreaCaptions
+            : undefined,
+    });
+    const displayOrder = galleryDisplayOrders[fallback.id] ?? slots.map((slot) => slot.position);
+    const displayRank = new Map(displayOrder.map((position, index) => [position, index]));
+
     return {
       ...fallback,
       title,
       copy: fallback.copy,
-      slots: buildGallerySlots({
-        title,
-        fallbackImage,
-        images: [...databaseImages, ...localImages],
-        captions: fallback.id === "interior"
-          ? interiorCaptions
-          : fallback.id === "exterior"
-            ? exteriorCaptions
-            : fallback.id === "local-area"
-              ? localAreaCaptions
-              : undefined,
-      }),
+      slots: slots.toSorted((left, right) =>
+        (displayRank.get(left.position) ?? displayOrder.length + left.position)
+        - (displayRank.get(right.position) ?? displayOrder.length + right.position)),
     };
   });
 

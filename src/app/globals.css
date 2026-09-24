@@ -114,4 +114,9 @@ button{border-radius:8px}
 .gallery-grid .gallery-image-original{object-fit:cover!important;filter:none!important}
 .gallery-grid .gallery-image-exterior-1{object-position:center 62%}
 .gallery-grid .gallery-image-exterior-2{object-position:center}
+.gallery-grid :is(.gallery-image-interior-13,.gallery-image-interior-15,.gallery-image-interior-16,.gallery-image-interior-17,.gallery-image-interior-18){object-position:center 52%}
+.gallery-grid :is(.gallery-image-exterior-13,.gallery-image-exterior-14,.gallery-image-exterior-19,.gallery-image-exterior-20,.gallery-image-exterior-22){object-position:center 56%}
+.gallery-grid .gallery-image-exterior-16{object-position:center 44%}
+.gallery-grid :is(.gallery-image-local-area-13,.gallery-image-local-area-14){object-position:center 58%}
+.gallery-grid :is(.gallery-image-local-area-15,.gallery-image-local-area-16){object-position:center 54%}
 @media(max-width:600px){.balanced-heading{width:100%}.balanced-heading span{text-align:left;text-align-last:auto}.split-feature .feature-list{grid-template-columns:1fr}.location-area-mosaic{display:grid;grid-template-columns:1fr;grid-auto-rows:auto}.location-area-mosaic .location-photo,.location-area-mosaic .location-photo-sunrise,.location-area-mosaic .location-photo-detail-top,.location-area-mosaic .location-photo-detail-bottom,.location-area-mosaic .location-photo-bottom-left,.location-area-mosaic .location-photo-bottom-middle,.location-area-mosaic .location-photo-bottom-right{grid-column:auto;grid-row:auto;min-height:280px}}

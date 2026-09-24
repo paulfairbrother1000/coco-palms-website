@@ -22,4 +22,14 @@ describe("galleryImagesFromFilenames", () => {
         alt: "Local Area 12",
       }]);
   });
+
+  it("recognises numbered photographs beyond the original twelve positions", () => {
+    expect(galleryImagesFromFilenames("exterior", "Exterior", ["image22.JPG"]))
+      .toEqual([{
+        position: 22,
+        src: "/images/gallery/exterior/image22.JPG",
+        label: "Exterior 22",
+        alt: "Exterior 22",
+      }]);
+  });
 });

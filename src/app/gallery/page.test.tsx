@@ -28,6 +28,12 @@ describe("gallery page", () => {
       "Open-plan Kitchen and lounging space beneath the vaulted ceiling.",
       "Built-in bean-to-cup coffee machine for fresh coffee at any time.",
       "Relax in the Primary Ensuite’s deep soaking bath.",
+      "Flexible bedroom space for family stays.",
+      "Calm, comfortable and made for unwinding.",
+      "Restful nights beneath the vaulted ceiling.",
+      "A peaceful bedroom retreat.",
+      "The Great Room dressed for Christmas.",
+      "Poolside dining, reflected indoors.",
     ];
 
     for (const caption of interiorCaptions) {
@@ -49,6 +55,16 @@ describe("gallery page", () => {
       "Al fresco dining beside the pool.",
       "Private swimming pool",
       "Outdoor kitchen overlooking the harbour at sunset.",
+      "Poolside dining with a harbour view.",
+      "Island drinks with a harbour view.",
+      "Ready for adventures on the water.",
+      "Coco Palms from the water.",
+      "The pool glowing after dark.",
+      "Evenings made for poolside living.",
+      "Sunset colours across the terrace.",
+      "Waterside lounging after sunset.",
+      "Coco Palms beneath an Antiguan sunset.",
+      "Sunset over Jolly Harbour.",
     ];
     for (const caption of exteriorCaptions) {
       expect(screen.getByRole("img", { name: caption })).toBeInTheDocument();
@@ -68,16 +84,22 @@ describe("gallery page", () => {
       "Floodlit pickleball courts at Jolly Harbour Sports Village.",
       "Fully equipped, air-conditioned, 6,000 sq. ft. gym at Jolly Harbour Sports Village.",
       "Nearby Jolly Beach",
+      "White sands and endless Caribbean blue.",
+      "Barefoot days on Antigua’s beaches.",
+      "The shoreline at golden hour.",
+      "Sunset, Antigua style.",
     ];
-    for (const caption of localAreaCaptions.slice(0, -1)) {
+    for (const [index, caption] of localAreaCaptions.entries()) {
+      if (index === 11) continue;
       expect(screen.getByRole("img", { name: caption })).toBeInTheDocument();
       expect(screen.getByText(caption)).toBeInTheDocument();
     }
     const renderedLocalAreaCaptions = Array.from(document.querySelectorAll("#local-area figcaption"))
       .map((caption) => caption.textContent);
-    expect(renderedLocalAreaCaptions).toEqual(localAreaCaptions);
+    expect(renderedLocalAreaCaptions).toEqual([1, 2, 13, 3, 4, 5, 14, 6, 7, 8, 15, 9, 10, 11, 16, 12]
+      .map((position) => localAreaCaptions[position - 1]));
 
-    const localVideoCaption = localAreaCaptions.at(-1)!;
+    const localVideoCaption = localAreaCaptions[11];
     const localVideo = screen.getByLabelText(`${localVideoCaption} video`);
     expect(localVideo).toHaveAttribute("src", "/images/gallery/local-area/image12.mp4");
     expect(localVideo).toHaveAttribute("poster", "/images/gallery/local-area/image12-poster.jpg");
@@ -92,5 +114,17 @@ describe("gallery page", () => {
     expect(screen.getAllByRole("img").every((image) => image.classList.contains("gallery-image-original"))).toBe(true);
     expect(screen.getByRole("img", { name: exteriorCaptions[0] })).toHaveClass("gallery-image-exterior-1");
     expect(screen.getByRole("img", { name: exteriorCaptions[1] })).toHaveClass("gallery-image-exterior-2");
+    expect(document.querySelectorAll("#interior figure")).toHaveLength(18);
+    expect(document.querySelectorAll("#exterior figure")).toHaveLength(22);
+    expect(document.querySelectorAll("#local-area figure")).toHaveLength(16);
+    expect(Array.from(document.querySelectorAll("#exterior figcaption")).slice(0, 6).map((caption) => caption.textContent))
+      .toEqual([
+        exteriorCaptions[0],
+        exteriorCaptions[12],
+        exteriorCaptions[1],
+        exteriorCaptions[13],
+        exteriorCaptions[2],
+        exteriorCaptions[14],
+      ]);
   });
 });

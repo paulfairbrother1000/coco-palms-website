@@ -82,4 +82,28 @@ describe("buildGallerySlots", () => {
       placeholder: false,
     });
   });
+
+  it("expands beyond twelve positions when a collection contains more images", () => {
+    const slots = buildGallerySlots({
+      title: "Exterior",
+      fallbackImage: {
+        src: "/images/rear-exterior.jpg",
+        label: "Coco Palms from the water",
+        alt: "Coco Palms from the water",
+      },
+      images: [{
+        position: 22,
+        src: "/images/gallery/exterior/image22.JPG",
+        label: "Sunset over Jolly Harbour.",
+        alt: "Sunset over Jolly Harbour.",
+      }],
+    });
+
+    expect(slots).toHaveLength(22);
+    expect(slots[21]).toMatchObject({
+      position: 22,
+      src: "/images/gallery/exterior/image22.JPG",
+      placeholder: false,
+    });
+  });
 });
