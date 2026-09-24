@@ -16,7 +16,7 @@ const links = [
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
   return (
-    <header className="site-header">
+    <header className="site-header" style={{ position: "sticky", top: 0 }}>
       <Link className="brand" href="/" aria-label="Coco Palms home">
         <Image className="brand-logo" src="/images/cocopalms-logo.jpg" alt="Coco Palms Antigua West Indies" width={193} height={96} priority />
       </Link>
