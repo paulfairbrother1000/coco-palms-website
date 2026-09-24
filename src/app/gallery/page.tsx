@@ -20,6 +20,12 @@ const galleryDisplayOrders: Record<string, number[]> = {
   "local-area": [1, 2, 13, 3, 4, 5, 14, 6, 7, 8, 15, 9, 10, 11, 16, 12],
 };
 
+const omittedGalleryPositions: Record<string, ReadonlySet<number>> = {
+  interior: new Set([5, 6, 7, 8]),
+  exterior: new Set([3, 5, 8]),
+  "local-area": new Set([6, 12, 15]),
+};
+
 const localAreaCaptions = [
   "Beachfront relaxation at Salt Plage on Dickenson Bay",
   "Historic Nelson’s Dockyard, a UNESCO World Heritage Site",
@@ -144,7 +150,7 @@ export default async function GalleryPage() {
           : fallback.id === "local-area"
             ? localAreaCaptions
             : undefined,
-    });
+    }).filter((slot) => !omittedGalleryPositions[fallback.id]?.has(slot.position));
     const displayOrder = galleryDisplayOrders[fallback.id] ?? slots.map((slot) => slot.position);
     const displayRank = new Map(displayOrder.map((position, index) => [position, index]));
 
