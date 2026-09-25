@@ -4,7 +4,7 @@ import { ArrowRight, Bath, BedDouble, ConciergeBell, MapPin, Users, Waves, Waves
 
 const tiles = [
   { title: "Interior", href: "/gallery#interior", image: "/images/interior-7.jpg", copy: "Light-filled spaces designed for relaxed time together." },
-  { title: "Exterior", href: "/gallery#exterior", image: "/images/gallery/exterior/image1.jpg", copy: "Waterfront terraces, poolside lounging and front-row seats for sunset over the harbour." },
+  { title: "Exterior", href: "/gallery#exterior", image: "/images/exterior-tile-champagne.jpg", copy: "Waterfront terraces, poolside lounging and front-row seats for sunset over the harbour." },
   { title: "Local Area", href: "/gallery#local-area", image: "/images/gallery/local-area/image1.jpg", copy: "Clear turquoise waters, white-sand beaches and all the colour of Antigua close at hand." },
 ];
 

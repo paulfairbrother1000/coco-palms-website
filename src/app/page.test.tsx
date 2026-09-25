@@ -37,6 +37,10 @@ describe("home page", () => {
       "src",
       expect.stringContaining("%2Fimages%2Finterior-7.jpg"),
     );
+    expect(screen.getByRole("img", { name: "Exterior" })).toHaveAttribute(
+      "src",
+      expect.stringContaining("%2Fimages%2Fexterior-tile-champagne.jpg"),
+    );
   });
 
   it("uses the approved homepage wording and numerals", () => {
