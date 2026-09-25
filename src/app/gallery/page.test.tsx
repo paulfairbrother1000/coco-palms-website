@@ -53,7 +53,7 @@ describe("gallery page", () => {
       "Built-in bean-to-cup coffee machine for fresh coffee at any time",
       "Relax in the Primary Ensuite’s deep soaking bath",
       "Flexible bedroom space for family stays",
-      "Calm, comfortable and made for unwinding",
+      "3rd bedroom with 2 Super King-Sized beds, ceiling fans, AC, safe and TV.",
       "Primary Bedroom suite with Eastern King bed, AC, ceiling fan, TV, safe and ensuite Bathroom with twin basins, freestanding bathtub and walk-in rain shower",
       "4th Bedroom with Super King-size bed, AC, ceiling fan, TV and safe",
       "The Great Room dressed for Christmas",
@@ -139,8 +139,11 @@ describe("gallery page", () => {
     expect(document.querySelectorAll("#exterior figure")).toHaveLength(19);
     expect(document.querySelectorAll("#local-area figure")).toHaveLength(13);
     expect(Array.from(document.querySelectorAll("figcaption"))
+      .filter((caption) => caption.textContent !== "3rd bedroom with 2 Super King-Sized beds, ceiling fans, AC, safe and TV.")
       .every((caption) => !caption.textContent?.endsWith("."))).toBe(true);
     expect(screen.getByRole("img", { name: "Poolside dining" })).toHaveClass("gallery-image-interior-18");
+    expect(screen.getByRole("img", { name: "3rd bedroom with 2 Super King-Sized beds, ceiling fans, AC, safe and TV." }))
+      .toHaveAttribute("src", expect.stringContaining("%2Fimages%2Fgallery%2Finterior%2Fimage14.jpeg"));
     expect(Array.from(document.querySelectorAll("#exterior figcaption")).slice(0, 6).map((caption) => caption.textContent))
       .toEqual([
         exteriorCaptions[0],

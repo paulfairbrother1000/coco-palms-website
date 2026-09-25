@@ -110,13 +110,13 @@ const closeToHome = [
 ] as const;
 
 const restaurants = [
-  { name: "Rock Groups Events", distance: "0 miles", href: "https://sheer-rocks.com/wp-content/uploads/2025/03/Rocks-Group-Private-Chef-Catering.pdf", copy: "Hire a catering service to cook and wait on you in the comfort of the villa." },
+  { name: "Rock Groups Events", distance: "0 miles", href: "https://sheer-rocks.com/wp-content/uploads/2025/03/Rocks-Group-Private-Chef-Catering.pdf", copy: "Private chef, catering and tailored fine dining experiences" },
   { name: "Al Porto", distance: "Approx. 0.7 miles", href: "https://www.instagram.com/alporto_antigua/", copy: "Waterside Mediterranean dining with Harbour views." },
   { name: "Fat Urchin", distance: "Approx. 0.9 miles", href: "https://faturchin.com/", copy: "A relaxed public house and coastal kitchen with Marina views." },
   { name: "Roca Pantry, Butcher’s Block & Wine Cellar", distance: "Approx. 1.6 miles", href: "https://roca-antigua.com/", copy: "The Rocks Group’s modern pantry, butcher and wine cellar at Sugar Ridge." },
   { name: "Miracles", distance: "Approx. 1.4 miles", href: "https://www.facebook.com/miraclesantigua/", copy: "A popular local restaurant close to the Jolly Harbour entrance." },
   { name: "Rokuni", distance: "Approx. 1.6 miles", href: "https://rokuni-antigua.com/", copy: "Asian-inspired sharing plates and cocktails at Sugar Ridge." },
-  { name: "Sheer Rocks", distance: "Approx. 2.8 miles", href: "https://sheer-rocks.com/", copy: "Clifftop dining, daybeds and sunset views above Little Ffryes Beach." },
+  { name: "Sheer Rocks", distance: "Approx. 2.8 miles", href: "https://sheer-rocks.com/", copy: "Award winning clifftop dining, daybeds and sunset views above Little Ffryes Beach." },
   { name: "Wild Tamarind", distance: "Approx. 3 miles", href: "https://www.instagram.com/wildtamarindrestaurant/", copy: "Contemporary Caribbean dining beside Ffryes Beach." },
   { name: "Catherine’s Café", distance: "Approx. 15.5 miles", href: "https://catherines-cafe.com/", copy: "French-inspired beachfront dining at Pigeon Point." },
   { name: "Loose Cannon", distance: "Approx. 15.7 miles", href: "https://www.loosecannonbeachbar.com/", copy: "A lively beach bar and restaurant on Galleon Beach." },
@@ -201,8 +201,8 @@ export default function LocationPage() {
       <section className="section dining-guide-section">
         <div className="section-heading">
           <span className="eyebrow">From marina favourites to destination dining</span>
-          <h2>Great cuisine is all around</h2>
-          <p>Driving distances are approximate from Coco Palms and are included as a simple planning guide.</p>
+          <h2>Explore Antigua’s vibrant culinary scene</h2>
+          <p>Explore local flavours, freshly caught sea food and international cuisine with ease.</p>
         </div>
         <div className="location-directory">
           {restaurants.map((restaurant) => <DirectoryCard {...restaurant} key={restaurant.name} />)}

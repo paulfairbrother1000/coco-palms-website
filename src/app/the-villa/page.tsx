@@ -30,8 +30,8 @@ const villaImages = [
     className: "location-photo location-photo-portrait",
   },
   {
-    src: "/images/villa/waterfront-aerial.jpg",
-    alt: "Coco Palms pool, waterfront deck and private mooring from above",
+    src: "/images/villa/pool-at-dusk.jpeg",
+    alt: "Coco Palms villa and private pool glowing at dusk",
     className: "location-photo location-photo-waterfront",
   },
 ] as const;
