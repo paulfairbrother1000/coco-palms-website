@@ -14,8 +14,9 @@ describe("villa page", () => {
       expect.stringContaining("%2Fimages%2Fvilla%2Fdining-area.jpg"),
       expect.stringContaining("%2Fimages%2Fvilla%2Fbedroom.jpg"),
       expect.stringContaining("%2Fimages%2Fvilla%2Fsunset-terrace.jpg"),
-      expect.stringContaining("%2Fimages%2Fvilla%2Fwaterfront-aerial.jpg"),
+      expect.stringContaining("%2Fimages%2Fvilla%2Fpool-at-dusk.jpeg"),
     ]));
+    expect(images[5].closest("figure")).toHaveClass("location-photo-waterfront");
   });
 
   it("uses numerals and the complete approved feature list", () => {

@@ -48,7 +48,7 @@ describe("Location and amenities page", () => {
     expect(screen.getByText("Waterside Mediterranean dining with Harbour views.")).toBeInTheDocument();
     expect(screen.getByText("A relaxed public house and coastal kitchen with Marina views.")).toBeInTheDocument();
     expect(screen.getByText("The Rocks Group’s modern pantry, butcher and wine cellar at Sugar Ridge.")).toBeInTheDocument();
-    expect(screen.getByText("Clifftop dining, daybeds and sunset views above Little Ffryes Beach.")).toBeInTheDocument();
+    expect(screen.getByText("Award winning clifftop dining, daybeds and sunset views above Little Ffryes Beach.")).toBeInTheDocument();
     expect(screen.getByText("Iconic harbour views, and the famous Reggae Heights BBQ party with live music")).toBeInTheDocument();
     expect(screen.getByText("A destination beach restaurant on Little Jumby Island.")).toBeInTheDocument();
     expect(screen.getByText("Destination dining on Princess Diana Beach, Barbuda.")).toBeInTheDocument();
@@ -89,7 +89,7 @@ describe("Location and amenities page", () => {
   it("provides nearby recommendations, useful distances and booking links", () => {
     render(<LocationPage />);
 
-    expect(screen.getByRole("heading", { name: "Great cuisine is all around" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Explore Antigua’s vibrant culinary scene" })).toBeInTheDocument();
 
     for (const venue of [
       "Jolly Harbour village",
@@ -130,7 +130,7 @@ describe("Location and amenities page", () => {
       "href",
       "https://sheer-rocks.com/wp-content/uploads/2025/03/Rocks-Group-Private-Chef-Catering.pdf",
     );
-    expect(cards[0]).toHaveTextContent("Hire a catering service to cook and wait on you in the comfort of the villa.");
+    expect(cards[0]).toHaveTextContent("Private chef, catering and tailored fine dining experiences");
     expect(cards[0]).toHaveTextContent("0 miles");
   });
 
@@ -189,7 +189,7 @@ describe("Location and amenities page", () => {
       expect(link.closest("article")).toHaveTextContent(distance);
     }
     expect(container.querySelector(".dining-guide-section .section-heading p")).toHaveTextContent(
-      "Driving distances are approximate from Coco Palms",
+      "Explore local flavours, freshly caught sea food and international cuisine with ease.",
     );
   });
 

@@ -84,7 +84,7 @@ const interiorCaptions = [
   "Built-in bean-to-cup coffee machine for fresh coffee at any time",
   "Relax in the Primary Ensuite’s deep soaking bath",
   "Flexible bedroom space for family stays",
-  "Calm, comfortable and made for unwinding",
+  "3rd bedroom with 2 Super King-Sized beds, ceiling fans, AC, safe and TV.",
   "Primary Bedroom suite with Eastern King bed, AC, ceiling fan, TV, safe and ensuite Bathroom with twin basins, freestanding bathtub and walk-in rain shower",
   "4th Bedroom with Super King-size bed, AC, ceiling fan, TV and safe",
   "The Great Room dressed for Christmas",
