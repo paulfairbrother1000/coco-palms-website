@@ -29,7 +29,10 @@ const calculation = {
 };
 
 describe("QuoteForm", () => {
-  beforeEach(() => vi.restoreAllMocks());
+  beforeEach(() => {
+    vi.restoreAllMocks();
+    vi.unstubAllGlobals();
+  });
 
   it("uses a blocked-date calendar instead of editable date fields", async () => {
     vi.spyOn(global, "fetch").mockResolvedValueOnce(new Response(JSON.stringify({ ranges: [] }), { status: 200 }));
@@ -77,6 +80,8 @@ describe("QuoteForm", () => {
   });
 
   it("submits the selected stay and displays an itemised quote with Book Now", async () => {
+    const gtag = vi.fn();
+    vi.stubGlobal("gtag", gtag);
     const fetchMock = vi.spyOn(global, "fetch")
       .mockResolvedValueOnce(new Response(JSON.stringify({ ranges: [] }), { status: 200 }))
       .mockResolvedValueOnce(new Response(JSON.stringify({ calculation, publicToken: "quote-token", emailSent: true }), { status: 200 }));
@@ -92,6 +97,9 @@ describe("QuoteForm", () => {
     await user.click(screen.getByRole("button", { name: "Get Quotation" }));
 
     await screen.findByRole("heading", { name: "$8,773.00" });
+    expect(gtag).toHaveBeenCalledWith("event", "generate_lead", {
+      method: "quotation", currency: "USD", value: 8773, nights: 7, guests: 2,
+    });
     expect(screen.getByText("7 nights × $1,000.00 — 15th May to 15th Nov")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Book Now" })).toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: "Book Now" }));

@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { FormEvent, useEffect, useId, useState } from "react";
 import { QuotationCalendar } from "@/features/availability/quotation-calendar";
 import type { UnavailableRange } from "@/features/availability/date-range";
+import { trackEvent } from "@/lib/analytics";
 import type { QuoteCalculation, QuoteConfirmationDetails } from "./types";
 import { QuoteResult } from "./quote-result";
 
@@ -78,6 +79,13 @@ export function QuoteForm() {
       const response = await fetch("/api/quotes", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(payload) });
       const result = await response.json() as QuoteResponse & { error?: string };
       if (!response.ok) { setError(result.error ?? "We could not prepare your quotation."); return; }
+      trackEvent("generate_lead", {
+        method: "quotation",
+        currency: "USD",
+        value: result.calculation.quotationTotal,
+        nights: result.calculation.nights,
+        guests: result.calculation.guests,
+      });
       setQuote({
         ...result,
         confirmation: {
