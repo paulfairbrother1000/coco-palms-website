@@ -110,6 +110,7 @@ const closeToHome = [
 ] as const;
 
 const restaurants = [
+  { name: "Rock Groups Events", distance: "0 miles", href: "https://sheer-rocks.com/wp-content/uploads/2025/03/Rocks-Group-Private-Chef-Catering.pdf", copy: "Hire a catering service to cook and wait on you in the comfort of the villa." },
   { name: "Al Porto", distance: "Approx. 0.7 miles", href: "https://www.instagram.com/alporto_antigua/", copy: "Waterside Mediterranean dining with Harbour views." },
   { name: "Fat Urchin", distance: "Approx. 0.9 miles", href: "https://faturchin.com/", copy: "A relaxed public house and coastal kitchen with Marina views." },
   { name: "Roca Pantry, Butcher’s Block & Wine Cellar", distance: "Approx. 1.6 miles", href: "https://roca-antigua.com/", copy: "The Rocks Group’s modern pantry, butcher and wine cellar at Sugar Ridge." },
@@ -200,7 +201,7 @@ export default function LocationPage() {
       <section className="section dining-guide-section">
         <div className="section-heading">
           <span className="eyebrow">From marina favourites to destination dining</span>
-          <h2>Restaurants to discover</h2>
+          <h2>Great cuisine is all around</h2>
           <p>Driving distances are approximate from Coco Palms and are included as a simple planning guide.</p>
         </div>
         <div className="location-directory">

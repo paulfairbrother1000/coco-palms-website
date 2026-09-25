@@ -89,8 +89,7 @@ describe("Location and amenities page", () => {
   it("provides nearby recommendations, useful distances and booking links", () => {
     render(<LocationPage />);
 
-    expect(screen.getByRole("heading", { name: "Restaurants to discover" })).toBeInTheDocument();
-    expect(screen.queryByRole("heading", { name: "Restaurants worth discovering" })).not.toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Great cuisine is all around" })).toBeInTheDocument();
 
     for (const venue of [
       "Jolly Harbour village",
@@ -118,6 +117,21 @@ describe("Location and amenities page", () => {
     expect(screen.getByRole("link", { name: /The Hut/i })).toHaveAttribute("href", "https://thehutlittlejumby.com/");
     expect(screen.getByRole("link", { name: /Roca Pantry/i })).toHaveAttribute("href", "https://roca-antigua.com/");
     expect(screen.getByRole("link", { name: "Wild Tamarind" }).closest("article")).toHaveTextContent("Ffryes Beach");
+  });
+
+  it("lists private catering at the villa before Al Porto", () => {
+    const { container } = render(<LocationPage />);
+    const cards = Array.from(container.querySelectorAll<HTMLElement>(".dining-guide-section .location-directory-card"));
+    const cateringLink = screen.getByRole("link", { name: "Rock Groups Events" });
+
+    expect(cards[0]).toContainElement(cateringLink);
+    expect(cards[1]).toContainElement(screen.getByRole("link", { name: "Al Porto" }));
+    expect(cateringLink).toHaveAttribute(
+      "href",
+      "https://sheer-rocks.com/wp-content/uploads/2025/03/Rocks-Group-Private-Chef-Catering.pdf",
+    );
+    expect(cards[0]).toHaveTextContent("Hire a catering service to cook and wait on you in the comfort of the villa.");
+    expect(cards[0]).toHaveTextContent("0 miles");
   });
 
   it("places Nobu Barbuda beside The Hut with its official link and boat distance", () => {
