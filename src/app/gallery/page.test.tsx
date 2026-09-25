@@ -13,7 +13,7 @@ describe("gallery page", () => {
 
     for (const [section, positions] of Object.entries({
       interior: [5, 6, 7, 8],
-      exterior: [3, 5, 8],
+      exterior: [3, 5, 8, 10],
       "local-area": [6, 15],
     })) {
       for (const position of positions) {
@@ -24,7 +24,7 @@ describe("gallery page", () => {
     expect(screen.queryByText("Nearby Jolly Beach")).not.toBeInTheDocument();
     expect(screen.queryByText("The shoreline at golden hour")).not.toBeInTheDocument();
     expect(document.querySelectorAll("#interior figure")).toHaveLength(14);
-    expect(document.querySelectorAll("#exterior figure")).toHaveLength(19);
+    expect(document.querySelectorAll("#exterior figure")).toHaveLength(18);
     expect(document.querySelectorAll("#local-area figure")).toHaveLength(13);
     expect(document.querySelector(".gallery-placeholder")).toBeNull();
   });
@@ -78,7 +78,7 @@ describe("gallery page", () => {
       "Outdoor kitchen and bar for relaxed poolside entertaining",
       "Generous covered lounge seating beside the pool",
       "Private boat dock",
-      "Al fresco dining beside the pool",
+      "",
       "Private swimming pool",
       "Outdoor kitchen overlooking the harbour at sunset",
       "Poolside dining with a harbour view",
@@ -92,7 +92,7 @@ describe("gallery page", () => {
       "Coco Palms at sunrise",
       "Sunrise over Jolly Harbour",
     ];
-    for (const caption of exteriorCaptions.filter((_, index) => ![3, 5, 8].includes(index + 1))) {
+    for (const caption of exteriorCaptions.filter((_, index) => ![3, 5, 8, 10].includes(index + 1))) {
       expect(screen.getByRole("img", { name: caption })).toBeInTheDocument();
       expect(screen.getByText(caption)).toBeInTheDocument();
     }
@@ -136,7 +136,9 @@ describe("gallery page", () => {
     expect(screen.getByRole("img", { name: exteriorCaptions[0] })).toHaveClass("gallery-image-exterior-1");
     expect(screen.getByRole("img", { name: exteriorCaptions[1] })).toHaveClass("gallery-image-exterior-2");
     expect(document.querySelectorAll("#interior figure")).toHaveLength(14);
-    expect(document.querySelectorAll("#exterior figure")).toHaveLength(19);
+    expect(document.querySelectorAll("#exterior figure")).toHaveLength(18);
+    expect(document.querySelector("#exterior .gallery-image-exterior-10")).toBeNull();
+    expect(screen.queryByText("Al fresco dining beside the pool")).not.toBeInTheDocument();
     expect(document.querySelectorAll("#local-area figure")).toHaveLength(13);
     expect(Array.from(document.querySelectorAll("figcaption"))
       .filter((caption) => caption.textContent !== "3rd bedroom with 2 Super King-Sized beds, ceiling fans, AC, safe and TV.")

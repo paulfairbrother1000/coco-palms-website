@@ -22,7 +22,7 @@ const galleryDisplayOrders: Record<string, number[]> = {
 
 const omittedGalleryPositions: Record<string, ReadonlySet<number>> = {
   interior: new Set([5, 6, 7, 8]),
-  exterior: new Set([3, 5, 8]),
+  exterior: new Set([3, 5, 8, 10]),
   "local-area": new Set([6, 12, 15]),
 };
 
@@ -55,7 +55,7 @@ const exteriorCaptions = [
   "Outdoor kitchen and bar for relaxed poolside entertaining",
   "Generous covered lounge seating beside the pool",
   "Private boat dock",
-  "Al fresco dining beside the pool",
+  "", // Position 10 is omitted from the gallery.
   "Private swimming pool",
   "Outdoor kitchen overlooking the harbour at sunset",
   "Poolside dining with a harbour view",
