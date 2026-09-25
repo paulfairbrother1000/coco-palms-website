@@ -1,5 +1,7 @@
 "use client";
 
+import { trackEvent } from "@/lib/analytics";
+
 import { format, parseISO } from "date-fns";
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
@@ -120,6 +122,11 @@ export function BookNowButton({
         setStatus(response.status === 503 && result?.recorded === true ? "recorded-email-failed" : "error");
         return;
       }
+      trackEvent("booking_request", {
+        currency: "USD",
+        value: details?.quotationTotal ?? 0,
+        nights: details?.nights ?? 0,
+      });
       setStatus("sent");
     } catch {
       setStatus("error");

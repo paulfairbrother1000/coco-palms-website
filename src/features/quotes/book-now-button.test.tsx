@@ -16,7 +16,10 @@ const details = {
 };
 
 describe("BookNowButton", () => {
-  beforeEach(() => vi.restoreAllMocks());
+  beforeEach(() => {
+    vi.restoreAllMocks();
+    vi.unstubAllGlobals();
+  });
 
   it("replaces the booking action with a clear route to a new quotation when the quote has expired", () => {
     render(<BookNowButton token="quote-token" details={details} disabled />);
@@ -99,6 +102,8 @@ describe("BookNowButton", () => {
   });
 
   it("sends one token-only POST and prevents a second submission while pending", async () => {
+    const gtag = vi.fn();
+    vi.stubGlobal("gtag", gtag);
     let resolveFetch!: (response: Response) => void;
     const fetchMock = vi.spyOn(global, "fetch").mockImplementation(() => new Promise((resolve) => {
       resolveFetch = resolve;
@@ -117,6 +122,9 @@ describe("BookNowButton", () => {
     resolveFetch(new Response(JSON.stringify({ ok: true }), { status: 200 }));
 
     expect(await screen.findByRole("button", { name: "Request sent" })).toBeDisabled();
+    expect(gtag).toHaveBeenCalledWith("event", "booking_request", {
+      currency: "USD", value: 8809.75, nights: 7,
+    });
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
     const completion = screen.getByRole("status");
     expect(completion.textContent).toBe("Thank you. Coco Palms has received your request. Your dates are not secured until your booking is confirmed and the required deposit has been paid.");
