@@ -51,34 +51,34 @@ const amenities = [
 
 const locationImages = [
   {
-    src: "/images/location/coco-palms-mooring-twilight.jpg",
-    alt: "Sunrise across Jolly Harbour from the Coco Palms private dock",
-    className: "location-photo location-photo-sunrise",
+    src: "/images/location/shirley-heights-sunset.jpeg",
+    alt: "Sunset view across the Antiguan coastline from Shirley Heights",
+    className: "location-photo location-photo-anchor",
   },
   {
     src: "/images/location/coco-palms-sunset-terrace.jpg",
     alt: "Coco Palms terrace and pool beneath a pink Antiguan sunset",
-    className: "location-photo location-photo-detail-top",
-  },
-  {
-    src: "/images/location/shirley-heights.jpg",
-    alt: "Shirley Heights overlooking English and Falmouth Harbours",
-    className: "location-photo location-photo-detail-bottom",
+    className: "location-photo location-photo-portrait",
   },
   {
     src: "/images/location/coco-palms-aerial.jpg",
     alt: "Aerial view of the Coco Palms pool, terrace, garden and private mooring",
-    className: "location-photo location-photo-bottom-left",
+    className: "location-photo location-photo-night",
   },
   {
-    src: "/images/location/kayaks-and-paddleboards.jpg",
-    alt: "Kayaks and paddleboards lined up on the private dock",
-    className: "location-photo location-photo-bottom-middle",
+    src: "/images/location/antigua-beach.jpeg",
+    alt: "White sand and turquoise Caribbean water in Antigua",
+    className: "location-photo location-photo-beach",
   },
   {
     src: "/images/location/coco-palms-waterfront-sunset.jpg",
     alt: "Coco Palms viewed from its waterfront mooring beneath a golden sunset",
-    className: "location-photo location-photo-bottom-right",
+    className: "location-photo location-photo-sunset-villa",
+  },
+  {
+    src: "/images/location/kayaks-and-paddleboards.jpg",
+    alt: "Kayaks and paddleboards lined up on the private dock",
+    className: "location-photo location-photo-paddleboards",
   },
 ] as const;
 
@@ -150,7 +150,7 @@ export default function LocationPage() {
     <>
       <section className="page-hero">
         <span className="eyebrow">Jolly Harbour, Antigua</span>
-        <h1>Prime Jolly Harbour location, on the water</h1>
+        <h1>Prime location, right on the water</h1>
         <p className="location-hero-summary">
           Coco Palms is situated on Harbour Island on Antigua’s West coast, within the gated Jolly Harbour community.
         </p>
@@ -202,7 +202,7 @@ export default function LocationPage() {
         <div className="section-heading">
           <span className="eyebrow">From marina favourites to destination dining</span>
           <h2>Explore Antigua’s vibrant culinary scene</h2>
-          <p>Explore local flavours, freshly caught sea food and international cuisine with ease.</p>
+          <p>Discover local flavours, freshly caught sea food and international cuisine with ease.</p>
         </div>
         <div className="location-directory">
           {restaurants.map((restaurant) => <DirectoryCard {...restaurant} key={restaurant.name} />)}

@@ -39,7 +39,7 @@ describe("Location and amenities page", () => {
   it("shows the revised location, nearby venue and booking copy", () => {
     render(<LocationPage />);
 
-    expect(screen.getByRole("heading", { name: "Prime Jolly Harbour location, on the water" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Prime location, right on the water" })).toBeInTheDocument();
     expect(screen.getByText("Coco Palms is situated on Harbour Island on Antigua’s West coast, within the gated Jolly Harbour community.")).toHaveClass("location-hero-summary");
     expect(screen.getByText("Fitness centre, swimming pool, volleyball, tennis and pickleball courts and café bar.")).toBeInTheDocument();
     expect(screen.getByText("The marina village brings together a supermarket, shops, cafés, bars, pharmacy and useful holiday services.")).toBeInTheDocument();
@@ -70,18 +70,26 @@ describe("Location and amenities page", () => {
     expect(screen.getByText(/Coco Palms is situated on Harbour Island/)).toBeInTheDocument();
     expect(screen.getAllByTestId("location-mosaic-image")).toHaveLength(6);
     expect(screen.queryByRole("img", { name: /location collage/i })).not.toBeInTheDocument();
-    expect(screen.getByRole("img", { name: /sunrise across Jolly Harbour/i })).toHaveAttribute(
+    expect(screen.getByRole("img", { name: /White sand and turquoise Caribbean water in Antigua/i })).toHaveAttribute(
       "src",
-      expect.stringContaining("%2Fimages%2Flocation%2Fcoco-palms-mooring-twilight.jpg"),
+      expect.stringContaining("%2Fimages%2Flocation%2Fantigua-beach.jpeg"),
     );
     expect(screen.getByRole("img", { name: /kayaks and paddleboards lined up on the private dock/i })).toHaveAttribute(
       "src",
       expect.stringContaining("%2Fimages%2Flocation%2Fkayaks-and-paddleboards.jpg"),
     );
-    expect(screen.getByRole("img", { name: /Shirley Heights overlooking English and Falmouth Harbours/i })).toHaveAttribute(
+    expect(screen.getByRole("img", { name: /Sunset view across the Antiguan coastline from Shirley Heights/i })).toHaveAttribute(
       "src",
-      expect.stringContaining("%2Fimages%2Flocation%2Fshirley-heights.jpg"),
+      expect.stringContaining("%2Fimages%2Flocation%2Fshirley-heights-sunset.jpeg"),
     );
+    expect(screen.getAllByTestId("location-mosaic-image").map((image) => image.closest("figure")?.className)).toEqual([
+      "location-photo location-photo-anchor",
+      "location-photo location-photo-portrait",
+      "location-photo location-photo-night",
+      "location-photo location-photo-beach",
+      "location-photo location-photo-sunset-villa",
+      "location-photo location-photo-paddleboards",
+    ]);
     expect(screen.getByText(/leave by boat directly from the private dock/i)).toBeInTheDocument();
     expect(screen.getByText(/Antigua’s iconic oceanside locations and historic harbours are within easy reach/i)).toBeInTheDocument();
   });
@@ -189,7 +197,7 @@ describe("Location and amenities page", () => {
       expect(link.closest("article")).toHaveTextContent(distance);
     }
     expect(container.querySelector(".dining-guide-section .section-heading p")).toHaveTextContent(
-      "Explore local flavours, freshly caught sea food and international cuisine with ease.",
+      "Discover local flavours, freshly caught sea food and international cuisine with ease.",
     );
   });
 
