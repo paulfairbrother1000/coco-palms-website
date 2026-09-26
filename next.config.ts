@@ -9,6 +9,10 @@ const nextConfig: NextConfig = {
         destination: "/rates-and-availability",
         permanent: true,
       },
+      { source: "/ratesoldpage", destination: "/rates-and-availability", permanent: true },
+      { source: "/amenities", destination: "/location-and-amenities", permanent: true },
+      { source: "/Contact-us", destination: "/contact", permanent: true },
+      { source: "/payments", destination: "/rates-and-availability", permanent: true },
     ];
   },
 };

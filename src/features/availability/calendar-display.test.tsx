@@ -43,4 +43,11 @@ describe("unavailable calendar dates", () => {
     expect(screen.getByRole("button", { name: "June 15, 2027, available" })).toBeEnabled();
     vi.useRealTimers();
   });
+
+  it("exposes selected arrival and departure dates to assistive tools", () => {
+    render(<QuotationCalendar ranges={[]} arrival="2027-06-10" departure="2027-06-16" onChange={vi.fn()} />);
+    expect(screen.getByRole("button", { name: "June 10, 2027, arrival date" })).toHaveAttribute("aria-pressed", "true");
+    expect(screen.getByRole("button", { name: "June 16, 2027, departure date" })).toHaveAttribute("aria-pressed", "true");
+    expect(screen.getByRole("button", { name: "June 17, 2027, available" })).toHaveAttribute("aria-pressed", "false");
+  });
 });

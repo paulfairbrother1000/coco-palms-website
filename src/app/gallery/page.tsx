@@ -5,7 +5,7 @@ import { buildGallerySlots } from "@/features/gallery/build-gallery-slots";
 import { galleryImagesFromFilenames } from "@/features/gallery/gallery-files";
 import { createPublicSupabaseClient } from "@/lib/supabase/public";
 
-export const metadata = { title: "Gallery" };
+export const metadata = { title: "Gallery", description: "See Coco Palms villa photos: the interior, pool, waterfront terraces, private dock and beaches around Jolly Harbour, Antigua.", alternates: { canonical: "/gallery" } };
 export const revalidate = 300;
 
 const fallbackSections = [

@@ -24,7 +24,7 @@ import {
   Wifi,
 } from "lucide-react";
 
-export const metadata = { title: "Location & Amenities" };
+export const metadata = { title: "Location & Amenities", description: "Discover Coco Palms on Harbour Island in Jolly Harbour, Antigua, with a private pool and boat dock near beaches, dining, shops and watersports.", alternates: { canonical: "/location-and-amenities" } };
 
 const amenities = [
   [Waves, "Waterfront setting"],
