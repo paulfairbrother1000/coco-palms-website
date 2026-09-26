@@ -4,6 +4,8 @@ import { publicQuoteFromDatabase } from "@/features/quotes/public-quote";
 import { QuoteResult } from "@/features/quotes/quote-result";
 import { createPublicSupabaseClient } from "@/lib/supabase/public";
 
+export const metadata = { robots: { index: false, follow: false } };
+
 export default async function QuotationPage({ params }: { params: Promise<{ token: string }> }) {
   const { token } = await params;
   const { data, error } = await createPublicSupabaseClient().rpc("get_public_quote", { p_token: token });

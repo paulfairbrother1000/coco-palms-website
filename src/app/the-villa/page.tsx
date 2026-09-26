@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-export const metadata = { title: "The Villa" };
+export const metadata = { title: "The Villa", description: "Explore Coco Palms: a private 4-bedroom waterfront villa in Jolly Harbour, Antigua, sleeping up to 8 with a pool, boat dock and outdoor dining.", alternates: { canonical: "/the-villa" } };
 
 const villaImages = [
   {

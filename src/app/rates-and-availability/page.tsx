@@ -2,7 +2,7 @@ import { Suspense } from "react";
 import { QuoteForm } from "@/features/quotes/quote-form";
 import { PublishedRatesCard } from "@/features/quotes/published-rates-card";
 
-export const metadata = { title: "Rates & Availability" };
+export const metadata = { title: "Rates & Availability", description: "View current USD nightly rates and check dates for Coco Palms, a private 4-bedroom waterfront villa in Jolly Harbour, Antigua. Minimum stay 5 nights.", alternates: { canonical: "/rates-and-availability" } };
 
 export default function RatesAndAvailabilityPage() {
   return (

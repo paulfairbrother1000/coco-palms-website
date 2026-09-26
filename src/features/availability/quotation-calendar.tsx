@@ -43,12 +43,14 @@ export function QuotationCalendar({ ranges, arrival, departure, onChange }: Prop
       {days.map((date) => {
         const blocked = isDateUnavailable(date, ranges) || isBeforeEarliestArrival(date, now) || isTooShortDeparture(date, arrivalDate);
         const selected = (arrivalDate && isSameDay(date, arrivalDate)) || (departureDate && isSameDay(date, departureDate));
+        const selectionLabel = arrivalDate && isSameDay(date, arrivalDate) ? "arrival date" : departureDate && isSameDay(date, departureDate) ? "departure date" : null;
         const inRange = selectedNights.includes(dateIso(date));
         return <button
           type="button"
           key={date.toISOString()}
           disabled={blocked}
-          aria-label={`${format(date, "MMMM d, yyyy")}${blocked ? ", unavailable" : ", available"}`}
+          aria-label={`${format(date, "MMMM d, yyyy")}, ${selectionLabel ?? (blocked ? "unavailable" : "available")}`}
+          aria-pressed={Boolean(selected)}
           className={selected ? "selected" : inRange ? "in-range" : blocked ? "blocked" : ""}
           onClick={() => choose(date)}
         >{format(date, "d")}</button>;
